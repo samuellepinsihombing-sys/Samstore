@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Samstore - Digital Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --card: #141414;
+  --card-hover: #1a1a1a;
+  --gold: #fbbf24;
+  --gold-dark: #d97706;
+  --gold-light: #fde68a;
+  --text: #f5f5f5;
+  --dim: #a3a3a3;
+  --border: #262626;
+  --green: #10b981;
+  --red: #ef4444;
+  --purple: #8b5cf6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Background Effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 10%, rgba(251, 191, 36, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 15px 25px;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 1px;
+}
+
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--green);
+  background: rgba(16, 185, 129, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.logo-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 100px 20px 60px;
+  position: relative;
+  z-index: 10;
+}
+
+.welcome-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(217, 119, 6, 0.1));
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold-light);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+  animation: fadeDown 0.8s ease;
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(42px, 10vw, 80px);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, var(--gold-light) 50%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 20px;
+  animation: fadeUp 0.8s ease 0.2s both;
+  filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.2));
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-subtitle {
+  font-size: clamp(16px, 4vw, 22px);
+  color: var(--text);
+  margin-bottom: 10px;
+  font-weight: 600;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.hero-desc {
+  font-size: 14px;
+  color: var(--dim);
+  max-width: 500px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  animation: fadeUp 0.8s ease 0.6s both;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s ease 0.8s both;
+  margin-bottom: 40px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, -10px); }
+}
+
+.scroll-hint::after {
+  content: '↓';
+  display: block;
+  text-align: center;
+  margin-top: 5px;
+  font-size: 16px;
+  color: var(--gold);
+}
+
+/* ===== SECTION ===== */
+.section {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+
+.section-head {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 6vw, 42px);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+}
+
+.section-title span {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.section-desc {
+  font-size: 14px;
+  color: var(--dim);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ===== PRODUCT CARDS ===== */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 40px;
+}
+
+.product-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 35px 25px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover {
+  background: var(--card-hover);
+  transform: translateY(-8px);
+  border-color: rgba(251, 191, 36, 0.3);
+  box-shadow: 0 20px 60px rgba(251, 191, 36, 0.1);
+}
+
+.product-card:hover::before {
+  transform: scaleX(1);
+}
+
+.product-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(217, 119, 6, 0.05));
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-icon {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.product-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.product-desc {
+  font-size: 13px;
+  color: var(--dim);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.product-price {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 15px;
+  background: rgba(251, 191, 36, 0.08);
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.price-label {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.price-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--gold);
+}
+
+.price-value small {
+  font-size: 14px;
+  color: var(--dim);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+.btn-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.product-card:hover .btn-view {
+  background: var(--gold);
+  color: #000;
+  border-color: var(--gold);
+}
+
+.btn-view::after {
+  content: '→';
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .btn-view::after {
+  transform: translateX(4px);
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-overlay.active {
+  display: flex;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-head {
+  padding: 30px 25px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  color: var(--dim);
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.modal-close:hover {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+}
+
+.modal-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.1));
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.modal-subtitle {
+  font-size: 12px;
+  color: var(--dim);
+}
+
+.modal-body {
+  padding: 25px;
+}
+
+.packages-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.package-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.package-item {
+  padding: 15px;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.package-item:hover, .package-item.selected {
+  border-color: var(--gold);
+  background: rgba(251, 191, 36, 0.05);
+}
+
+.package-item.selected {
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+}
+
+.pkg-info h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 3px;
+}
+
+.pkg-info p {
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.pkg-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--gold);
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 13px 15px;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+}
+
+.form-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.btn-order {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s;
+  margin-top: 10px;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+}
+
+.btn-order:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
+}
+
+.btn-order:active {
+  transform: scale(0.98);
+}
+
+.btn-order svg {
+  width: 18px;
+  height: 18px;
+  fill: #fff;
+}
+
+.form-note {
+  text-align: center;
+  font-size: 10px;
+  color: var(--dim);
+  margin-top: 12px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  padding: 40px 20px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+  position: relative;
+  z-index: 10;
+}
+
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: var(--dim);
+  line-height: 1.6;
+}
+
+.footer-text strong {
+  color: var(--text);
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--card);
+  border: 1px solid var(--gold);
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 2000;
+  transition: transform 0.4s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.error { border-color: var(--red); color: #fca5a5; }
+.toast.success { border-color: var(--green); color: #6ee7b7; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+
+@media (max-width: 480px) {
+  .navbar { padding: 12px 18px; }
+  .logo { font-size: 18px; }
+  .hero { padding-top: 80px; }
+  .products-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">✦ Samstore</div>
+  <div class="logo-badge">OPEN</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="welcome-tag">✨ Premium Digital Store</div>
+  <h1>Samstore</h1>
+  <div class="hero-subtitle">Selamat Berbelanja!</div>
+  <p class="hero-desc">
+    Marketplace digital terpercaya untuk kebutuhan Website, Minigame, dan layanan custom lainnya. 
+    Kualitas premium, harga bersahabat, pelayanan cepat.
+  </p>
+  
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-value">500+</div>
+      <div class="stat-label">Pelanggan</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">4.9★</div>
+      <div class="stat-label">Rating</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">24/7</div>
+      <div class="stat-label">Support</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">Lihat Produk</div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section">
+  <div class="section-head">
+    <div class="section-tag">◆ Our Products ◆</div>
+    <h2 class="section-title">Pilih <span>Kategori</span> Favoritmu</h2>
+    <p class="section-desc">Klik salah satu produk untuk melihat rincian harga dan melakukan pemesanan</p>
+  </div>
+
+  <div class="products-grid">
+
+    <!-- WEBSITE -->
+    <div class="product-card" onclick="openModal('website')">
+      <div class="product-icon">🌐</div>
+      <h3 class="product-name">Website</h3>
+      <p class="product-desc">Jasa pembuatan website profesional, landing page, portfolio, hingga toko online.</p>
+      <div class="product-price">
+        <span class="price-label">Mulai dari</span>
+        <span class="price-value">Rp 15.000 <small>/ proyek</small></span>
+      </div>
+      <button class="btn-view">Lihat Paket</button>
+    </div>
+
+    <!-- MINIGAME -->
+    <div class="product-card" onclick="openModal('minigame')">
+      <div class="product-icon">🎮</div>
+      <h3 class="product-name">Minigame</h3>
+      <p class="product-desc">Game sederhana custom untuk event, hiburan, tugas sekolah, atau proyek seru.</p>
+      <div class="product-price">
+        <span class="price-label">Mulai dari</span>
+        <span class="price-value">Rp 5.000 <small>/ game</small></span>
+      </div>
+      <button class="btn-view">Lihat Paket</button>
+    </div>
+
+    <!-- PESAN KHUSUS -->
+    <div class="product-card" onclick="openModal('custom')">
+      <div class="product-icon">✨</div>
+      <h3 class="product-name">Pesan Khusus</h3>
+      <p class="product-desc">Request custom sesuai kebutuhanmu. Desain, coding, edit, dan jasa digital lainnya.</p>
+      <div class="product-price">
+        <span class="price-label">Mulai dari</span>
+        <span class="price-value">Rp 5.000 <small>/ request</small></span>
+      </div>
+      <button class="btn-view">Lihat Paket</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">✦ Samstore</div>
+  <p class="footer-text">
+    © 2026 Samstore • Dibuat dengan <strong>❤</strong> untuk pelanggan setia<br>
+    Trusted Digital Marketplace
+  </p>
+</footer>
+
+<!-- MODAL ORDER -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-icon" id="modalIcon">🌐</div>
+      <h3 class="modal-title" id="modalTitle">Website</h3>
+      <p class="modal-subtitle" id="modalSubtitle">Pilih paket sesuai kebutuhanmu</p>
+    </div>
+
+    <div class="modal-body">
+      <div class="packages-label">Pilih Paket</div>
+      <div class="package-list" id="packageList">
+        <!-- Packages diisi oleh JS -->
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Nama Pelanggan *</label>
+        <input type="text" class="form-input" id="custName" placeholder="Masukkan nama lengkap">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Catatan Tambahan</label>
+        <textarea class="form-textarea" id="custNote" placeholder="Jelaskan detail pesananmu (opsional)..."></textarea>
+      </div>
+
+      <button class="btn-order" onclick="sendToWA()">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.917.918l4.462-1.494A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.3 0-4.438-.726-6.2-1.96l-.433-.303-3.15 1.055 1.057-3.144-.332-.482A9.953 9.953 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+        Pesan via WhatsApp
+      </button>
+
+      <p class="form-note">🔒 Data pesanan akan dikirim langsung ke admin Samstore</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA PRODUK =====
+const PRODUCTS = {
+  website: {
+    icon: '🌐',
+    title: 'Website',
+    subtitle: 'Jasa Pembuatan Website Profesional',
+    packages: [
+      { name: 'Basic Landing Page', desc: '1 halaman sederhana, responsive', price: 'Rp 15.000' },
+      { name: 'Portfolio Website', desc: 'Showcase karya, multi-section', price: 'Rp 35.000' },
+      { name: 'Toko Online Mini', desc: 'Katalog produk + checkout WA', price: 'Rp 75.000' },
+      { name: 'Website Custom Premium', desc: 'Full fitur, desain eksklusif', price: 'Rp 150.000' }
+    ]
+  },
+  minigame: {
+    icon: '🎮',
+    title: 'Minigame',
+    subtitle: 'Game Sederhana & Fun',
+    packages: [
+      { name: 'Game Template Basic', desc: 'Game siap pakai, simple', price: 'Rp 5.000' },
+      { name: 'Game Kustom Ringan', desc: 'Custom tema & warna', price: 'Rp 15.000' },
+      { name: 'Game Interaktif', desc: 'Multi-level + scoring', price: 'Rp 35.000' },
+      { name: 'Game Premium Custom', desc: 'Sesuai request lengkap', price: 'Rp 75.000' }
+    ]
+  },
+  custom: {
+    icon: '✨',
+    title: 'Pesan Khusus',
+    subtitle: 'Request Sesuai Kebutuhanmu',
+    packages: [
+      { name: 'Request Mini', desc: 'Tugas sederhana, edit kecil', price: 'Rp 5.000' },
+      { name: 'Request Medium', desc: 'Desain/coding menengah', price: 'Rp 20.000' },
+      { name: 'Request Besar', desc: 'Proyek kompleks', price: 'Rp 50.000' },
+      { name: 'Request VIP', desc: 'Prioritas + revisi unlimited', price: 'Rp 100.000' }
+    ]
+  }
+};
+
+const WA_NUMBER = '6281214233454';
+let currentProduct = null;
+let selectedPackage = null;
+
+// ===== MODAL FUNCTIONS =====
+function openModal(key) {
+  currentProduct = PRODUCTS[key];
+  selectedPackage = null;
+  
+  document.getElementById('modalIcon').textContent = currentProduct.icon;
+  document.getElementById('modalTitle').textContent = currentProduct.title;
+  document.getElementById('modalSubtitle').textContent = currentProduct.subtitle;
+  
+  const list = document.getElementById('packageList');
+  list.innerHTML = '';
+  
+  currentProduct.packages.forEach((pkg, i) => {
+    const div = document.createElement('div');
+    div.className = 'package-item';
+    div.innerHTML = `
+      <div class="pkg-info">
+        <h4>${pkg.name}</h4>
+        <p>${pkg.desc}</p>
+      </div>
+      <div class="pkg-price">${pkg.price}</div>
+    `;
+    div.onclick = () => selectPackage(i, div);
+    list.appendChild(div);
+  });
+  
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function selectPackage(index, element) {
+  selectedPackage = currentProduct.packages[index];
+  document.querySelectorAll('.package-item').forEach(el => el.classList.remove('selected'));
+  element.classList.add('selected');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+  document.getElementById('custName').value = '';
+  document.getElementById('custNote').value = '';
+}
+
+// ===== KIRIM KE WHATSAPP =====
+function sendToWA() {
+  const name = document.getElementById('custName').value.trim();
+  const note = document.getElementById('custNote').value.trim();
+  
+  if (!name) {
+    showToast('⚠️ Mohon isi nama pelanggan', 'error');
+    return;
+  }
+  
+  if (!selectedPackage) {
+    showToast('⚠️ Pilih paket terlebih dahulu', 'error');
+    return;
+  }
+  
+  const tanggal = new Date().toLocaleDateString('id-ID', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+  
+  const pesan = 
+`🛍️ *PESANAN BARU - SAMSTORE*
+━━━━━━━━━━━━━━━━━━━━━
+
+👤 *Nama Pelanggan:*
+${name}
+
+📦 *Kategori Produk:*
+${currentProduct.icon} ${currentProduct.title}
+
+💎 *Paket Dipilih:*
+${selectedPackage.name}
+
+💰 *Harga:*
+${selectedPackage.price}
+
+📋 *Detail Paket:*
+${selectedPackage.desc}
+
+📝 *Catatan:*
+${note || '-'}
+
+📅 *Waktu Pesan:*
+${tanggal}
+
+━━━━━━━━━━━━━━━━━━━━━
+_Dikirim otomatis dari website Samstore_`;
+
+  const encoded = encodeURIComponent(pesan);
+  window.open(`https://wa.me/${WA_NUMBER}?text=${encoded}`, '_blank');
+  
+  showToast('✅ Mengarahkan ke WhatsApp...', 'success');
+  setTimeout(closeModal, 1000);
+}
+
+// ===== TOAST =====
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ===== SCROLL SMOOTH =====
+document.querySelector('.scroll-hint').onclick = () => {
+  document.querySelector('.section').scrollIntoView({ behavior: 'smooth' });
+};
+</script>
+
+</body>
+</html>
