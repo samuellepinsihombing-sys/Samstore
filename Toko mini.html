@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>FreshMart - Minimarket Online Terpercaya</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #10b981;
+  --primary-dark: #059669;
+  --primary-light: #d1fae5;
+  --accent: #f97316;
+  --accent-light: #fed7aa;
+  --bg: #f8fafc;
+  --white: #ffffff;
+  --dark: #0f172a;
+  --text: #334155;
+  --dim: #64748b;
+  --border: #e2e8f0;
+  --red: #ef4444;
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ===== HEADER ===== */
+.header {
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  z-index: 100;
+  padding: 15px 20px;
+}
+
+.header-top {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: -0.5px;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.search-bar {
+  flex: 1;
+  max-width: 500px;
+  position: relative;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 12px 16px 12px 44px;
+  background: var(--bg);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--dark);
+  outline: none;
+  transition: 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.search-bar input:focus {
+  border-color: var(--primary);
+  background: var(--white);
+}
+
+.search-bar::before {
+  content: '🔍';
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+}
+
+.cart-btn {
+  position: relative;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.cart-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--red);
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  border: 2px solid white;
+}
+
+/* ===== HERO BANNER ===== */
+.hero {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.hero-banner {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border-radius: 24px;
+  padding: 40px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-banner::before {
+  content: '🛒';
+  position: absolute;
+  right: -20px;
+  bottom: -30px;
+  font-size: 200px;
+  opacity: 0.15;
+  transform: rotate(-15deg);
+}
+
+.hero-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  width: fit-content;
+  backdrop-filter: blur(10px);
+}
+
+.hero-banner h1 {
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+.hero-banner p {
+  font-size: 14px;
+  opacity: 0.9;
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  background: rgba(255,255,255,0.15);
+  padding: 8px 16px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+.hero-stat strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.hero-stat span {
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+/* ===== CATEGORIES ===== */
+.categories {
+  max-width: 1200px;
+  margin: 30px auto 10px;
+  padding: 0 20px;
+}
+
+.category-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+}
+
+.category-scroll::-webkit-scrollbar { display: none; }
+
+.cat-btn {
+  padding: 10px 20px;
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.cat-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.cat-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+/* ===== PRODUCTS ===== */
+.products-section {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 20px 100px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--dark);
+  letter-spacing: -0.5px;
+}
+
+.section-title span {
+  color: var(--primary);
+}
+
+.product-count {
+  font-size: 13px;
+  color: var(--dim);
+  font-weight: 500;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.product-card {
+  background: var(--white);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.product-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--accent);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);
+}
+
+.product-image {
+  height: 130px;
+  background: linear-gradient(135deg, var(--primary-light), #ecfdf5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 70px;
+  position: relative;
+}
+
+.product-info {
+  padding: 14px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-cat {
+  font-size: 10px;
+  color: var(--primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.product-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 6px;
+  line-height: 1.3;
+  min-height: 36px;
+}
+
+.product-price {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--primary);
+  margin-bottom: 10px;
+  margin-top: auto;
+}
+
+.btn-add {
+  width: 100%;
+  padding: 10px;
+  background: var(--dark);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn-add:hover {
+  background: var(--primary);
+}
+
+.btn-add:active {
+  transform: scale(0.95);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--dim);
+  grid-column: 1/-1;
+}
+
+.empty-state .emoji {
+  font-size: 60px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* ===== CART DRAWER ===== */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+}
+
+.cart-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  background: var(--white);
+  z-index: 201;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+}
+
+.cart-drawer.active {
+  transform: translateX(0);
+}
+
+.cart-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-header h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.close-cart {
+  background: var(--bg);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text);
+  transition: 0.2s;
+}
+
+.close-cart:hover {
+  background: var(--red);
+  color: white;
+}
+
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px 20px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.cart-item-img {
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.cart-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-item-price {
+  font-size: 12px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.qty-btn {
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: var(--bg);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.qty-btn:hover { background: var(--primary); color: white; }
+.qty-btn.danger:hover { background: var(--red); }
+
+.qty-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+  min-width: 20px;
+  text-align: center;
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--dim);
+}
+
+.cart-empty .emoji {
+  font-size: 60px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.cart-footer {
+  padding: 20px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.cart-summary {
+  margin-bottom: 15px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.summary-row.total {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--dark);
+  padding-top: 10px;
+  border-top: 2px dashed var(--border);
+  margin-top: 10px;
+}
+
+.summary-row.total span:last-child {
+  color: var(--primary);
+}
+
+.customer-input {
+  width: 100%;
+  padding: 12px 14px;
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  outline: none;
+  transition: 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.customer-input:focus {
+  border-color: var(--primary);
+}
+
+.btn-checkout {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn-checkout:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(37, 211, 102, 0.4);
+}
+
+.btn-checkout:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--dark);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ===== FOOTER ===== */
+.footer {
+  background: var(--dark);
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.footer-logo {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.footer p {
+  font-size: 12px;
+  opacity: 0.7;
+  line-height: 1.6;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.product-card { animation: slideIn 0.4s ease backwards; }
+.product-card:nth-child(1) { animation-delay: 0.05s; }
+.product-card:nth-child(2) { animation-delay: 0.1s; }
+.product-card:nth-child(3) { animation-delay: 0.15s; }
+.product-card:nth-child(4) { animation-delay: 0.2s; }
+.product-card:nth-child(5) { animation-delay: 0.25s; }
+.product-card:nth-child(6) { animation-delay: 0.3s; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .hero-banner { padding: 25px; }
+  .hero-banner::before { font-size: 120px; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .product-image { height: 100px; font-size: 50px; }
+  .product-info { padding: 10px; }
+  .product-name { font-size: 12px; min-height: 32px; }
+  .product-price { font-size: 15px; }
+  .search-bar { display: none; }
+  .cart-btn span { display: none; }
+  .cart-btn { padding: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-top">
+    <div class="logo">
+      <div class="logo-icon">🛒</div>
+      <span>FreshMart</span>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Cari produk... (misal: Indomie, Aqua)">
+    </div>
+    <button class="cart-btn" onclick="openCart()">
+      🛍️ <span>Keranjang</span>
+      <div class="cart-badge" id="cartBadge">0</div>
+    </button>
+  </div>
+</header>
+
+<!-- HERO BANNER -->
+<section class="hero">
+  <div class="hero-banner">
+    <div class="hero-tag">⚡ PROMO SPESIAL HARI INI</div>
+    <h1>Belanja Hemat,<br>Hidup Lebih Sehat!</h1>
+    <p>Ribuan produk kebutuhan harian dengan harga termurah. Gratis ongkir untuk pembelian di atas Rp 50.000!</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong>1000+</strong>
+        <span>Produk</span>
+      </div>
+      <div class="hero-stat">
+        <strong>24 Jam</strong>
+        <span>Pengiriman</span>
+      </div>
+      <div class="hero-stat">
+        <strong>4.9★</strong>
+        <span>Rating</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories">
+  <div class="category-scroll" id="categoryScroll">
+    <button class="cat-btn active" data-cat="all">🏪 Semua</button>
+    <button class="cat-btn" data-cat="minuman">🥤 Minuman</button>
+    <button class="cat-btn" data-cat="snack">🍿 Snack</button>
+    <button class="cat-btn" data-cat="makanan">🍜 Makanan</button>
+    <button class="cat-btn" data-cat="harian">🧴 Harian</button>
+    <button class="cat-btn" data-cat="frozen">🧊 Frozen</button>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section">
+  <div class="section-head">
+    <h2 class="section-title">Produk <span>Unggulan</span></h2>
+    <span class="product-count" id="productCount">24 produk</span>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">🛒 FreshMart</div>
+  <p>Minimarket Online Terpercaya © 2026<br>Melayani dengan sepenuh hati ❤️</p>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>🛍️ Keranjang Belanja</h3>
+    <button class="close-cart" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-summary">
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span id="subtotal">Rp 0</span>
+      </div>
+      <div class="summary-row">
+        <span>Ongkos Kirim</span>
+        <span id="shipping">Rp 0</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total</span>
+        <span id="total">Rp 0</span>
+      </div>
+    </div>
+    <input type="text" class="customer-input" id="customerName" placeholder="Nama Pemesan *">
+    <input type="text" class="customer-input" id="customerAddress" placeholder="Alamat Pengiriman *">
+    <button class="btn-checkout" id="btnCheckout" onclick="checkout()">
+      💬 Checkout via WhatsApp
+    </button>
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA PRODUK =====
+const PRODUCTS = [
+  // MINUMAN
+  { id: 1, name: 'Aqua 600ml', cat: 'minuman', catLabel: 'Minuman', icon: '💧', price: 4000, badge: null },
+  { id: 2, name: 'Teh Botol Sosro', cat: 'minuman', catLabel: 'Minuman', icon: '🍵', price: 5000, badge: 'BEST' },
+  { id: 3, name: 'Coca Cola 390ml', cat: 'minuman', catLabel: 'Minuman', icon: '🥤', price: 7500, badge: null },
+  { id: 4, name: 'Ultra Milk Coklat', cat: 'minuman', catLabel: 'Minuman', icon: '🥛', price: 6500, badge: null },
+  { id: 5, name: 'Yakult 5 Pack', cat: 'minuman', catLabel: 'Minuman', icon: '🍼', price: 9000, badge: 'SALE' },
+  { id: 6, name: 'Kopi Good Day', cat: 'minuman', catLabel: 'Minuman', icon: '☕', price: 4500, badge: null },
+  
+  // SNACK
+  { id: 7, name: 'Chitato Sapi Panggang', cat: 'snack', catLabel: 'Snack', icon: '🥔', price: 9500, badge: 'HOT' },
+  { id: 8, name: 'Oreo Original', cat: 'snack', catLabel: 'Snack', icon: '🍪', price: 7000, badge: null },
+  { id: 9, name: 'Tango Wafer', cat: 'snack', catLabel: 'Snack', icon: '🧇', price: 5500, badge: null },
+  { id: 10, name: 'Qtela Singkong', cat: 'snack', catLabel: 'Snack', icon: '🍟', price: 3500, badge: 'MURAH' },
+  { id: 11, name: 'Silverqueen Cashew', cat: 'snack', catLabel: 'Snack', icon: '🍫', price: 12000, badge: null },
+  { id: 12, name: 'Permen Kopiko', cat: 'snack', catLabel: 'Snack', icon: '🍬', price: 1000, badge: null },
+  
+  // MAKANAN
+  { id: 13, name: 'Indomie Goreng', cat: 'makanan', catLabel: 'Makanan', icon: '🍜', price: 3500, badge: 'LARIS' },
+  { id: 14, name: 'Mie Sedaap Kuah', cat: 'makanan', catLabel: 'Makanan', icon: '🍲', price: 3300, badge: null },
+  { id: 15, name: 'Sari Roti Tawar', cat: 'makanan', catLabel: 'Makanan', icon: '🍞', price: 14000, badge: null },
+  { id: 16, name: 'Pop Mie Ayam', cat: 'makanan', catLabel: 'Makanan', icon: '🥣', price: 6000, badge: null },
+  { id: 17, name: 'Nabati Keju', cat: 'makanan', catLabel: 'Makanan', icon: '🧀', price: 3000, badge: 'NEW' },
+  { id: 18, name: 'Biskuit Roma', cat: 'makanan', catLabel: 'Makanan', icon: '🍘', price: 4500, badge: null },
+  
+  // KEBUTUHAN HARIAN
+  { id: 19, name: 'Sabun Lifebuoy', cat: 'harian', catLabel: 'Harian', icon: '🧼', price: 4000, badge: null },
+  { id: 20, name: 'Shampoo Pantene', cat: 'harian', catLabel: 'Harian', icon: '🧴', price: 15000, badge: 'PREMIUM' },
+  { id: 21, name: 'Pasta Gigi Pepsodent', cat: 'harian', catLabel: 'Harian', icon: '🪥', price: 8500, badge: null },
+  { id: 22, name: 'Tissue Paseo', cat: 'harian', catLabel: 'Harian', icon: '🧻', price: 11000, badge: null },
+  { id: 23, name: 'Deterjen Rinso', cat: 'harian', catLabel: 'Harian', icon: '🧺', price: 3500, badge: null },
+  
+  // FROZEN
+  { id: 24, name: 'Nugget So Good', cat: 'frozen', catLabel: 'Frozen', icon: '🍗', price: 25000, badge: 'PROMO' },
+  { id: 25, name: 'Sosis So Nice', cat: 'frozen', catLabel: 'Frozen', icon: '🌭', price: 2000, badge: null },
+  { id: 26, name: 'Bakso Sapi', cat: 'frozen', catLabel: 'Frozen', icon: '🥟', price: 18000, badge: null },
+  { id: 27, name: 'Es Krim Walls', cat: 'frozen', catLabel: 'Frozen', icon: '🍦', price: 8000, badge: 'NEW' }
+];
+
+const WA_NUMBER = '6281214233454';
+let cart = JSON.parse(localStorage.getItem('freshmart_cart') || '[]');
+let currentFilter = 'all';
+let currentSearch = '';
+
+// ===== FORMAT RUPIAH =====
+const rupiah = (num) => 'Rp ' + num.toLocaleString('id-ID');
+
+// ===== RENDER PRODUCTS =====
+function renderProducts() {
+  const grid = document.getElementById('productsGrid');
+  const count = document.getElementById('productCount');
+  
+  let filtered = PRODUCTS.filter(p => {
+    const matchCat = currentFilter === 'all' || p.cat === currentFilter;
+    const matchSearch = p.name.toLowerCase().includes(currentSearch.toLowerCase());
+    return matchCat && matchSearch;
+  });
+  
+  count.textContent = `${filtered.length} produk`;
+  
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <span class="emoji">🔍</span>
+        <p>Produk tidak ditemukan</p>
+      </div>
+    `;
+    return;
+  }
+  
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card">
+      ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+      <div class="product-image">${p.icon}</div>
+      <div class="product-info">
+        <div class="product-cat">${p.catLabel}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-price">${rupiah(p.price)}</div>
+        <button class="btn-add" onclick="addToCart(${p.id})">
+          ➕ Tambah
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== CART FUNCTIONS =====
+function addToCart(id) {
+  const product = PRODUCTS.find(p => p.id === id);
+  const existing = cart.find(item => item.id === id);
+  
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
+  
+  saveCart();
+  updateCartUI();
+  showToast(`✓ ${product.name} ditambahkan!`, 'success');
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  
+  item.qty += delta;
+  if (item.qty <= 0) {
+    cart = cart.filter(i => i.id !== id);
+  }
+  
+  saveCart();
+  updateCartUI();
+  renderCart();
+}
+
+function saveCart() {
+  localStorage.setItem('freshmart_cart', JSON.stringify(cart));
+}
+
+function updateCartUI() {
+  const totalItems = cart.reduce((sum, i) => sum + i.qty, 0);
+  document.getElementById('cartBadge').textContent = totalItems;
+  document.getElementById('btnCheckout').disabled = cart.length === 0;
+}
+
+function renderCart() {
+  const container = document.getElementById('cartItems');
+  
+  if (cart.length === 0) {
+    container.innerHTML = `
+      <div class="cart-empty">
+        <span class="emoji">🛒</span>
+        <p>Keranjang masih kosong</p>
+        <p style="font-size:12px;margin-top:5px;">Yuk mulai belanja!</p>
+      </div>
+    `;
+    updateSummary();
+    return;
+  }
+  
+  container.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-img">${item.icon}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${rupiah(item.price * item.qty)}</div>
+      </div>
+      <div class="qty-control">
+        <button class="qty-btn danger" onclick="changeQty(${item.id}, -1)">−</button>
+        <span class="qty-val">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+      </div>
+    </div>
+  `).join('');
+  
+  updateSummary();
+}
+
+function updateSummary() {
+  const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+  const shipping = subtotal >= 50000 || subtotal === 0 ? 0 : 10000;
+  const total = subtotal + shipping;
+  
+  document.getElementById('subtotal').textContent = rupiah(subtotal);
+  document.getElementById('shipping').textContent = shipping === 0 ? 'GRATIS ✨' : rupiah(shipping);
+  document.getElementById('total').textContent = rupiah(total);
+}
+
+function openCart() {
+  document.getElementById('cartOverlay').classList.add('active');
+  document.getElementById('cartDrawer').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  renderCart();
+}
+
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('active');
+  document.getElementById('cartDrawer').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ===== CHECKOUT =====
+function checkout() {
+  const name = document.getElementById('customerName').value.trim();
+  const address = document.getElementById('customerAddress').value.trim();
+  
+  if (!name) { showToast('⚠️ Mohon isi nama pemesan', 'error'); return; }
+  if (!address) { showToast('⚠️ Mohon isi alamat pengiriman', 'error'); return; }
+  if (cart.length === 0) { showToast('⚠️ Keranjang masih kosong', 'error'); return; }
+  
+  const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+  const shipping = subtotal >= 50000 ? 0 : 10000;
+  const total = subtotal + shipping;
+  const tanggal = new Date().toLocaleDateString('id-ID', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+  
+  let itemList = cart.map((item, i) => 
+    `${i+1}. ${item.name} x${item.qty} = ${rupiah(item.price * item.qty)}`
+  ).join('%0A');
+  
+  const pesan = 
+`🛒 *PESANAN BARU - FRESHMART*
+━━━━━━━━━━━━━━━━━━━━━━━
+
+👤 *Pemesan:* ${name}
+📍 *Alamat:* ${address}
+
+📦 *Daftar Belanja:*
+${itemList}
+
+━━━━━━━━━━━━━━━━━━━━━━━
+💰 Subtotal: ${rupiah(subtotal)}
+🚚 Ongkir: ${shipping === 0 ? 'GRATIS ✨' : rupiah(shipping)}
+💵 *TOTAL: ${rupiah(total)}*
+━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 *Waktu Pesan:*
+${tanggal}
+
+${subtotal >= 50000 ? '🎉 Selamat! Anda dapat GRATIS ONGKIR!' : '💡 Belanja min. Rp 50.000 untuk GRATIS ONGKIR'}
+
+_Dikirim otomatis dari FreshMart_`;
+
+  window.open(`https://wa.me/${WA_NUMBER}?text=${pesan}`, '_blank');
+  showToast('✅ Mengarahkan ke WhatsApp...', 'success');
+  
+  setTimeout(() => {
+    cart = [];
+    saveCart();
+    updateCartUI();
+    renderCart();
+    closeCart();
+  }, 1500);
+}
+
+// ===== TOAST =====
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show';
+  if (type === 'error') t.style.background = 'var(--red)';
+  else if (type === 'success') t.style.background = 'var(--primary)';
+  else t.style.background = 'var(--dark)';
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ===== EVENT LISTENERS =====
+document.getElementById('categoryScroll').addEventListener('click', (e) => {
+  if (e.target.classList.contains('cat-btn')) {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    currentFilter = e.target.dataset.cat;
+    renderProducts();
+  }
+});
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  currentSearch = e.target.value;
+  renderProducts();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeCart();
+});
+
+// ===== INIT =====
+renderProducts();
+updateCartUI();
+</script>
+
+</body>
+</html>
