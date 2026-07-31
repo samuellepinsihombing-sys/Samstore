@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pendaftaran Les Rany</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --primary-blue: #1e3a8a; 
+            --accent-yellow: #fbbf24; 
+            --bg-light: #f3f4f6;
+            --success-green: #10b981;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        body {
+            background-color: var(--bg-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-top: 8px solid var(--primary-blue);
+        }
+
+        .header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent-yellow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .header-address {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 8px;
+            line-height: 1.5;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 15px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .form-body { padding: 30px 25px; }
+
+        .input-group { margin-bottom: 20px; }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            color: #1f2937;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-blue);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.1);
+        }
+
+        .price-display {
+            background: #ecfdf5;
+            border: 1px dashed var(--success-green);
+            color: #065f46;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover { background: #172554; transform: translateY(-2px); }
+        .btn-submit:active { transform: scale(0.98); }
+
+        .footer-note { text-align: center; margin-top: 20px; font-size: 12px; color: #9ca3af; }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>LES RANY</h1>
+            <p>Bimbingan Belajar SD - SMP - SMA</p>
+            
+            <!-- ALAMAT BARU SESUAI PERMINTAAN -->
+            <div class="header-address">
+                📍 Jalan Jamin Ginting Km 11<br>
+                (Samping Jambur Tamsaka)
+            </div>
+        </div>
+
+        <div class="form-body">
+            <div class="input-group">
+                <label for="nama">Nama Lengkap Siswa</label>
+                <input type="text" id="nama" placeholder="Contoh: Budi Santoso" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="jenjang">Jenjang Pendidikan</label>
+                <select id="jenjang" onchange="updateKelas()">
+                    <option value="" disabled selected>-- Pilih Jenjang --</option>
+                    <option value="SD">Sekolah Dasar (SD)</option>
+                    <option value="SMP">Sekolah Menengah Pertama (SMP)</option>
+                    <option value="SMA">Sekolah Menengah Atas (SMA)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="kelas">Kelas</label>
+                <select id="kelas">
+                    <option value="" disabled selected>-- Pilih Kelas --</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="mapel">Mata Pelajaran</label>
+                <select id="mapel" onchange="tampilkanHarga()">
+                    <option value="" disabled selected>-- Pilih Mapel --</option>
+                    <option value="Matematika">📐 Matematika</option>
+                    <option value="Fisika">️ Fisika</option>
+                    <option value="Bahasa Inggris">🇬🇧 Bahasa Inggris</option>
+                    <option value="IPA">🧪 IPA (Khusus SMP)</option>
+                </select>
+            </div>
+
+            <div id="priceBox" class="price-display"></div>
+
+            <button class="btn-submit" onclick="kirimKeWA()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.967.592 1.971.906 3.033.906 3.18 0 5.767-2.587 5.767-5.766.001-3.182-2.585-5.769-5.766-5.769zm0 10.234c-.925 0-1.81-.26-2.57-.74l-.184-.11-1.91.501.51-1.86-.12-.19c-.61-.97-.93-1.79-.93-2.76 0-2.46 2.002-4.463 4.463-4.463 2.46 0 4.463 2.003 4.463 4.463 0 2.461-2.003 4.463-4.463 4.463z"/></svg>
+                Daftar via WhatsApp
+            </button>
+
+            <div class="footer-note">Data & Estimasi Biaya akan dikirim ke Admin</div>
+        </div>
+    </div>
+
+    <script>
+        const pricingData = {
+            'SD': { price: 150000, freq: '3 Pertemuan/Minggu', subjects: ['Matematika', 'Bahasa Inggris'] },
+            'SMP': { price: 150000, freq: '2 Pertemuan/Minggu', subjects: ['Matematika', 'Bahasa Inggris', 'IPA'] },
+            'SMA': { price: 180000, freq: '2 Pertemuan/Minggu', subjects: ['Matematika', 'Bahasa Inggris', 'Fisika'] }
+        };
+
+        function updateKelas() {
+            const jenjang = document.getElementById('jenjang').value;
+            const kelasSelect = document.getElementById('kelas');
+            const mapelSelect = document.getElementById('mapel');
+            
+            kelasSelect.innerHTML = '<option value="" disabled selected>-- Pilih Kelas --</option>';
+            let options = [];
+            if (jenjang === 'SD') options = ['Kelas 1', 'Kelas 2', 'Kelas 3', 'Kelas 4', 'Kelas 5', 'Kelas 6'];
+            else if (jenjang === 'SMP') options = ['Kelas 7', 'Kelas 8', 'Kelas 9'];
+            else if (jenjang === 'SMA') options = ['Kelas 10', 'Kelas 11', 'Kelas 12'];
+            
+            options.forEach(kls => {
+                const option = document.createElement('option');
+                option.value = kls;
+                option.textContent = kls;
+                kelasSelect.appendChild(option);
+            });
+
+            mapelSelect.innerHTML = '<option value="" disabled selected>-- Pilih Mapel --</option>';
+            if(pricingData[jenjang]) {
+                pricingData[jenjang].subjects.forEach(sub => {
+                    const opt = document.createElement('option');
+                    opt.value = sub;
+                    opt.textContent = sub === 'Matematika' ? ' Matematika' : 
+                                      sub === 'Fisika' ? '⚛️ Fisika' : 
+                                      sub === 'Bahasa Inggris' ? '🇧 Bahasa Inggris' : '🧪 IPA';
+                    mapelSelect.appendChild(opt);
+                });
+            }
+            
+            document.getElementById('priceBox').style.display = 'none';
+        }
+
+        function tampilkanHarga() {
+            const jenjang = document.getElementById('jenjang').value;
+            const mapel = document.getElementById('mapel').value;
+            const priceBox = document.getElementById('priceBox');
+
+            if (!jenjang || !mapel) {
+                priceBox.style.display = 'none';
+                return;
+            }
+
+            const data = pricingData[jenjang];
+            const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(data.price);
+            
+            priceBox.innerHTML = ` Estimasi: <b>${formattedPrice} / bulan</b><br><small>(${data.freq})</small>`;
+            priceBox.style.display = 'block';
+        }
+
+        function kirimKeWA() {
+            const nama = document.getElementById('nama').value.trim();
+            const jenjang = document.getElementById('jenjang').value;
+            const kelas = document.getElementById('kelas').value;
+            const mapel = document.getElementById('mapel').value;
+
+            if (!nama || !jenjang || !kelas || !mapel) {
+                alert("⚠️ Mohon lengkapi semua data pendaftaran!");
+                return;
+            }
+
+            // NOMOR WA TETAP 082370710004
+            const nomorWA = "6282370710004"; 
+            const data = pricingData[jenjang];
+            const formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(data.price);
+
+            const pesan = `Halo Admin Les Rany! 👋%0A%0ASaya ingin mendaftar bimbingan belajar.%0A%0A *Detail Pendaftaran:*%0A👤 Nama: ${nama}%0A🎓 Jenjang: ${jenjang}%0A🏫 Kelas: ${kelas}%0A📚 Mapel: ${mapel}%0A💰 Estimasi Biaya: ${formattedPrice}/bulan (${data.freq})%0A%0AMohon info jadwal dan prosedur pembayarannya. Terima kasih!`;
+
+            window.open(`https://wa.me/${nomorWA}?text=${pesan}`, '_blank');
+        }
+    </script>
+</body>
+</html>
