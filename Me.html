@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Samstore - Digital Marketplace</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<title>Samstore - Premium Digital Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #0a0a0a;
@@ -17,8 +17,7 @@
   --dim: #a3a3a3;
   --border: #262626;
   --green: #10b981;
-  --red: #ef444;
-  --purple: #8b5cf6;
+  --red: #ef4444;
 }
 
 * {
@@ -29,15 +28,41 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html { scroll-behavior: smooth; }
+
 body {
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
   position: relative;
+  line-height: 1.6;
 }
 
-/* Background Effect */
+/* ===== PARTICLES CANVAS ===== */
+#particles {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ===== MOUSE SPOTLIGHT ===== */
+.spotlight {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s;
+  mix-blend-mode: screen;
+}
+
+/* Background Effect - Fixed */
 body::before {
   content: '';
   position: fixed;
@@ -48,6 +73,12 @@ body::before {
     radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 40%);
   pointer-events: none;
   z-index: 1;
+  animation: bgShift 15s ease-in-out infinite;
+}
+
+@keyframes bgShift {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
 }
 
 /* ===== NAVBAR ===== */
@@ -55,7 +86,7 @@ body::before {
   position: fixed;
   top: 0; left: 0; right: 0;
   padding: 15px 25px;
-  background: rgba(10, 10, 10, 0.8);
+  background: rgba(10, 10, 10, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
@@ -63,6 +94,12 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .logo {
@@ -74,6 +111,13 @@ body::before {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: 1px;
+  position: relative;
+  animation: logoGlow 3s ease-in-out infinite;
+}
+
+@keyframes logoGlow {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.3)); }
+  50% { filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.6)); }
 }
 
 .logo-badge {
@@ -87,6 +131,12 @@ body::before {
   padding: 4px 10px;
   border-radius: 20px;
   border: 1px solid rgba(16, 185, 129, 0.3);
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
 .logo-badge::before {
@@ -99,22 +149,63 @@ body::before {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
-  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+}
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  position: relative;
+  z-index: 10;
+  padding-top: 70px;
 }
 
 /* ===== HERO ===== */
 .hero {
-  min-height: 100vh;
+  min-height: calc(100vh - 70px);
   display: flex;
-
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 100px 20px 60px;
+  padding: 60px 20px 40px;
   position: relative;
-  z-index: 10;
+}
+
+/* Floating decorative orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.orb-1 {
+  width: 200px; height: 200px;
+  background: var(--gold);
+  top: 20%; left: 10%;
+  animation: floatOrb 8s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 150px; height: 150px;
+  background: #8b5cf6;
+  bottom: 20%; right: 10%;
+  animation: floatOrb 10s ease-in-out infinite reverse;
+}
+
+.orb-3 {
+  width: 100px; height: 100px;
+  background: var(--gold-light);
+  top: 50%; right: 20%;
+  animation: floatOrb 7s ease-in-out infinite;
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.1); }
+  66% { transform: translate(-20px, 30px) scale(0.9); }
 }
 
 .welcome-tag {
@@ -131,7 +222,30 @@ body::before {
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-bottom: 25px;
-  animation: fadeDown 0.8s ease;
+  animation: fadeDown 0.8s ease, tagFloat 3s ease-in-out infinite 1s;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-tag::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.3), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+@keyframes tagFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
 @keyframes fadeDown {
@@ -144,14 +258,20 @@ body::before {
   font-size: clamp(42px, 10vw, 80px);
   font-weight: 900;
   background: linear-gradient(135deg, #fff 0%, var(--gold-light) 50%, var(--gold-dark) 100%);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: -2px;
   line-height: 1;
   margin-bottom: 20px;
-  animation: fadeUp 0.8s ease 0.2s both;
+  animation: fadeUp 0.8s ease 0.2s both, gradientShift 5s ease infinite;
   filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.2));
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 @keyframes fadeUp {
@@ -165,6 +285,29 @@ body::before {
   margin-bottom: 10px;
   font-weight: 600;
   animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.typing-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: clamp(16px, 4vw, 22px);
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 10px;
+  min-height: 35px;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.typed-text {
+  border-right: 2px solid var(--gold);
+  padding-right: 4px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { border-color: var(--gold); }
+  51%, 100% { border-color: transparent; }
 }
 
 .hero-desc {
@@ -182,11 +325,16 @@ body::before {
   justify-content: center;
   flex-wrap: wrap;
   animation: fadeUp 0.8s ease 0.8s both;
-  margin-bottom: 40px;
 }
 
-.stat-item {
+.stat-item { 
   text-align: center;
+  transition: transform 0.3s ease;
+  cursor: default;
+}
+
+.stat-item:hover {
+  transform: translateY(-5px) scale(1.05);
 }
 
 .stat-value {
@@ -195,6 +343,7 @@ body::before {
   font-weight: 900;
   color: var(--gold);
   line-height: 1;
+  display: inline-block;
 }
 
 .stat-label {
@@ -205,39 +354,53 @@ body::before {
   margin-top: 5px;
 }
 
-.scroll-hint {
+/* Scroll indicator */
+.scroll-indicator {
   position: absolute;
-  bottom: 30px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   color: var(--dim);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  animation: bounce 2s infinite;
+  font-size: 10px;
+  letter-spacing: 2px;
+  animation: fadeUp 1s ease 1.2s both;
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translate(-50%, 0); }
-  50% { transform: translate(-50%, -10px); }
+.scroll-indicator .mouse {
+  width: 22px;
+  height: 34px;
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  position: relative;
 }
 
-.scroll-hint::after {
-  content: '↓';
-  display: block;
-  text-align: center;
-  margin-top: 5px;
-  font-size: 16px;
-  color: var(--gold);
+.scroll-indicator .mouse::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 2px;
+  animation: scrollDown 1.5s ease-in-out infinite;
 }
 
-/* ===== SECTION ===== */
-.section {
+@keyframes scrollDown {
+  0% { transform: translate(-50%, 0); opacity: 1; }
+  100% { transform: translate(-50%, 12px); opacity: 0; }
+}
+
+/* ===== PRODUCTS SECTION ===== */
+.products-section {
   padding: 80px 20px;
   max-width: 1200px;
   margin: 0 auto;
-  position: relative;
-  z-index: 10;
 }
 
 .section-head {
@@ -252,6 +415,14 @@ body::before {
   letter-spacing: 3px;
   text-transform: uppercase;
   margin-bottom: 12px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease;
+}
+
+.section-tag.revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .section-title {
@@ -261,11 +432,38 @@ body::before {
   color: #fff;
   letter-spacing: -1px;
   margin-bottom: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease 0.1s;
+}
+
+.section-title.revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .section-title span {
   color: var(--gold);
   font-style: italic;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title span::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1s ease 0.5s;
+}
+
+.section-title.revealed span::after {
+  transform: scaleX(1);
 }
 
 .section-desc {
@@ -274,6 +472,14 @@ body::before {
   max-width: 500px;
   margin: 0 auto;
   line-height: 1.6;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease 0.2s;
+}
+
+.section-desc.revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ===== PRODUCT CARDS ===== */
@@ -294,6 +500,14 @@ body::before {
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
+  opacity: 0;
+  transform: translateY(40px);
+  transform-style: preserve-3d;
+}
+
+.product-card.revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .product-card::before {
@@ -307,16 +521,32 @@ body::before {
   transition: transform 0.4s ease;
 }
 
+/* Shine effect on hover */
+.product-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.1), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.8s ease;
+  pointer-events: none;
+}
+
+.product-card:hover::after {
+  left: 120%;
+}
+
 .product-card:hover {
   background: var(--card-hover);
   transform: translateY(-8px);
   border-color: rgba(251, 191, 36, 0.3);
-  box-shadow: 0 20px 60px rgba(251, 191, 36, 0.1);
+  box-shadow: 0 20px 60px rgba(251, 191, 36, 0.15);
 }
 
-.product-card:hover::before {
-  transform: scaleX(1);
-}
+.product-card:hover::before { transform: scaleX(1); }
 
 .product-icon {
   width: 80px;
@@ -329,11 +559,28 @@ body::before {
   align-items: center;
   justify-content: center;
   font-size: 36px;
-  transition: transform 0.4s ease;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.product-icon::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--gold), transparent);
+  opacity: 0;
+  z-index: -1;
+  filter: blur(10px);
+  transition: opacity 0.4s ease;
 }
 
 .product-card:hover .product-icon {
-  transform: scale(1.1) rotate(-5deg);
+  transform: scale(1.15) rotate(-8deg);
+}
+
+.product-card:hover .product-icon::before {
+  opacity: 0.5;
 }
 
 .product-name {
@@ -342,6 +589,11 @@ body::before {
   color: #fff;
   margin-bottom: 8px;
   letter-spacing: -0.5px;
+  transition: color 0.3s ease;
+}
+
+.product-card:hover .product-name {
+  color: var(--gold-light);
 }
 
 .product-desc {
@@ -359,6 +611,12 @@ body::before {
   background: rgba(251, 191, 36, 0.08);
   border-radius: 12px;
   margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover .product-price {
+  background: rgba(251, 191, 36, 0.15);
+  transform: scale(1.02);
 }
 
 .price-label {
@@ -399,12 +657,32 @@ body::before {
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-view::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: var(--gold);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  z-index: -1;
 }
 
 .product-card:hover .btn-view {
-  background: var(--gold);
   color: #000;
   border-color: var(--gold);
+}
+
+.product-card:hover .btn-view::before {
+  width: 300px;
+  height: 300px;
 }
 
 .btn-view::after {
@@ -412,8 +690,52 @@ body::before {
   transition: transform 0.3s ease;
 }
 
-.product-card:hover .btn-view::after {
+.product-card:hover .btn-view::after { 
   transform: translateX(4px);
+  animation: arrowBounce 0.6s ease infinite;
+}
+
+@keyframes arrowBounce {
+  0%, 100% { transform: translateX(4px); }
+  50% { transform: translateX(8px); }
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  padding: 40px 20px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+  position: relative;
+}
+
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--gold);
+  margin-bottom: 8px;
+  animation: logoGlow 3s ease-in-out infinite;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: var(--dim);
+  line-height: 1.6;
+}
+
+.footer-text strong { color: var(--text); }
+
+.footer-text .heart {
+  display: inline-block;
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.2); }
+  50% { transform: scale(0.95); }
+  75% { transform: scale(1.15); }
 }
 
 /* ===== MODAL ===== */
@@ -429,16 +751,13 @@ body::before {
   z-index: 1000;
   padding: 20px;
   overflow-y: auto;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .modal-overlay.active {
   display: flex;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  opacity: 1;
 }
 
 .modal {
@@ -450,12 +769,12 @@ body::before {
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  animation: modalUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: modalUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes modalUp {
-  from { opacity: 0; transform: translateY(40px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(50px) scale(0.9) rotate(-2deg); }
+  to { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
 }
 
 .modal-head {
@@ -480,13 +799,14 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 }
 
 .modal-close:hover {
   background: var(--red);
   color: #fff;
   border-color: var(--red);
+  transform: rotate(90deg);
 }
 
 .modal-icon {
@@ -500,6 +820,12 @@ body::before {
   align-items: center;
   justify-content: center;
   font-size: 32px;
+  animation: iconPop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+@keyframes iconPop {
+  0% { transform: scale(0) rotate(-180deg); }
+  100% { transform: scale(1) rotate(0); }
 }
 
 .modal-title {
@@ -515,9 +841,7 @@ body::before {
   color: var(--dim);
 }
 
-.modal-body {
-  padding: 25px;
-}
+.modal-body { padding: 25px; }
 
 .packages-label {
   font-size: 11px;
@@ -544,17 +868,51 @@ body::before {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideInRight 0.4s ease forwards;
+}
+
+.package-item:nth-child(1) { animation-delay: 0.1s; }
+.package-item:nth-child(2) { animation-delay: 0.2s; }
+.package-item:nth-child(3) { animation-delay: 0.3s; }
+.package-item:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes slideInRight {
+  to { opacity: 1; transform: translateX(0); }
 }
 
 .package-item:hover, .package-item.selected {
   border-color: var(--gold);
   background: rgba(251, 191, 36, 0.05);
+  transform: translateX(5px);
 }
 
-.package-item.selected {
+.package-item.selected { 
   box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+  background: rgba(251, 191, 36, 0.1);
 }
+
+.package-item.selected::before {
+  content: '✓';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--gold);
+  color: #000;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.package-item { position: relative; }
 
 .pkg-info h4 {
   font-size: 14px;
@@ -575,10 +933,7 @@ body::before {
   color: var(--gold);
 }
 
-/* Form */
-.form-group {
-  margin-bottom: 15px;
-}
+.form-group { margin-bottom: 15px; }
 
 .form-label {
   display: block;
@@ -600,12 +955,13 @@ body::before {
   font-size: 14px;
   font-family: 'Poppins', sans-serif;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 }
 
 .form-input:focus, .form-textarea:focus {
   border-color: var(--gold);
   box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+  background: #0f0f0f;
 }
 
 .form-textarea {
@@ -629,60 +985,43 @@ body::before {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
   margin-top: 10px;
   font-family: 'Poppins', sans-serif;
   box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-order::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-order:hover::before {
+  left: 100%;
 }
 
 .btn-order:hover {
   transform: translateY(-2px);
-  box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
+  box-shadow: 0 15px 40px rgba(37, 211, 102, 0.5);
 }
 
-.btn-order:active {
-  transform: scale(0.98);
-}
+.btn-order:active { transform: scale(0.98); }
 
-.btn-order svg {
-  width: 18px;
-  height: 18px;
-  fill: #fff;
-}
+.btn-order svg { width: 18px; height: 18px; fill: #fff; }
 
 .form-note {
   text-align: center;
   font-size: 10px;
   color: var(--dim);
   margin-top: 12px;
-}
-
-/* ===== FOOTER ===== */
-.footer {
-  padding: 40px 20px;
-  text-align: center;
-  border-top: 1px solid var(--border);
-  margin-top: 40px;
-  position: relative;
-  z-index: 10;
-}
-
-.footer-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 24px;
-  font-weight: 900;
-  color: var(--gold);
-  margin-bottom: 8px;
-}
-
-.footer-text {
-  font-size: 12px;
-  color: var(--dim);
-  line-height: 1.6;
-}
-
-.footer-text strong {
-  color: var(--text);
 }
 
 /* Toast */
@@ -698,7 +1037,7 @@ body::before {
   font-size: 13px;
   font-weight: 600;
   z-index: 2000;
-  transition: transform 0.4s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
@@ -707,20 +1046,47 @@ body::before {
 .toast.success { border-color: var(--green); color: #6ee7b7; }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+::-webkit-scrollbar-thumb { 
+  background: linear-gradient(180deg, var(--gold-dark), var(--gold)); 
+  border-radius: 10px; 
+}
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* Progress bar top */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+  z-index: 200;
+  width: 0%;
+  transition: width 0.1s ease;
+  box-shadow: 0 0 10px var(--gold);
+}
 
 @media (max-width: 480px) {
   .navbar { padding: 12px 18px; }
   .logo { font-size: 18px; }
-  .hero { padding-top: 80px; }
   .products-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 20px; }
+  .spotlight { display: none; }
+  .orb { opacity: 0.2; }
 }
 </style>
 </head>
 <body>
+
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Particles Canvas -->
+<canvas id="particles"></canvas>
+
+<!-- Mouse Spotlight -->
+<div class="spotlight" id="spotlight"></div>
 
 <!-- NAVBAR -->
 <nav class="navbar">
@@ -728,91 +1094,105 @@ body::before {
   <div class="logo-badge">OPEN</div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="welcome-tag">✨ Premium Digital Store</div>
-  <h1>Samstore</h1>
-  <div class="hero-subtitle">Selamat Berbelanja!</div>
-  <p class="hero-desc">
-    Marketplace digital terpercaya untuk kebutuhan Website, Minigame, dan layanan custom lainnya. 
-    Kualitas premium, harga bersahabat, pelayanan cepat.
-  </p>
-  
-  <div class="hero-stats">
-    <div class="stat-item">
-      <div class="stat-value">500+</div>
-      <div class="stat-label">Pelanggan</div>
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    
+    <div class="welcome-tag">✨ Premium Digital Store</div>
+    <h1>Samstore</h1>
+    <div class="typing-wrapper">
+      <span class="typed-text" id="typedText"></span>
     </div>
-    <div class="stat-item">
-      <div class="stat-value">4.9★</div>
-      <div class="stat-label">Rating</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value">24/7</div>
-      <div class="stat-label">Support</div>
-    </div>
-  </div>
-
-  <div class="scroll-hint">Lihat Produk</div>
-</section>
-
-<!-- PRODUCTS -->
-<section class="section">
-  <div class="section-head">
-    <div class="section-tag">◆ Our Products ◆</div>
-    <h2 class="section-title">Pilih <span>Kategori</span> Favoritmu</h2>
-    <p class="section-desc">Klik salah satu produk untuk melihat rincian harga dan melakukan pemesanan</p>
-  </div>
-
-  <div class="products-grid">
-
-    <!-- WEBSITE -->
-    <div class="product-card" onclick="openModal('website')">
-      <div class="product-icon">🌐</div>
-      <h3 class="product-name">Website</h3>
-      <p class="product-desc">Jasa pembuatan website profesional, landing page, portfolio, hingga toko online.</p>
-      <div class="product-price">
-        <span class="price-label">Mulai dari</span>
-        <span class="price-value">Rp 15.000 <small>/ proyek</small></span>
+    <p class="hero-desc">
+      Marketplace digital terpercaya untuk kebutuhan Website, Minigame, dan layanan custom lainnya. 
+      Kualitas premium, harga bersahabat, pelayanan cepat.
+    </p>
+    
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-value" data-target="500">0</div>
+        <div class="stat-label">Pelanggan</div>
       </div>
-      <button class="btn-view">Lihat Paket</button>
-    </div>
-
-    <!-- MINIGAME -->
-    <div class="product-card" onclick="openModal('minigame')">
-      <div class="product-icon">🎮</div>
-      <h3 class="product-name">Minigame</h3>
-      <p class="product-desc">Game sederhana custom untuk event, hiburan, tugas sekolah, atau proyek seru.</p>
-      <div class="product-price">
-        <span class="price-label">Mulai dari</span>
-        <span class="price-value">Rp 5.000 <small>/ game</small></span>
+      <div class="stat-item">
+        <div class="stat-value" data-target="4.9" data-decimal="true">0</div>
+        <div class="stat-label">Rating ★</div>
       </div>
-      <button class="btn-view">Lihat Paket</button>
-    </div>
-
-    <!-- PESAN KHUSUS -->
-    <div class="product-card" onclick="openModal('custom')">
-      <div class="product-icon">✨</div>
-      <h3 class="product-name">Pesan Khusus</h3>
-      <p class="product-desc">Request custom sesuai kebutuhanmu. Desain, coding, edit, dan jasa digital lainnya.</p>
-      <div class="product-price">
-        <span class="price-label">Mulai dari</span>
-        <span class="price-value">Rp 5.000 <small>/ request</small></span>
+      <div class="stat-item">
+        <div class="stat-value">24/7</div>
+        <div class="stat-label">Support</div>
       </div>
-      <button class="btn-view">Lihat Paket</button>
     </div>
 
-  </div>
-</section>
+    <div class="scroll-indicator">
+      <div class="mouse"></div>
+      <span>SCROLL</span>
+    </div>
+  </section>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-logo">✦ Samstore</div>
-  <p class="footer-text">
-    © 2026 Samstore • Dibuat dengan <strong>❤</strong> untuk pelanggan setia<br>
-    Trusted Digital Marketplace
-  </p>
-</footer>
+  <!-- PRODUCTS SECTION -->
+  <section class="products-section">
+    <div class="section-head">
+      <div class="section-tag">◆ Our Products ◆</div>
+      <h2 class="section-title">Pilih <span>Kategori</span> Favoritmu</h2>
+      <p class="section-desc">Klik salah satu produk untuk melihat rincian harga dan melakukan pemesanan</p>
+    </div>
+
+    <div class="products-grid">
+
+      <!-- WEBSITE -->
+      <div class="product-card" data-tilt onclick="openModal('website')">
+        <div class="product-icon">🌐</div>
+        <h3 class="product-name">Website</h3>
+        <p class="product-desc">Jasa pembuatan website profesional, landing page, portfolio, hingga toko online.</p>
+        <div class="product-price">
+          <span class="price-label">Mulai dari</span>
+          <span class="price-value">Rp 15.000 <small>/ proyek</small></span>
+        </div>
+        <button class="btn-view">Lihat Paket</button>
+      </div>
+
+      <!-- MINIGAME -->
+      <div class="product-card" data-tilt onclick="openModal('minigame')">
+        <div class="product-icon">🎮</div>
+        <h3 class="product-name">Minigame</h3>
+        <p class="product-desc">Game sederhana custom untuk event, hiburan, tugas sekolah, atau proyek seru.</p>
+        <div class="product-price">
+          <span class="price-label">Mulai dari</span>
+          <span class="price-value">Rp 5.000 <small>/ game</small></span>
+        </div>
+        <button class="btn-view">Lihat Paket</button>
+      </div>
+
+      <!-- PESAN KHUSUS -->
+      <div class="product-card" data-tilt onclick="openModal('custom')">
+        <div class="product-icon">✨</div>
+        <h3 class="product-name">Pesan Khusus</h3>
+        <p class="product-desc">Request custom sesuai kebutuhanmu. Desain, coding, edit, dan jasa digital lainnya.</p>
+        <div class="product-price">
+          <span class="price-label">Mulai dari</span>
+          <span class="price-value">Rp 5.000 <small>/ request</small></span>
+        </div>
+        <button class="btn-view">Lihat Paket</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">✦ Samstore</div>
+    <p class="footer-text">
+      © 2026 Samstore • Dibuat dengan <span class="heart">❤</span> untuk pelanggan setia<br>
+      Trusted Digital Marketplace
+    </p>
+  </footer>
+
+</main>
 
 <!-- MODAL ORDER -->
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModal()">
@@ -826,9 +1206,7 @@ body::before {
 
     <div class="modal-body">
       <div class="packages-label">Pilih Paket</div>
-      <div class="package-list" id="packageList">
-        <!-- Packages diisi oleh JS -->
-      </div>
+      <div class="package-list" id="packageList"></div>
 
       <div class="form-group">
         <label class="form-label">Nama Pelanggan *</label>
@@ -853,6 +1231,238 @@ body::before {
 <div class="toast" id="toast"></div>
 
 <script>
+// ===== PARTICLES BACKGROUND =====
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.reset();
+    this.y = Math.random() * canvas.height;
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = canvas.height + 10;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedY = Math.random() * 0.5 + 0.2;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.opacity = Math.random() * 0.5 + 0.2;
+    this.twinkle = Math.random() * 0.02;
+    this.twinkleDir = 1;
+  }
+  update() {
+    this.y -= this.speedY;
+    this.x += this.speedX;
+    this.opacity += this.twinkle * this.twinkleDir;
+    if (this.opacity >= 0.7 || this.opacity <= 0.1) this.twinkleDir *= -1;
+    if (this.y < -10) this.reset();
+  }
+  draw() {
+    ctx.fillStyle = `rgba(251, 191, 36, ${this.opacity})`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    // Glow effect
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = 'rgba(251, 191, 36, 0.5)';
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+}
+
+for (let i = 0; i < 60; i++) {
+  particles.push(new Particle());
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ===== MOUSE SPOTLIGHT =====
+const spotlight = document.getElementById('spotlight');
+let mouseX = 0, mouseY = 0;
+let spotX = 0, spotY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function updateSpotlight() {
+  spotX += (mouseX - spotX) * 0.1;
+  spotY += (mouseY - spotY) * 0.1;
+  spotlight.style.left = spotX + 'px';
+  spotlight.style.top = spotY + 'px';
+  requestAnimationFrame(updateSpotlight);
+}
+updateSpotlight();
+
+// ===== SCROLL PROGRESS BAR =====
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrollPercent = (scrollTop / docHeight) * 100;
+  document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+});
+
+// ===== TYPING EFFECT =====
+const phrases = [
+  'Selamat Berbelanja! 🛍️',
+  'Digital Products Premium ✨',
+  'Kualitas Terbaik, Harga Terjangkau 💎',
+  'Your Trusted Digital Store 🚀'
+];
+let phraseIdx = 0, charIdx = 0, isDeleting = false;
+const typedText = document.getElementById('typedText');
+
+function typeEffect() {
+  const current = phrases[phraseIdx];
+  if (isDeleting) {
+    typedText.textContent = current.substring(0, charIdx - 1);
+    charIdx--;
+  } else {
+    typedText.textContent = current.substring(0, charIdx + 1);
+    charIdx++;
+  }
+  
+  let speed = isDeleting ? 40 : 80;
+  
+  if (!isDeleting && charIdx === current.length) {
+    speed = 2500;
+    isDeleting = true;
+  } else if (isDeleting && charIdx === 0) {
+    isDeleting = false;
+    phraseIdx = (phraseIdx + 1) % phrases.length;
+    speed = 500;
+  }
+  
+  setTimeout(typeEffect, speed);
+}
+typeEffect();
+
+// ===== COUNTER ANIMATION =====
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  const isDecimal = el.dataset.decimal === 'true';
+  const duration = 2000;
+  const steps = 60;
+  const increment = target / steps;
+  let current = 0;
+  let step = 0;
+  
+  const timer = setInterval(() => {
+    step++;
+    current += increment;
+    if (step >= steps) {
+      current = target;
+      clearInterval(timer);
+    }
+    el.textContent = isDecimal ? current.toFixed(1) : Math.floor(current) + '+';
+  }, duration / steps);
+}
+
+// ===== SCROLL REVEAL =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      
+      // Counter animation for stats
+      if (entry.target.classList.contains('stat-value') && entry.target.dataset.target) {
+        animateCounter(entry.target);
+      }
+      
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+// Observe all animatable elements
+document.querySelectorAll('.product-card, .section-tag, .section-title, .section-desc, .stat-value[data-target]').forEach(el => {
+  observer.observe(el);
+});
+
+// Staggered delay for cards
+document.querySelectorAll('.product-card').forEach((card, i) => {
+  card.style.transitionDelay = (i * 0.15) + 's';
+});
+
+// ===== 3D TILT EFFECT =====
+document.querySelectorAll('[data-tilt]').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -5;
+    const rotateY = ((x - centerX) / centerX) * 5;
+    
+    card.style.transform = `translateY(-8px) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+  
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'translateY(0) perspective(1000px) rotateX(0) rotateY(0)';
+  });
+});
+
+// ===== RIPPLE EFFECT =====
+document.querySelectorAll('.product-card, .btn-view, .btn-order').forEach(el => {
+  el.addEventListener('click', function(e) {
+    const ripple = document.createElement('span');
+    const rect = this.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.cssText = `
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(251, 191, 36, 0.4);
+      width: ${size}px;
+      height: ${size}px;
+      left: ${e.clientX - rect.left - size/2}px;
+      top: ${e.clientY - rect.top - size/2}px;
+      transform: scale(0);
+      animation: ripple 0.6s ease-out;
+      pointer-events: none;
+    `;
+    this.style.position = 'relative';
+    this.style.overflow = 'hidden';
+    this.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+});
+
+// Ripple keyframe
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes ripple {
+    to { transform: scale(2); opacity: 0; }
+  }
+`;
+document.head.appendChild(style);
+
+// ===== PARALLAX ORBS =====
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  document.querySelectorAll('.orb').forEach((orb, i) => {
+    const speed = (i + 1) * 0.3;
+    orb.style.transform = `translateY(${scrolled * speed}px)`;
+  });
+});
+
 // ===== DATA PRODUK =====
 const PRODUCTS = {
   website: {
@@ -1005,10 +1615,10 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
 });
 
-// ===== SCROLL SMOOTH =====
-document.querySelector('.scroll-hint').onclick = () => {
-  document.querySelector('.section').scrollIntoView({ behavior: 'smooth' });
-};
+// ===== SMOOTH REVEAL ON LOAD =====
+window.addEventListener('load', () => {
+  document.body.style.opacity = '1';
+});
 </script>
 
 </body>
