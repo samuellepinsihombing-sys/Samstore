@@ -1,0 +1,3150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Samstore - Premium Digital Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --card: #141414;
+  --card-hover: #1a1a1a;
+  --gold: #fbbf24;
+  --gold-dark: #d97706;
+  --gold-light: #fde68a;
+  --text: #f5f5f5;
+  --dim: #a3a3a3;
+  --border: #262626;
+  --green: #10b981;
+  --red: #ef4444;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  position: relative;
+  line-height: 1.6;
+  cursor: none;
+}
+
+/* ============================================ */
+/* 🔐 LOGIN PAGE                                */
+/* ============================================ */
+.login-page {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.login-page.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.login-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 10%, rgba(251, 191, 36, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.05) 0%, transparent 60%);
+  animation: bgShift 15s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.login-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.login-orb-1 { width: 300px; height: 300px; background: var(--gold); top: 10%; left: 5%; animation: floatOrb 10s ease-in-out infinite; }
+.login-orb-2 { width: 250px; height: 250px; background: #8b5cf6; bottom: 10%; right: 5%; animation: floatOrb 12s ease-in-out infinite reverse; }
+
+.login-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 440px;
+  animation: loginUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes loginUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.login-card {
+  background: linear-gradient(145deg, rgba(20, 20, 20, 0.9), rgba(10, 10, 10, 0.95));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 45px 35px 35px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 30px;
+  padding: 2px;
+  background: conic-gradient(from var(--angle, 0deg), transparent 40%, var(--gold) 50%, transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.6;
+  animation: rotateBorder 6s linear infinite;
+  pointer-events: none;
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotateBorder { to { --angle: 360deg; } }
+
+.login-card::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -60%;
+  width: 40%; height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.1), transparent);
+  transform: skewX(-20deg);
+  animation: loginShimmer 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes loginShimmer {
+  0% { left: -60%; }
+  100% { left: 160%; }
+}
+
+.login-logo-wrap {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.login-logo-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.1));
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-8px) rotate(5deg); }
+}
+
+.login-logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+  animation: gradientShift 4s ease infinite;
+  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.3));
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.login-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 5px;
+  letter-spacing: -0.5px;
+}
+
+.login-subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: var(--dim);
+  margin-bottom: 28px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.login-field {
+  position: relative;
+}
+
+.login-field-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dim);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.login-field-input {
+  width: 100%;
+  padding: 14px 15px 14px 42px;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  transition: all 0.3s ease;
+  cursor: auto;
+}
+
+.login-field-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15);
+  background: #0f0f0f;
+}
+
+.login-field-icon {
+  position: absolute;
+  left: 14px;
+  top: 38px;
+  font-size: 16px;
+  color: var(--dim);
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+.login-field-input:focus ~ .login-field-icon {
+  color: var(--gold);
+}
+
+.pwd-toggle {
+  position: absolute;
+  right: 12px;
+  top: 36px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: var(--dim);
+  cursor: none;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.pwd-toggle:hover { color: var(--gold); background: rgba(251, 191, 36, 0.1); }
+
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border: none;
+  border-radius: 12px;
+  color: #000;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  margin-top: 5px;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 10px 30px rgba(251, 191, 36, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-login::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-login:hover::before { left: 100%; }
+.btn-login:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(251, 191, 36, 0.55); }
+.btn-login:active { transform: scale(0.98); }
+.btn-login:disabled { opacity: 0.7; cursor: not-allowed; }
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  color: var(--dim);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.btn-guest {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-guest::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  background: rgba(251, 191, 36, 0.15);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+  z-index: -1;
+}
+
+.btn-guest:hover { 
+  border-color: var(--gold); 
+  color: var(--gold); 
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(251, 191, 36, 0.15);
+}
+
+.btn-guest:hover::before { width: 400px; height: 400px; }
+
+.guest-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.1));
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.guest-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
+}
+
+.guest-text strong { font-size: 13px; }
+.guest-text small { font-size: 10px; color: var(--dim); font-weight: 500; letter-spacing: 0; text-transform: none; }
+
+.btn-guest:hover .guest-text small { color: var(--gold-light); }
+
+.login-footer {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 1.6;
+}
+
+.login-footer .heart {
+  display: inline-block;
+  color: var(--red);
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.login-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  margin-bottom: 14px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  animation: shake 0.4s ease;
+}
+
+.login-error.show { display: flex; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+/* ===== PRELOADER ===== */
+.preloader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.preloader.hide { opacity: 0; visibility: hidden; }
+
+.preloader-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+  animation: gradientShift 2s ease infinite, preloaderPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes preloaderPulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.3)); }
+  50% { transform: scale(1.05); filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.7)); }
+}
+
+.preloader-bar {
+  width: 200px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.preloader-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+  animation: loadingBar 1.5s ease-in-out infinite;
+  border-radius: 10px;
+}
+
+@keyframes loadingBar {
+  0% { width: 0%; left: 0; }
+  50% { width: 60%; left: 20%; }
+  100% { width: 0%; left: 100%; }
+}
+
+.preloader-text {
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ===== CUSTOM CURSOR ===== */
+.cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10001;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 35px;
+  height: 35px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: all 0.15s ease;
+  mix-blend-mode: difference;
+}
+
+.cursor-ring.hover {
+  width: 55px;
+  height: 55px;
+  background: rgba(251, 191, 36, 0.1);
+  border-color: var(--gold-light);
+}
+
+.trail {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  opacity: 0.7;
+  mix-blend-mode: screen;
+}
+
+/* ===== PARTICLES ===== */
+#particles {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.spotlight {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 10%, rgba(251, 191, 36, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 1;
+  animation: bgShift 15s ease-in-out infinite;
+}
+
+@keyframes bgShift {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 15px 25px;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 1px;
+  animation: logoGlow 3s ease-in-out infinite;
+  cursor: none;
+}
+
+@keyframes logoGlow {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.3)); }
+  50% { filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.6)); }
+}
+
+.navbar-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--green);
+  background: rgba(16, 185, 129, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  animation: badgePulse 2s ease-in-out infinite;
+  cursor: none;
+}
+
+.logo-badge.developer {
+  color: var(--gold);
+  background: rgba(251, 191, 36, 0.1);
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.logo-badge.guest {
+  color: #60a5fa;
+  background: rgba(96, 165, 250, 0.1);
+  border-color: rgba(96, 165, 250, 0.3);
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.logo-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.logo-badge:not(.developer):not(.guest)::before {
+  background: var(--green);
+  box-shadow: 0 0 10px var(--green);
+}
+
+.logo-badge.developer::before {
+  background: var(--gold);
+  box-shadow: 0 0 10px var(--gold);
+}
+
+.logo-badge.guest::before {
+  background: #60a5fa;
+  box-shadow: 0 0 10px #60a5fa;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 currentColor; }
+  50% { opacity: 0.7; box-shadow: 0 0 0 8px transparent; }
+}
+
+/* SOUND TOGGLE & LOGOUT */
+.sound-toggle, .logout-btn {
+  width: 40px;
+  height: 40px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--gold);
+  cursor: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.sound-toggle:hover, .logout-btn:hover {
+  background: var(--gold);
+  color: #000;
+  border-color: var(--gold);
+  transform: scale(1.1);
+}
+
+.logout-btn:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+
+.sound-toggle.muted { color: var(--dim); }
+
+/* ===== MAIN ===== */
+.main {
+  position: relative;
+  z-index: 10;
+  padding-top: 70px;
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px 20px 60px;
+  position: relative;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.orb-1 { width: 200px; height: 200px; background: var(--gold); top: 20%; left: 10%; animation: floatOrb 8s ease-in-out infinite; }
+.orb-2 { width: 150px; height: 150px; background: #8b5cf6; bottom: 20%; right: 10%; animation: floatOrb 10s ease-in-out infinite reverse; }
+.orb-3 { width: 100px; height: 100px; background: var(--gold-light); top: 50%; right: 20%; animation: floatOrb 7s ease-in-out infinite; }
+
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.1); }
+  66% { transform: translate(-20px, 30px) scale(0.9); }
+}
+
+.welcome-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(217, 119, 6, 0.1));
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold-light);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+  animation: fadeDown 0.8s ease, tagFloat 3s ease-in-out infinite 1s;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-tag::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.3), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+@keyframes tagFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(42px, 10vw, 80px);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, var(--gold-light) 50%, var(--gold-dark) 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 20px;
+  animation: fadeUp 0.8s ease 0.2s both, gradientShift 5s ease infinite;
+  filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.2));
+}
+
+.hero-greeting {
+  font-size: 14px;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 8px;
+  animation: fadeUp 0.8s ease 0.15s both;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.typing-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: clamp(16px, 4vw, 22px);
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 10px;
+  min-height: 35px;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.typed-text {
+  border-right: 2px solid var(--gold);
+  padding-right: 4px;
+  animation: blink 1s infinite;
+}
+
+.hero-desc {
+  font-size: 14px;
+  color: var(--dim);
+  max-width: 500px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  animation: fadeUp 0.8s ease 0.6s both;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s ease 0.8s both;
+  margin-bottom: 40px;
+}
+
+.stat-item { text-align: center; transition: transform 0.3s ease; cursor: none; }
+.stat-item:hover { transform: translateY(-5px) scale(1.05); }
+
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  display: inline-block;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+.scroll-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: transparent;
+  border: 2px solid var(--gold);
+  border-radius: 40px;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: none;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  animation: fadeUp 1s ease 1.2s both, btnFloat 3s ease-in-out infinite 2s;
+}
+
+@keyframes btnFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.scroll-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: var(--gold);
+  transition: left 0.4s ease;
+  z-index: -1;
+}
+
+.scroll-btn:hover { color: #000; }
+.scroll-btn:hover::before { left: 0; }
+
+.scroll-btn .arrow {
+  display: inline-block;
+  font-size: 16px;
+  animation: arrowDown 1.5s ease-in-out infinite;
+}
+
+@keyframes arrowDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+/* ===== COUNTDOWN PROMO ===== */
+.countdown-section {
+  padding: 60px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.countdown-card {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(239, 68, 68, 0.05));
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 24px;
+  padding: 40px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.countdown-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.1), transparent);
+  animation: shimmer 4s infinite;
+}
+
+.countdown-fire {
+  position: absolute;
+  font-size: 100px;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.countdown-fire.left { top: 10px; left: 10px; animation: fireFlicker 2s ease-in-out infinite; }
+.countdown-fire.right { bottom: 10px; right: 10px; animation: fireFlicker 2s ease-in-out infinite 1s; }
+
+@keyframes fireFlicker {
+  0%, 100% { transform: scale(1) rotate(-5deg); opacity: 0.08; }
+  50% { transform: scale(1.1) rotate(5deg); opacity: 0.15; }
+}
+
+.countdown-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--red);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 15px;
+  animation: tagPulse 2s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes tagPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+}
+
+.countdown-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+  position: relative;
+  z-index: 2;
+}
+
+.countdown-title span {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.countdown-sub {
+  font-size: 13px;
+  color: var(--dim);
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.countdown-timer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 500px;
+  margin: 0 auto 25px;
+  position: relative;
+  z-index: 2;
+}
+
+.cd-box {
+  background: var(--bg);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 16px;
+  padding: 18px 10px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.cd-box:hover { transform: translateY(-5px); }
+
+.cd-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+}
+
+.cd-num {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 7vw, 42px);
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 5px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cd-num.flip { animation: flipNum 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+
+@keyframes flipNum {
+  0% { transform: translateY(-20px) rotateX(90deg); opacity: 0; }
+  50% { transform: translateY(5px) rotateX(-10deg); }
+  100% { transform: translateY(0) rotateX(0); opacity: 1; }
+}
+
+.cd-label {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.countdown-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border: none;
+  border-radius: 30px;
+  color: #000;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: none;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 10px 30px rgba(251, 191, 36, 0.4);
+}
+
+.countdown-cta:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(251, 191, 36, 0.6);
+}
+
+/* ===== PROMO TICKER ===== */
+.promo-ticker {
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
+  padding: 10px 0;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.promo-ticker::before,
+.promo-ticker::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 80px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.promo-ticker::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+.promo-ticker::after { right: 0; background: linear-gradient(-90deg, var(--bg), transparent); }
+
+.ticker-track {
+  display: flex;
+  gap: 50px;
+  white-space: nowrap;
+  animation: tickerScroll 25s linear infinite;
+  width: fit-content;
+}
+
+@keyframes tickerScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #000;
+  letter-spacing: 1px;
+}
+
+/* ===== PRODUCTS ===== */
+.products-section {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-head { text-align: center; margin-bottom: 50px; }
+
+.section-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease;
+}
+
+.section-tag.revealed { opacity: 1; transform: translateY(0); }
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 6vw, 42px);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease 0.1s;
+}
+
+.section-title.revealed { opacity: 1; transform: translateY(0); }
+
+.section-title span {
+  color: var(--gold);
+  font-style: italic;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title span::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1s ease 0.5s;
+}
+
+.section-title.revealed span::after { transform: scaleX(1); }
+
+.section-desc {
+  font-size: 14px;
+  color: var(--dim);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease 0.2s;
+}
+
+.section-desc.revealed { opacity: 1; transform: translateY(0); }
+
+/* ===== PRODUCT CARDS ===== */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 40px;
+}
+
+.product-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 35px 25px;
+  text-align: center;
+  cursor: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 22px;
+  padding: 2px;
+  background: conic-gradient(from var(--angle, 0deg), transparent 40%, var(--gold) 50%, transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: rotateBorder 4s linear infinite;
+  pointer-events: none;
+}
+
+.product-card:hover::before { opacity: 1; }
+
+.product-card::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -60%;
+  width: 40%; height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.15), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.8s ease;
+  pointer-events: none;
+}
+
+.product-card:hover::after { left: 120%; }
+
+.product-card:hover {
+  background: var(--card-hover);
+  transform: translateY(-10px);
+  border-color: rgba(251, 191, 36, 0.3);
+  box-shadow: 0 25px 70px rgba(251, 191, 36, 0.2);
+}
+
+.product-card.revealed { opacity: 1; transform: translateY(0); }
+
+.floating-badge {
+  position: absolute;
+  top: 15px; right: 15px;
+  padding: 5px 12px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #000;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  z-index: 3;
+  box-shadow: 0 5px 15px rgba(251, 191, 36, 0.4);
+  animation: badgePop 0.6s cubic-bezier(0.16, 1, 0.3, 1) both, badgeWiggle 3s ease-in-out infinite 1s;
+}
+
+@keyframes badgePop {
+  from { transform: scale(0) rotate(-180deg); opacity: 0; }
+  to { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+@keyframes badgeWiggle {
+  0%, 100% { transform: rotate(0) scale(1); }
+  25% { transform: rotate(-3deg) scale(1.05); }
+  75% { transform: rotate(3deg) scale(1.05); }
+}
+
+.corner-ribbon {
+  position: absolute;
+  top: 15px; left: -35px;
+  width: 130px;
+  padding: 4px 0;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(-45deg);
+  z-index: 3;
+  box-shadow: 0 3px 10px rgba(239, 68, 68, 0.4);
+}
+
+.product-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(217, 119, 6, 0.05));
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.product-icon::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--gold), transparent);
+  opacity: 0;
+  z-index: -1;
+  filter: blur(10px);
+  transition: opacity 0.4s ease;
+}
+
+.product-card:hover .product-icon { transform: scale(1.15) rotate(-8deg); }
+
+.product-card:hover .product-icon::before {
+  opacity: 0.5;
+  animation: iconGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes iconGlow {
+  0%, 100% { opacity: 0.3; filter: blur(10px); }
+  50% { opacity: 0.7; filter: blur(15px); }
+}
+
+.product-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+  transition: color 0.3s ease;
+}
+
+.product-card:hover .product-name { color: var(--gold-light); }
+
+.product-desc {
+  font-size: 13px;
+  color: var(--dim);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.product-price {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 15px;
+  background: rgba(251, 191, 36, 0.08);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.product-card:hover .product-price {
+  background: rgba(251, 191, 36, 0.15);
+  transform: scale(1.02);
+}
+
+.price-label {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.price-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--gold);
+  position: relative;
+  display: inline-block;
+}
+
+.price-value small {
+  font-size: 14px;
+  color: var(--dim);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+.btn-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: none;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-view::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  background: var(--gold);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  z-index: -1;
+}
+
+.product-card:hover .btn-view { color: #000; border-color: var(--gold); }
+.product-card:hover .btn-view::before { width: 300px; height: 300px; }
+
+.btn-view::after {
+  content: '→';
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .btn-view::after { 
+  transform: translateX(4px);
+  animation: arrowBounce 0.6s ease infinite;
+}
+
+@keyframes arrowBounce {
+  0%, 100% { transform: translateX(4px); }
+  50% { transform: translateX(8px); }
+}
+
+/* ===== TESTIMONIAL ===== */
+.testi-section {
+  padding: 80px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.testi-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.05), rgba(139, 92, 246, 0.03));
+  border: 1px solid var(--border);
+  padding: 40px 20px;
+}
+
+.testi-track {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.testi-card {
+  flex: 0 0 100%;
+  padding: 0 10px;
+}
+
+.testi-inner {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 35px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.testi-inner::before {
+  content: '"';
+  position: absolute;
+  top: -20px; left: 20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 120px;
+  color: var(--gold);
+  opacity: 0.15;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.testi-stars {
+  color: var(--gold);
+  font-size: 18px;
+  margin-bottom: 15px;
+  letter-spacing: 3px;
+}
+
+.testi-text {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.8;
+  margin-bottom: 25px;
+  font-style: italic;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.testi-author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.testi-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #000;
+  font-size: 18px;
+  border: 2px solid var(--gold-light);
+}
+
+.testi-info { text-align: left; }
+
+.testi-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.testi-role {
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 1px;
+}
+
+.testi-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.testi-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--gold);
+  cursor: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.testi-arrow:hover {
+  background: var(--gold);
+  color: #000;
+  border-color: var(--gold);
+  transform: scale(1.1);
+}
+
+.testi-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.testi-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  cursor: none;
+  transition: all 0.3s ease;
+}
+
+.testi-dot.active {
+  background: var(--gold);
+  width: 24px;
+  border-radius: 10px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  padding: 40px 20px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--gold);
+  margin-bottom: 8px;
+  animation: logoGlow 3s ease-in-out infinite;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: var(--dim);
+  line-height: 1.6;
+}
+
+.footer-text strong { color: var(--text); }
+
+.footer-text .heart {
+  display: inline-block;
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: none;
+}
+
+.modal-overlay.active { display: flex; opacity: 1; }
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: auto;
+}
+
+@keyframes modalUp {
+  from { opacity: 0; transform: translateY(50px) scale(0.9) rotate(-2deg); }
+  to { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+}
+
+.modal-head {
+  padding: 30px 25px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px; right: 15px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  color: var(--dim);
+  cursor: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+  transform: rotate(90deg);
+}
+
+.modal-icon {
+  width: 70px; height: 70px;
+  margin: 0 auto 15px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.1));
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  animation: iconPop 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+@keyframes iconPop {
+  0% { transform: scale(0) rotate(-180deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.modal-subtitle {
+  font-size: 12px;
+  color: var(--dim);
+}
+
+.modal-body { padding: 25px; }
+
+.packages-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.package-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.package-item {
+  padding: 15px;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideInRight 0.4s ease forwards;
+  position: relative;
+}
+
+.package-item:nth-child(1) { animation-delay: 0.1s; }
+.package-item:nth-child(2) { animation-delay: 0.2s; }
+.package-item:nth-child(3) { animation-delay: 0.3s; }
+.package-item:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes slideInRight { to { opacity: 1; transform: translateX(0); } }
+
+.package-item:hover, .package-item.selected {
+  border-color: var(--gold);
+  background: rgba(251, 191, 36, 0.05);
+  transform: translateX(5px);
+}
+
+.package-item.selected { 
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+  background: rgba(251, 191, 36, 0.1);
+}
+
+.pkg-info h4 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.pkg-info p { font-size: 11px; color: var(--dim); }
+
+.pkg-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--gold);
+}
+
+.form-group { margin-bottom: 15px; }
+
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 13px 15px;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  transition: all 0.3s ease;
+  cursor: auto;
+}
+
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+  background: #0f0f0f;
+}
+
+.form-textarea { min-height: 80px; resize: vertical; }
+
+.btn-order {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-order::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-order:hover::before { left: 100%; }
+.btn-order:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(37, 211, 102, 0.5); }
+.btn-order:active { transform: scale(0.98); }
+.btn-order svg { width: 18px; height: 18px; fill: #fff; }
+
+.form-note { text-align: center; font-size: 10px; color: var(--dim); margin-top: 12px; }
+
+.toast {
+  position: fixed;
+  top: 80px; left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--card);
+  border: 1px solid var(--gold);
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 10002;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.error { border-color: var(--red); color: #fca5a5; }
+.toast.success { border-color: var(--green); color: #6ee7b7; }
+
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+  z-index: 200;
+  width: 0%;
+  box-shadow: 0 0 10px var(--gold);
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { 
+  background: linear-gradient(180deg, var(--gold-dark), var(--gold)); 
+  border-radius: 10px; 
+}
+
+.sparkle {
+  position: fixed;
+  pointer-events: none;
+  color: var(--gold);
+  font-size: 14px;
+  z-index: 9999;
+  animation: sparkleFade 0.8s ease-out forwards;
+}
+
+@keyframes sparkleFade {
+  0% { transform: translate(0, 0) scale(0); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(1); opacity: 0; }
+}
+
+@media (max-width: 480px) {
+  body { cursor: auto; }
+  .cursor-dot, .cursor-ring, .trail { display: none; }
+  * { cursor: auto !important; }
+  .navbar { padding: 12px 18px; }
+  .logo { font-size: 18px; }
+  .products-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 20px; }
+  .spotlight { display: none; }
+  .orb { opacity: 0.2; }
+  .countdown-timer { gap: 8px; }
+  .cd-box { padding: 12px 6px; }
+  .testi-inner { padding: 25px 20px; }
+  .testi-text { font-size: 13px; }
+  .login-card { padding: 35px 22px 28px; }
+  .login-logo-text { font-size: 26px; }
+  .login-title { font-size: 19px; }
+  .logo-badge { font-size: 9px; padding: 3px 8px; }
+  .logout-btn { width: 36px; height: 36px; font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- 🔐 LOGIN PAGE                                -->
+<!-- ============================================ -->
+<div class="login-page" id="loginPage">
+  <div class="login-orb login-orb-1"></div>
+  <div class="login-orb login-orb-2"></div>
+  
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-logo-wrap">
+        <div class="login-logo-icon">✦</div>
+        <div class="login-logo-text">Samstore</div>
+      </div>
+
+      <h2 class="login-title">Selamat Datang</h2>
+      <p class="login-subtitle">Silakan masuk untuk melanjutkan</p>
+
+      <div class="login-error" id="loginError">
+        <span>⚠️</span>
+        <span id="loginErrorMsg">Email atau password salah!</span>
+      </div>
+
+      <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
+        <div class="login-field">
+          <label class="login-field-label">Email</label>
+          <input 
+            type="email" 
+            class="login-field-input" 
+            id="loginEmail" 
+            placeholder="nama@email.com"
+            autocomplete="email"
+            required
+          >
+          <span class="login-field-icon">✉️</span>
+        </div>
+
+        <div class="login-field">
+          <label class="login-field-label">Password</label>
+          <input 
+            type="password" 
+            class="login-field-input" 
+            id="loginPassword" 
+            placeholder="Masukkan password"
+            autocomplete="current-password"
+            required
+          >
+          <span class="login-field-icon">🔒</span>
+          <button type="button" class="pwd-toggle" id="pwdToggle" onclick="togglePassword()">👁️</button>
+        </div>
+
+        <button type="submit" class="btn-login" id="btnLogin">
+          <span>Masuk sebagai Developer</span>
+          <span>→</span>
+        </button>
+      </form>
+
+      <div class="login-divider">atau</div>
+
+      <button class="btn-guest" onclick="enterAsGuest()">
+        <div class="guest-icon">🛒</div>
+        <div class="guest-text">
+          <strong>Masuk sebagai Pembeli</strong>
+          <small>Langsung belanja tanpa perlu akun</small>
+        </div>
+      </button>
+
+      <div class="login-footer">
+        © 2026 Samstore • Dibuat dengan <span class="heart">❤</span><br>
+        Premium Digital Marketplace
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRELOADER -->
+<div class="preloader" id="preloader">
+  <div class="preloader-logo">✦ Samstore</div>
+  <div class="preloader-bar"></div>
+  <div class="preloader-text">Loading Premium Experience...</div>
+</div>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- PARTICLES -->
+<canvas id="particles"></canvas>
+
+<!-- SPOTLIGHT -->
+<div class="spotlight" id="spotlight"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">✦ Samstore</div>
+  <div class="navbar-right">
+    <button class="sound-toggle" id="soundToggle" title="Toggle Sound">🔊</button>
+    <div class="logo-badge" id="roleBadge">OPEN</div>
+    <button class="logout-btn" id="logoutBtn" onclick="handleLogout()" title="Logout" style="display:none;">🚪</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    
+    <div class="welcome-tag">✨ Premium Digital Store</div>
+    <p class="hero-greeting" id="heroGreeting" style="display:none;"></p>
+    <h1>Samstore</h1>
+    <div class="typing-wrapper">
+      <span class="typed-text" id="typedText"></span>
+    </div>
+    <p class="hero-desc">
+      Marketplace digital terpercaya untuk kebutuhan Website, Minigame, dan layanan custom lainnya. 
+      Kualitas premium, harga bersahabat, pelayanan cepat.
+    </p>
+    
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-value" data-target="500">0</div>
+        <div class="stat-label">Pelanggan</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" data-target="4.9" data-decimal="true">0</div>
+        <div class="stat-label">Rating ★</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">24/7</div>
+        <div class="stat-label">Support</div>
+      </div>
+    </div>
+
+    <a href="#countdown" class="scroll-btn" data-magnetic>
+      Lihat Produk <span class="arrow">↓</span>
+    </a>
+  </section>
+
+  <!-- COUNTDOWN PROMO -->
+  <section class="countdown-section" id="countdown">
+    <div class="countdown-card">
+      <span class="countdown-fire left">🔥</span>
+      <span class="countdown-fire right">🔥</span>
+      
+      <div class="countdown-tag">⚡ FLASH SALE</div>
+      <h2 class="countdown-title">Diskon <span>Hingga 50%</span><br>Berakhir Dalam:</h2>
+      <p class="countdown-sub">Jangan sampai ketinggalan promo spesial minggu ini!</p>
+      
+      <div class="countdown-timer">
+        <div class="cd-box">
+          <div class="cd-num" id="cdDays">00</div>
+          <div class="cd-label">Hari</div>
+        </div>
+        <div class="cd-box">
+          <div class="cd-num" id="cdHours">00</div>
+          <div class="cd-label">Jam</div>
+        </div>
+        <div class="cd-box">
+          <div class="cd-num" id="cdMinutes">00</div>
+          <div class="cd-label">Menit</div>
+        </div>
+        <div class="cd-box">
+          <div class="cd-num" id="cdSeconds">00</div>
+          <div class="cd-label">Detik</div>
+        </div>
+      </div>
+      
+      <a href="#products" class="countdown-cta" data-magnetic>
+        🛍️ Belanja Sekarang
+      </a>
+    </div>
+  </section>
+
+  <!-- PROMO TICKER -->
+  <div class="promo-ticker">
+    <div class="ticker-track">
+      <span class="ticker-item">🔥 PROMO SPESIAL MINGGU INI</span>
+      <span class="ticker-item">⚡ GRATIS KONSULTASI</span>
+      <span class="ticker-item">💎 KUALITAS PREMIUM</span>
+      <span class="ticker-item">🚀 PROSES CEPAT 24 JAM</span>
+      <span class="ticker-item">⭐ RATING 4.9/5</span>
+      <span class="ticker-item">🎁 BONUS REVISI</span>
+      <span class="ticker-item">🔥 PROMO SPESIAL MINGGU INI</span>
+      <span class="ticker-item">⚡ GRATIS KONSULTASI</span>
+      <span class="ticker-item">💎 KUALITAS PREMIUM</span>
+      <span class="ticker-item">🚀 PROSES CEPAT 24 JAM</span>
+      <span class="ticker-item">⭐ RATING 4.9/5</span>
+      <span class="ticker-item">🎁 BONUS REVISI</span>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <section class="products-section" id="products">
+    <div class="section-head">
+      <div class="section-tag">◆ Our Products ◆</div>
+      <h2 class="section-title">Pilih <span>Kategori</span> Favoritmu</h2>
+      <p class="section-desc">Klik salah satu produk untuk melihat rincian harga dan melakukan pemesanan</p>
+    </div>
+
+    <div class="products-grid">
+
+      <div class="product-card" data-tilt onclick="openModal('website')">
+        <div class="floating-badge">🔥 HOT</div>
+        <div class="product-icon">🌐</div>
+        <h3 class="product-name">Website</h3>
+        <p class="product-desc">Jasa pembuatan website profesional, landing page, portfolio, hingga toko online.</p>
+        <div class="product-price">
+          <span class="price-label">Mulai dari</span>
+          <span class="price-value">Rp 15.000 <small>/ proyek</small></span>
+        </div>
+        <button class="btn-view" data-magnetic>Lihat Paket</button>
+      </div>
+
+      <div class="product-card" data-tilt onclick="openModal('minigame')">
+        <div class="floating-badge">⭐ BEST</div>
+        <div class="product-icon">🎮</div>
+        <h3 class="product-name">Minigame</h3>
+        <p class="product-desc">Game sederhana custom untuk event, hiburan, tugas sekolah, atau proyek seru.</p>
+        <div class="product-price">
+          <span class="price-label">Mulai dari</span>
+          <span class="price-value">Rp 5.000 <small>/ game</small></span>
+        </div>
+        <button class="btn-view" data-magnetic>Lihat Paket</button>
+      </div>
+
+      <div class="product-card" data-tilt onclick="openModal('custom')">
+        <div class="corner-ribbon">NEW!</div>
+        <div class="floating-badge" style="top:40px;">💎 VIP</div>
+        <div class="product-icon">✨</div>
+        <h3 class="product-name">Pesan Khusus</h3>
+        <p class="product-desc">Request custom sesuai kebutuhanmu. Desain, coding, edit, dan jasa digital lainnya.</p>
+        <div class="product-price">
+          <span class="price-label">Mulai dari</span>
+          <span class="price-value">Rp 5.000 <small>/ request</small></span>
+        </div>
+        <button class="btn-view" data-magnetic>Lihat Paket</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="testi-section">
+    <div class="section-head">
+      <div class="section-tag">◆ Testimoni Pelanggan ◆</div>
+      <h2 class="section-title">Kata <span>Mereka</span> Tentang Kami</h2>
+      <p class="section-desc">Ratusan pelanggan puas dengan layanan Samstore</p>
+    </div>
+
+    <div class="testi-wrapper">
+      <div class="testi-track" id="testiTrack">
+        
+        <div class="testi-card">
+          <div class="testi-inner">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">Website portofolio saya jadi keren banget! Desainnya premium, loading cepat, dan adminnya sabar banget ngadepin revisi saya. Worth it banget buat harga segini!</p>
+            <div class="testi-author">
+              <div class="testi-avatar">AR</div>
+              <div class="testi-info">
+                <div class="testi-name">Andi Rahman</div>
+                <div class="testi-role">Mahasiswa UI/UX</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-inner">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">Pesan minigame buat event kantor, hasilnya exceed ekspektasi! Game-nya fun, temen-temen pada suka. Prosesnya cepet banget, baru 2 hari udah jadi. Recommended!</p>
+            <div class="testi-author">
+              <div class="testi-avatar">SP</div>
+              <div class="testi-info">
+                <div class="testi-name">Siti Purnama</div>
+                <div class="testi-role">HR Manager</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-inner">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">Udah 3x order di Samstore, selalu puas! Dari landing page, toko online, sampe request custom dashboard. Pelayanannya profesional, harga bersahabat. Langganan!</p>
+            <div class="testi-author">
+              <div class="testi-avatar">BW</div>
+              <div class="testi-info">
+                <div class="testi-name">Budi Wijaya</div>
+                <div class="testi-role">Pengusaha Online</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-inner">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">Awalnya ragu karena harga murah, tapi ternyata kualitasnya premium! Website toko online saya jadi lebih profesional, penjualan naik 40% setelah pake web dari Samstore.</p>
+            <div class="testi-author">
+              <div class="testi-avatar">DM</div>
+              <div class="testi-info">
+                <div class="testi-name">Dewi Maharani</div>
+                <div class="testi-role">Owner Butik Online</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-card">
+          <div class="testi-inner">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">Request custom buat tugas kuliah, hasilnya rapi dan on-time! Adminnya juga helpful banget ngasih saran. Nilai A+ buat tugas saya. Makasih Samstore!</p>
+            <div class="testi-author">
+              <div class="testi-avatar">FH</div>
+              <div class="testi-info">
+                <div class="testi-name">Farhan Hakim</div>
+                <div class="testi-role">Mahasiswa IT</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="testi-nav">
+        <button class="testi-arrow" id="testiPrev">←</button>
+        <div class="testi-dots" id="testiDots"></div>
+        <button class="testi-arrow" id="testiNext">→</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">✦ Samstore</div>
+    <p class="footer-text">
+      © 2026 Samstore • Dibuat dengan <span class="heart">❤</span> untuk pelanggan setia<br>
+      Trusted Digital Marketplace
+    </p>
+  </footer>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-icon" id="modalIcon">🌐</div>
+      <h3 class="modal-title" id="modalTitle">Website</h3>
+      <p class="modal-subtitle" id="modalSubtitle">Pilih paket sesuai kebutuhanmu</p>
+    </div>
+
+    <div class="modal-body">
+      <div class="packages-label">Pilih Paket</div>
+      <div class="package-list" id="packageList"></div>
+
+      <div class="form-group">
+        <label class="form-label">Nama Pelanggan *</label>
+        <input type="text" class="form-input" id="custName" placeholder="Masukkan nama lengkap">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Catatan Tambahan</label>
+        <textarea class="form-textarea" id="custNote" placeholder="Jelaskan detail pesananmu (opsional)..."></textarea>
+      </div>
+
+      <button class="btn-order" onclick="sendToWA()">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.917.918l4.462-1.494A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.3 0-4.438-.726-6.2-1.96l-.433-.303-3.15 1.055 1.057-3.144-.332-.482A9.953 9.953 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+        Pesan via WhatsApp
+      </button>
+
+      <p class="form-note">🔒 Data pesanan akan dikirim langsung ke admin Samstore</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================
+// 🔐 AUTHENTICATION SYSTEM
+// ============================================
+const DEV_EMAIL = 'samuel@gmail.com';
+const DEV_PASSWORD = 'samuelganteng';
+const SESSION_KEY = 'samstore_session';
+
+// Check existing session on page load
+(function checkSession() {
+  const session = localStorage.getItem(SESSION_KEY);
+  if (session) {
+    try {
+      const data = JSON.parse(session);
+      if (data && data.role) {
+        enterApp(data, true);
+      }
+    } catch(e) {
+      localStorage.removeItem(SESSION_KEY);
+    }
+  }
+})();
+
+function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password = document.getElementById('loginPassword').value;
+  const errorEl = document.getElementById('loginError');
+  const errorMsg = document.getElementById('loginErrorMsg');
+  const btn = document.getElementById('btnLogin');
+
+  errorEl.classList.remove('show');
+  btn.disabled = true;
+  btn.innerHTML = '<span>Memverifikasi...</span>';
+
+  // Simulate loading
+  setTimeout(() => {
+    if (email === DEV_EMAIL && password === DEV_PASSWORD) {
+      const session = {
+        role: 'developer',
+        email: email,
+        name: 'Samuel',
+        loginTime: Date.now()
+      };
+      localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      playSuccess();
+      enterApp(session);
+    } else {
+      errorEl.classList.add('show');
+      if (email !== DEV_EMAIL) {
+        errorMsg.textContent = 'Email tidak terdaftar!';
+      } else {
+        errorMsg.textContent = 'Password salah! Coba lagi.';
+      }
+      btn.disabled = false;
+      btn.innerHTML = '<span>Masuk sebagai Developer</span><span>→</span>';
+      
+      // Shake animation
+      const card = document.querySelector('.login-card');
+      card.style.animation = 'none';
+      setTimeout(() => card.style.animation = 'shake 0.4s ease', 10);
+    }
+  }, 800);
+}
+
+function enterAsGuest() {
+  const session = {
+    role: 'guest',
+    name: 'Pembeli',
+    loginTime: Date.now()
+  };
+  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  playClick();
+  enterApp(session);
+}
+
+function enterApp(session, isRefresh = false) {
+  const loginPage = document.getElementById('loginPage');
+  loginPage.classList.add('hide');
+  setTimeout(() => {
+    loginPage.style.display = 'none';
+  }, 600);
+
+  // Update UI based on role
+  const badge = document.getElementById('roleBadge');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const greeting = document.getElementById('heroGreeting');
+
+  if (session.role === 'developer') {
+    badge.textContent = '👨‍💻 DEV MODE';
+    badge.className = 'logo-badge developer';
+    logoutBtn.style.display = 'flex';
+    greeting.style.display = 'block';
+    greeting.textContent = `👋 Halo Developer, ${session.name}!`;
+  } else {
+    badge.textContent = '🛒 PEMBELI';
+    badge.className = 'logo-badge guest';
+    logoutBtn.style.display = 'flex';
+    greeting.style.display = 'block';
+    greeting.textContent = `👋 Selamat berbelanja!`;
+  }
+}
+
+function handleLogout() {
+  if (!confirm('Yakin ingin keluar?')) return;
+  localStorage.removeItem(SESSION_KEY);
+  
+  // Reset login form
+  document.getElementById('loginForm').reset();
+  document.getElementById('loginError').classList.remove('show');
+  const btn = document.getElementById('btnLogin');
+  btn.disabled = false;
+  btn.innerHTML = '<span>Masuk sebagai Developer</span><span>→</span>';
+
+  // Show login page again
+  const loginPage = document.getElementById('loginPage');
+  loginPage.style.display = 'flex';
+  setTimeout(() => loginPage.classList.remove('hide'), 10);
+
+  // Reset UI
+  const badge = document.getElementById('roleBadge');
+  badge.textContent = 'OPEN';
+  badge.className = 'logo-badge';
+  document.getElementById('logoutBtn').style.display = 'none';
+  document.getElementById('heroGreeting').style.display = 'none';
+
+  playClick();
+  showToast('✅ Berhasil logout', 'success');
+}
+
+function togglePassword() {
+  const pwd = document.getElementById('loginPassword');
+  const toggle = document.getElementById('pwdToggle');
+  if (pwd.type === 'password') {
+    pwd.type = 'text';
+    toggle.textContent = '🙈';
+  } else {
+    pwd.type = 'password';
+    toggle.textContent = '👁️';
+  }
+}
+
+// ============================================
+// 🔊 PREMIUM SOUND ENGINE (Web Audio API)
+// ============================================
+let audioCtx = null;
+let soundEnabled = true;
+
+function initAudio() {
+  if (!audioCtx) {
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch(e) { console.warn('Audio not supported'); }
+  }
+  return audioCtx;
+}
+
+function playClick() {
+  if (!soundEnabled) return;
+  const ctx = initAudio();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  const osc1 = ctx.createOscillator();
+  const gain1 = ctx.createGain();
+  osc1.type = 'sine';
+  osc1.frequency.setValueAtTime(1200, now);
+  osc1.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+  gain1.gain.setValueAtTime(0.15, now);
+  gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+  osc1.connect(gain1); gain1.connect(ctx.destination);
+  const osc2 = ctx.createOscillator();
+  const gain2 = ctx.createGain();
+  osc2.type = 'sine';
+  osc2.frequency.setValueAtTime(1800, now);
+  gain2.gain.setValueAtTime(0.08, now);
+  gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+  osc2.connect(gain2); gain2.connect(ctx.destination);
+  osc1.start(now); osc1.stop(now + 0.2);
+  osc2.start(now); osc2.stop(now + 0.15);
+}
+
+function playHover() {
+  if (!soundEnabled) return;
+  const ctx = initAudio();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(2000, now);
+  gain.gain.setValueAtTime(0.04, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(now); osc.stop(now + 0.05);
+}
+
+function playModalOpen() {
+  if (!soundEnabled) return;
+  const ctx = initAudio();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(200, now);
+  osc.frequency.exponentialRampToValueAtTime(600, now + 0.3);
+  gain.gain.setValueAtTime(0.1, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(now); osc.stop(now + 0.3);
+}
+
+function playSuccess() {
+  if (!soundEnabled) return;
+  const ctx = initAudio();
+  if (!ctx) return;
+  const notes = [523.25, 659.25, 783.99, 1046.50];
+  notes.forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    const start = ctx.currentTime + i * 0.08;
+    gain.gain.setValueAtTime(0, start);
+    gain.gain.linearRampToValueAtTime(0.12, start + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, start + 0.3);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(start); osc.stop(start + 0.3);
+  });
+}
+
+function playTick() {
+  if (!soundEnabled) return;
+  const ctx = initAudio();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(1500, now);
+  gain.gain.setValueAtTime(0.05, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(now); osc.stop(now + 0.08);
+}
+
+document.getElementById('soundToggle').addEventListener('click', function() {
+  soundEnabled = !soundEnabled;
+  this.textContent = soundEnabled ? '🔊' : '🔇';
+  this.classList.toggle('muted', !soundEnabled);
+  if (soundEnabled) { initAudio(); playClick(); }
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('button, a, .product-card, .package-item, .testi-arrow, .testi-dot')) {
+    playClick();
+  }
+});
+
+document.querySelectorAll('button, a, .product-card, .package-item').forEach(el => {
+  el.addEventListener('mouseenter', () => { if (soundEnabled) playHover(); });
+});
+
+// ============================================
+// ⏰ COUNTDOWN PROMO
+// ============================================
+const STORAGE_KEY = 'samstore_countdown_target';
+let countdownTarget = localStorage.getItem(STORAGE_KEY);
+
+if (!countdownTarget || parseInt(countdownTarget) < Date.now()) {
+  countdownTarget = Date.now() + (7 * 24 * 60 * 60 * 1000);
+  localStorage.setItem(STORAGE_KEY, countdownTarget.toString());
+} else {
+  countdownTarget = parseInt(countdownTarget);
+}
+
+let prevValues = { d: '', h: '', m: '', s: '' };
+
+function updateCountdown() {
+  const now = Date.now();
+  const diff = countdownTarget - now;
+  if (diff <= 0) {
+    countdownTarget = Date.now() + (7 * 24 * 60 * 60 * 1000);
+    localStorage.setItem(STORAGE_KEY, countdownTarget.toString());
+    return;
+  }
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+  const d = String(days).padStart(2, '0');
+  const h = String(hours).padStart(2, '0');
+  const m = String(minutes).padStart(2, '0');
+  const s = String(seconds).padStart(2, '0');
+  const elD = document.getElementById('cdDays');
+  const elH = document.getElementById('cdHours');
+  const elM = document.getElementById('cdMinutes');
+  const elS = document.getElementById('cdSeconds');
+  if (prevValues.d !== d) { elD.textContent = d; elD.classList.remove('flip'); void elD.offsetWidth; elD.classList.add('flip'); }
+  if (prevValues.h !== h) { elH.textContent = h; elH.classList.remove('flip'); void elH.offsetWidth; elH.classList.add('flip'); }
+  if (prevValues.m !== m) { elM.textContent = m; elM.classList.remove('flip'); void elM.offsetWidth; elM.classList.add('flip'); }
+  if (prevValues.s !== s) { 
+    elS.textContent = s; 
+    elS.classList.remove('flip'); 
+    void elS.offsetWidth; 
+    elS.classList.add('flip');
+    if (soundEnabled && document.visibilityState === 'visible') playTick();
+  }
+  prevValues = { d, h, m, s };
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ============================================
+// 💬 TESTIMONIAL SLIDER
+// ============================================
+const testiTrack = document.getElementById('testiTrack');
+const testiDots = document.getElementById('testiDots');
+const testiCards = testiTrack.querySelectorAll('.testi-card');
+let currentTesti = 0;
+let testiAutoSlide;
+
+testiCards.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goToTesti(i);
+  testiDots.appendChild(dot);
+});
+
+function goToTesti(index) {
+  currentTesti = index;
+  testiTrack.style.transform = `translateX(-${index * 100}%)`;
+  testiDots.querySelectorAll('.testi-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === index);
+  });
+  resetTestiAutoSlide();
+}
+
+function nextTesti() { currentTesti = (currentTesti + 1) % testiCards.length; goToTesti(currentTesti); }
+function prevTesti() { currentTesti = (currentTesti - 1 + testiCards.length) % testiCards.length; goToTesti(currentTesti); }
+
+document.getElementById('testiNext').onclick = nextTesti;
+document.getElementById('testiPrev').onclick = prevTesti;
+
+function resetTestiAutoSlide() {
+  clearInterval(testiAutoSlide);
+  testiAutoSlide = setInterval(nextTesti, 5000);
+}
+resetTestiAutoSlide();
+
+let touchStartX = 0;
+testiTrack.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+testiTrack.addEventListener('touchend', (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) { if (diff > 0) nextTesti(); else prevTesti(); }
+}, { passive: true });
+
+// ============================================
+// PRELOADER
+// ============================================
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('preloader').classList.add('hide');
+    document.addEventListener('click', function initOnClick() {
+      initAudio();
+      document.removeEventListener('click', initOnClick);
+    }, { once: true });
+  }, 1500);
+});
+
+// ============================================
+// CUSTOM CURSOR
+// ============================================
+const cursorDot = document.getElementById('cursorDot');
+const cursorRing = document.getElementById('cursorRing');
+let mouseX = 0, mouseY = 0;
+let ringX = 0, ringY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  cursorDot.style.left = mouseX + 'px';
+  cursorDot.style.top = mouseY + 'px';
+  if (Math.random() > 0.85) spawnTrail(mouseX, mouseY);
+});
+
+function updateCursor() {
+  ringX += (mouseX - ringX) * 0.15;
+  ringY += (mouseY - ringY) * 0.15;
+  cursorRing.style.left = ringX + 'px';
+  cursorRing.style.top = ringY + 'px';
+  requestAnimationFrame(updateCursor);
+}
+updateCursor();
+
+document.querySelectorAll('a, button, .product-card, .package-item, input, textarea, .testi-dot').forEach(el => {
+  el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+});
+
+function spawnTrail(x, y) {
+  const trail = document.createElement('div');
+  trail.className = 'trail';
+  trail.style.left = x + 'px';
+  trail.style.top = y + 'px';
+  document.body.appendChild(trail);
+  setTimeout(() => {
+    trail.style.transition = 'all 0.6s ease';
+    trail.style.opacity = '0';
+    trail.style.transform = 'translate(-50%, -50%) scale(0)';
+    setTimeout(() => trail.remove(), 600);
+  }, 50);
+}
+
+// ============================================
+// PARTICLES
+// ============================================
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() { this.reset(); this.y = Math.random() * canvas.height; }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = canvas.height + 10;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedY = Math.random() * 0.5 + 0.2;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.opacity = Math.random() * 0.5 + 0.2;
+    this.twinkle = Math.random() * 0.02;
+    this.twinkleDir = 1;
+  }
+  update() {
+    this.y -= this.speedY;
+    this.x += this.speedX;
+    this.opacity += this.twinkle * this.twinkleDir;
+    if (this.opacity >= 0.7 || this.opacity <= 0.1) this.twinkleDir *= -1;
+    if (this.y < -10) this.reset();
+  }
+  draw() {
+    ctx.fillStyle = `rgba(251, 191, 36, ${this.opacity})`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = 'rgba(251, 191, 36, 0.5)';
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+}
+
+for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ============================================
+// SPOTLIGHT
+// ============================================
+const spotlight = document.getElementById('spotlight');
+let spotX = 0, spotY = 0;
+
+function updateSpotlight() {
+  spotX += (mouseX - spotX) * 0.1;
+  spotY += (mouseY - spotY) * 0.1;
+  spotlight.style.left = spotX + 'px';
+  spotlight.style.top = spotY + 'px';
+  requestAnimationFrame(updateSpotlight);
+}
+updateSpotlight();
+
+// ============================================
+// SCROLL PROGRESS
+// ============================================
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrollPercent = (scrollTop / docHeight) * 100;
+  document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+});
+
+// ============================================
+// TYPING EFFECT
+// ============================================
+const phrases = [
+  'Selamat Berbelanja! 🛍️',
+  'Digital Products Premium ✨',
+  'Kualitas Terbaik, Harga Terjangkau 💎',
+  'Your Trusted Digital Store 🚀'
+];
+let phraseIdx = 0, charIdx = 0, isDeleting = false;
+const typedText = document.getElementById('typedText');
+
+function typeEffect() {
+  const current = phrases[phraseIdx];
+  if (isDeleting) {
+    typedText.textContent = current.substring(0, charIdx - 1);
+    charIdx--;
+  } else {
+    typedText.textContent = current.substring(0, charIdx + 1);
+    charIdx++;
+  }
+  let speed = isDeleting ? 40 : 80;
+  if (!isDeleting && charIdx === current.length) { speed = 2500; isDeleting = true; }
+  else if (isDeleting && charIdx === 0) { isDeleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; speed = 500; }
+  setTimeout(typeEffect, speed);
+}
+typeEffect();
+
+// ============================================
+// COUNTER ANIMATION
+// ============================================
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  const isDecimal = el.dataset.decimal === 'true';
+  const duration = 2000;
+  const steps = 60;
+  const increment = target / steps;
+  let current = 0;
+  let step = 0;
+  const timer = setInterval(() => {
+    step++;
+    current += increment;
+    if (step >= steps) { current = target; clearInterval(timer); }
+    el.textContent = isDecimal ? current.toFixed(1) : Math.floor(current) + '+';
+  }, duration / steps);
+}
+
+// ============================================
+// SCROLL REVEAL
+// ============================================
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      if (entry.target.classList.contains('stat-value') && entry.target.dataset.target) {
+        animateCounter(entry.target);
+      }
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.product-card, .section-tag, .section-title, .section-desc, .stat-value[data-target]').forEach(el => {
+  observer.observe(el);
+});
+
+document.querySelectorAll('.product-card').forEach((card, i) => {
+  card.style.transitionDelay = (i * 0.15) + 's';
+});
+
+// ============================================
+// 3D TILT EFFECT
+// ============================================
+document.querySelectorAll('[data-tilt]').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -5;
+    const rotateY = ((x - centerX) / centerX) * 5;
+    card.style.transform = `translateY(-10px) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'translateY(0) perspective(1000px) rotateX(0) rotateY(0)';
+  });
+});
+
+// ============================================
+// MAGNETIC BUTTON
+// ============================================
+document.querySelectorAll('[data-magnetic]').forEach(btn => {
+  btn.addEventListener('mousemove', (e) => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+  });
+  btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0, 0)'; });
+});
+
+// ============================================
+// SPARKLE EFFECT
+// ============================================
+document.querySelectorAll('.product-card, .btn-view, .btn-order, .scroll-btn, .countdown-cta').forEach(el => {
+  el.addEventListener('click', function(e) {
+    for (let i = 0; i < 8; i++) {
+      const sparkle = document.createElement('span');
+      sparkle.className = 'sparkle';
+      sparkle.textContent = '✦';
+      sparkle.style.left = e.clientX + 'px';
+      sparkle.style.top = e.clientY + 'px';
+      const angle = (Math.PI * 2 * i) / 8;
+      const distance = 30 + Math.random() * 20;
+      sparkle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+      sparkle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 800);
+    }
+  });
+});
+
+// ============================================
+// PARALLAX
+// ============================================
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  document.querySelectorAll('.orb').forEach((orb, i) => {
+    const speed = (i + 1) * 0.3;
+    orb.style.transform = `translateY(${scrolled * speed}px)`;
+  });
+});
+
+// ============================================
+// DATA PRODUK & MODAL
+// ============================================
+const PRODUCTS = {
+  website: {
+    icon: '🌐',
+    title: 'Website',
+    subtitle: 'Jasa Pembuatan Website Profesional',
+    packages: [
+      { name: 'Basic Landing Page', desc: '1 halaman sederhana, responsive', price: 'Rp 15.000' },
+      { name: 'Portfolio Website', desc: 'Showcase karya, multi-section', price: 'Rp 35.000' },
+      { name: 'Toko Online Mini', desc: 'Katalog produk + checkout WA', price: 'Rp 75.000' },
+      { name: 'Website Custom Premium', desc: 'Full fitur, desain eksklusif', price: 'Rp 150.000' }
+    ]
+  },
+  minigame: {
+    icon: '🎮',
+    title: 'Minigame',
+    subtitle: 'Game Sederhana & Fun',
+    packages: [
+      { name: 'Game Template Basic', desc: 'Game siap pakai, simple', price: 'Rp 5.000' },
+      { name: 'Game Kustom Ringan', desc: 'Custom tema & warna', price: 'Rp 15.000' },
+      { name: 'Game Interaktif', desc: 'Multi-level + scoring', price: 'Rp 35.000' },
+      { name: 'Game Premium Custom', desc: 'Sesuai request lengkap', price: 'Rp 75.000' }
+    ]
+  },
+  custom: {
+    icon: '✨',
+    title: 'Pesan Khusus',
+    subtitle: 'Request Sesuai Kebutuhanmu',
+    packages: [
+      { name: 'Request Mini', desc: 'Tugas sederhana, edit kecil', price: 'Rp 5.000' },
+      { name: 'Request Medium', desc: 'Desain/coding menengah', price: 'Rp 20.000' },
+      { name: 'Request Besar', desc: 'Proyek kompleks', price: 'Rp 50.000' },
+      { name: 'Request VIP', desc: 'Prioritas + revisi unlimited', price: 'Rp 100.000' }
+    ]
+  }
+};
+
+const WA_NUMBER = '6281214233454';
+let currentProduct = null;
+let selectedPackage = null;
+
+function openModal(key) {
+  currentProduct = PRODUCTS[key];
+  selectedPackage = null;
+  document.getElementById('modalIcon').textContent = currentProduct.icon;
+  document.getElementById('modalTitle').textContent = currentProduct.title;
+  document.getElementById('modalSubtitle').textContent = currentProduct.subtitle;
+  const list = document.getElementById('packageList');
+  list.innerHTML = '';
+  currentProduct.packages.forEach((pkg, i) => {
+    const div = document.createElement('div');
+    div.className = 'package-item';
+    div.innerHTML = `
+      <div class="pkg-info">
+        <h4>${pkg.name}</h4>
+        <p>${pkg.desc}</p>
+      </div>
+      <div class="pkg-price">${pkg.price}</div>
+    `;
+    div.onclick = () => selectPackage(i, div);
+    list.appendChild(div);
+  });
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  playModalOpen();
+}
+
+function selectPackage(index, element) {
+  selectedPackage = currentProduct.packages[index];
+  document.querySelectorAll('.package-item').forEach(el => el.classList.remove('selected'));
+  element.classList.add('selected');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+  document.getElementById('custName').value = '';
+  document.getElementById('custNote').value = '';
+}
+
+function sendToWA() {
+  const name = document.getElementById('custName').value.trim();
+  const note = document.getElementById('custNote').value.trim();
+  if (!name) { showToast('⚠️ Mohon isi nama pelanggan', 'error'); return; }
+  if (!selectedPackage) { showToast('⚠️ Pilih paket terlebih dahulu', 'error'); return; }
+  const tanggal = new Date().toLocaleDateString('id-ID', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+  const session = JSON.parse(localStorage.getItem(SESSION_KEY) || '{}');
+  const roleInfo = session.role === 'developer' ? '👨‍💻 Developer Mode' : '🛒 Pembeli';
+  const pesan = 
+`🛍️ *PESANAN BARU - SAMSTORE*
+━━━━━━━━━━━━━━━━━━━━━
+
+👤 *Nama Pelanggan:*
+${name}
+
+🏷️ *Tipe Akun:*
+${roleInfo}
+
+📦 *Kategori Produk:*
+${currentProduct.icon} ${currentProduct.title}
+
+💎 *Paket Dipilih:*
+${selectedPackage.name}
+
+💰 *Harga:*
+${selectedPackage.price}
+
+📋 *Detail Paket:*
+${selectedPackage.desc}
+
+📝 *Catatan:*
+${note || '-'}
+
+📅 *Waktu Pesan:*
+${tanggal}
+
+━━━━━━━━━━━━━━━━━━━━━
+_Dikirim otomatis dari website Samstore_`;
+
+  const encoded = encodeURIComponent(pesan);
+  window.open(`https://wa.me/${WA_NUMBER}?text=${encoded}`, '_blank');
+  playSuccess();
+  showToast('✅ Mengarahkan ke WhatsApp...', 'success');
+  setTimeout(closeModal, 1000);
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+
+</body>
+</html>
