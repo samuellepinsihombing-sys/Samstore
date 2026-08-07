@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samstore — Premium Digital Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --bg-soft: #121212;
+  --card: #161616;
+  --card-hover: #1c1c1c;
+  --white: #ffffff;
+  --text: #e8e8e8;
+  --dim: #888888;
+  --dimmer: #555555;
+  --border: #222222;
+  --border-light: #2a2a2a;
+  --success: #4ade80;
+  --error: #f87171;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a3a; }
+
+/* ============ LOGIN PAGE ============ */
+.login-page {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.login-page.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.login-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(255,255,255,0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.login-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  pointer-events: none;
+}
+
+.login-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 440px;
+  animation: loginUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes loginUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.login-card {
+  background: linear-gradient(180deg, #141414 0%, #0c0c0c 100%);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 50px 38px 38px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+}
+
+.login-logo-wrap {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-logo-icon {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 18px;
+  background: #fff;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #000;
+  font-weight: 900;
+  font-family: 'Playfair Display', serif;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(255,255,255,0.08);
+}
+
+.login-logo-icon::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.login-logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.login-logo-sub {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.login-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.login-subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: var(--dim);
+  margin-bottom: 28px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.login-field-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+
+.login-field-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.login-field-input:focus {
+  border-color: #fff;
+  background: #000;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.08);
+}
+
+.login-field-input::placeholder { color: var(--dimmer); }
+
+.pwd-toggle {
+  position: absolute;
+  right: 12px;
+  top: 38px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--dim);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.pwd-toggle:hover { color: #fff; border-color: #fff; }
+
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  background: #fff;
+  border: none;
+  border-radius: 12px;
+  color: #000;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-login::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-login:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(255,255,255,0.15); }
+.btn-login:hover::before { left: 100%; }
+.btn-login:active { transform: scale(0.98); }
+.btn-login:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 20px 0;
+  color: var(--dimmer);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.login-divider::before, .login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.btn-guest {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-guest:hover {
+  border-color: #fff;
+  background: rgba(255,255,255,0.04);
+  transform: translateY(-2px);
+}
+
+.btn-guest-icon {
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #000;
+}
+
+.btn-guest-text { text-align: left; flex: 1; }
+.btn-guest-text strong { display: block; font-size: 13px; }
+.btn-guest-text small { display: block; font-size: 11px; color: var(--dim); font-weight: 400; margin-top: 2px; }
+.btn-guest:hover .btn-guest-text small { color: #fff; }
+
+.login-footer {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 11px;
+  color: var(--dimmer);
+  letter-spacing: 1px;
+}
+
+.login-error {
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  color: var(--error);
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  margin-bottom: 14px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-error.show { display: flex; animation: shake 0.4s ease; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+/* ============ PRELOADER ============ */
+.preloader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 18px;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.preloader.hide { opacity: 0; visibility: hidden; }
+
+.preloader-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 34px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 4px;
+  animation: preloaderPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes preloaderPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.preloader-bar {
+  width: 180px;
+  height: 2px;
+  background: var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.preloader-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 30%;
+  background: #fff;
+  animation: loadingBar 1.4s ease-in-out infinite;
+  border-radius: 10px;
+}
+
+@keyframes loadingBar {
+  0% { left: -30%; }
+  100% { left: 100%; }
+}
+
+/* ============ NAVBAR ============ */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 16px 30px;
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-size: 14px;
+  font-weight: 900;
+  font-family: 'Playfair Display', serif;
+}
+
+.navbar-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 20px;
+  border: 1px solid var(--border-light);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.logo-badge.dev {
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.logo-badge.guest {
+  color: var(--dim);
+  background: rgba(255,255,255,0.03);
+}
+
+.logo-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 10px currentColor;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.nav-btn {
+  width: 38px;
+  height: 38px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: #fff;
+  color: #000;
+  transform: translateY(-2px);
+}
+
+.logout-btn:hover { background: var(--error); color: #fff; border-color: var(--error); }
+
+/* ============ MAIN ============ */
+.main {
+  position: relative;
+  z-index: 10;
+  padding-top: 70px;
+}
+
+/* ============ HERO ============ */
+.hero {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.05) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-light);
+  padding: 7px 16px;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  animation: fadeUp 0.8s ease;
+}
+
+.hero-tag .dot {
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-greeting {
+  font-size: 13px;
+  color: var(--dim);
+  font-weight: 500;
+  margin-bottom: 14px;
+  animation: fadeUp 0.8s ease 0.1s both;
+  letter-spacing: 0.5px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 11vw, 96px);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -3px;
+  line-height: 0.95;
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+
+.hero h1 .italic {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--dim);
+}
+
+.hero-desc {
+  font-size: 15px;
+  color: var(--dim);
+  max-width: 520px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 45px;
+  animation: fadeUp 0.8s ease 0.5s both;
+}
+
+.stat-item { text-align: center; }
+
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 34px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeUp 0.8s ease 0.6s both;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 14px 28px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  font-family: 'Inter', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: #fff;
+  color: #000;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(255,255,255,0.2);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #fff;
+  border-color: var(--border-light);
+}
+
+.btn-secondary:hover {
+  border-color: #fff;
+  background: rgba(255,255,255,0.04);
+  transform: translateY(-3px);
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--dimmer);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: fadeUp 0.8s ease 0.8s both;
+}
+
+.scroll-indicator::after {
+  content: '';
+  width: 1px;
+  height: 30px;
+  background: linear-gradient(180deg, var(--dim), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  0%, 100% { transform: scaleY(0.5); transform-origin: top; }
+  50% { transform: scaleY(1); }
+}
+
+/* ============ SECTION COMMON ============ */
+.section {
+  padding: 90px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-head {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--dim);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: inline-block;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.section-title .italic {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--dim);
+}
+
+.section-desc {
+  font-size: 14px;
+  color: var(--dim);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ============ PRODUCTS GRID ============ */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.product-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 36px 28px 30px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.product-card.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.product-card:hover {
+  background: var(--card-hover);
+  transform: translateY(-6px);
+  border-color: var(--border-light);
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.product-card:hover::before { opacity: 1; }
+
+.product-badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  padding: 5px 11px;
+  background: #fff;
+  color: #000;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.product-badge.new { background: #000; color: #fff; border: 1px solid #fff; }
+
+.product-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 22px;
+  background: #fff;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #000;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-card:hover .product-icon {
+  transform: scale(1.08) rotate(-6deg);
+  border-radius: 20px;
+}
+
+.product-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.product-desc {
+  font-size: 13px;
+  color: var(--dim);
+  margin-bottom: 24px;
+  line-height: 1.7;
+  min-height: 44px;
+}
+
+.product-price-wrap {
+  padding: 18px;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.price-label {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.price-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.price-value small {
+  font-size: 12px;
+  color: var(--dim);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+}
+
+.price-arrow {
+  width: 36px;
+  height: 36px;
+  background: #fff;
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover .price-arrow { transform: translateX(5px); }
+
+.product-features {
+  list-style: none;
+  margin-bottom: 22px;
+  padding: 0;
+}
+
+.product-features li {
+  font-size: 12px;
+  color: var(--dim);
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.product-features li::before {
+  content: '';
+  width: 14px;
+  height: 1px;
+  background: var(--dim);
+}
+
+.btn-view {
+  width: 100%;
+  padding: 13px;
+  background: transparent;
+  border: 1px solid var(--border-light);
+  border-radius: 50px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-view:hover {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+/* ============ ACCOUNT SECTION ============ */
+.account-section {
+  padding: 90px 24px;
+  background: #060606;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.account-grid {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.account-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 26px;
+  text-align: center;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.account-card:hover {
+  background: var(--card-hover);
+  transform: translateY(-4px);
+  border-color: var(--border-light);
+}
+
+.account-icon {
+  width: 58px;
+  height: 58px;
+  background: #fff;
+  color: #000;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: 0 auto 18px;
+  transition: all 0.3s ease;
+}
+
+.account-card:hover .account-icon {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.account-label {
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.account-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+  word-break: break-all;
+}
+
+.account-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.account-card:hover .account-btn { color: #fff; }
+
+/* ============ FOOTER ============ */
+.footer {
+  padding: 50px 24px 30px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: var(--dimmer);
+  line-height: 1.7;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.footer-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--border-light);
+  margin: 20px auto;
+}
+
+/* ============ MODAL ============ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active { display: flex; opacity: 1; }
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal::-webkit-scrollbar { width: 6px; }
+.modal::-webkit-scrollbar-thumb { background: var(--border-light); }
+
+@keyframes modalUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-head {
+  padding: 28px 26px 20px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  text-align: center;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  color: var(--dim);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover { background: #fff; color: #000; border-color: #fff; transform: rotate(90deg); }
+
+.modal-icon {
+  width: 60px; height: 60px;
+  margin: 0 auto 14px;
+  background: #fff;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: #000;
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.modal-subtitle {
+  font-size: 12px;
+  color: var(--dim);
+  letter-spacing: 0.5px;
+}
+
+.modal-body { padding: 24px 26px; }
+
+.packages-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.package-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.package-item {
+  padding: 15px;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  gap: 12px;
+}
+
+.package-item:hover {
+  border-color: var(--border-light);
+  background: #121212;
+}
+
+.package-item.selected {
+  border-color: #fff;
+  background: rgba(255,255,255,0.04);
+}
+
+.pkg-info h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 3px;
+}
+
+.pkg-info p {
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+.pkg-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 900;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.form-group { margin-bottom: 14px; }
+
+.form-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--dim);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 13px 15px;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.form-input:focus, .form-textarea:focus {
+  border-color: #fff;
+  background: #000;
+}
+
+.form-textarea { min-height: 80px; resize: vertical; }
+
+.btn-order {
+  width: 100%;
+  padding: 15px;
+  background: #fff;
+  border: none;
+  border-radius: 50px;
+  color: #000;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-order:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(255,255,255,0.15); }
+.btn-order:active { transform: scale(0.98); }
+
+.form-note {
+  text-align: center;
+  font-size: 10px;
+  color: var(--dimmer);
+  margin-top: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* ============ ACCOUNT MODAL ============ */
+.account-modal-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.account-modal-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: #0a0a0a;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.account-modal-link:hover {
+  border-color: #fff;
+  background: rgba(255,255,255,0.03);
+  transform: translateX(4px);
+}
+
+.account-modal-link-icon {
+  width: 44px;
+  height: 44px;
+  background: #fff;
+  color: #000;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.account-modal-link-info { flex: 1; min-width: 0; }
+.account-modal-link-info small { font-size: 10px; color: var(--dim); letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 2px; }
+.account-modal-link-info strong { font-size: 13px; color: #fff; display: block; word-break: break-all; }
+.account-modal-link-arrow { color: var(--dim); font-size: 14px; transition: all 0.3s ease; }
+.account-modal-link:hover .account-modal-link-arrow { color: #fff; transform: translateX(3px); }
+
+/* ============ TOAST ============ */
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--card);
+  border: 1px solid var(--border-light);
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  z-index: 10002;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+  max-width: 90%;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.error { border-color: var(--error); color: var(--error); }
+.toast.success { border-color: var(--success); color: var(--success); }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 600px) {
+  .navbar { padding: 14px 18px; }
+  .logo { font-size: 17px; letter-spacing: 1.5px; }
+  .logo-icon { width: 28px; height: 28px; font-size: 12px; }
+  .logo-badge { font-size: 9px; padding: 4px 9px; }
+  .nav-btn { width: 34px; height: 34px; font-size: 12px; }
+  .hero { padding: 50px 20px 70px; }
+  .hero h1 { letter-spacing: -1.5px; }
+  .hero-stats { gap: 24px; }
+  .stat-value { font-size: 26px; }
+  .section { padding: 60px 20px; }
+  .products-grid { grid-template-columns: 1fr; gap: 18px; }
+  .account-grid { grid-template-columns: 1fr; }
+  .login-card { padding: 40px 26px 30px; }
+  .login-logo-text { font-size: 24px; letter-spacing: 2px; }
+  .scroll-indicator { display: none; }
+  .btn-primary, .btn-secondary { padding: 12px 22px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN PAGE ============ -->
+<div class="login-page" id="loginPage">
+  <div class="login-bg"></div>
+  <div class="login-grid"></div>
+
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-logo-wrap">
+        <div class="login-logo-icon">S</div>
+        <div class="login-logo-text">Samstore</div>
+        <div class="login-logo-sub">Digital Marketplace</div>
+      </div>
+
+      <h2 class="login-title">Selamat Datang</h2>
+      <p class="login-subtitle">Silakan pilih mode akses Anda</p>
+
+      <div class="login-error" id="loginError">
+        <span>⚠</span>
+        <span id="loginErrorMsg">Email atau password salah!</span>
+      </div>
+
+      <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
+        <div>
+          <label class="login-field-label">Email Developer</label>
+          <input
+            type="email"
+            class="login-field-input"
+            id="loginEmail"
+            placeholder="developer@email.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div style="position: relative;">
+          <label class="login-field-label">Password</label>
+          <input
+            type="password"
+            class="login-field-input"
+            id="loginPassword"
+            placeholder="Masukkan password"
+            autocomplete="current-password"
+            required
+          >
+          <button type="button" class="pwd-toggle" onclick="togglePassword()">👁</button>
+        </div>
+
+        <button type="submit" class="btn-login" id="btnLogin">
+          Masuk sebagai Developer
+        </button>
+      </form>
+
+      <div class="login-divider">atau</div>
+
+      <button class="btn-guest" onclick="enterAsGuest()">
+        <div class="btn-guest-icon">🛒</div>
+        <div class="btn-guest-text">
+          <strong>Masuk sebagai Pembeli</strong>
+          <small>Langsung belanja tanpa akun</small>
+        </div>
+      </button>
+
+      <div class="login-footer">
+        © 2026 Samstore — Premium Digital Store
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PRELOADER ============ -->
+<div class="preloader" id="preloader">
+  <div class="preloader-logo">SAMSTORE</div>
+  <div class="preloader-bar"></div>
+</div>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar">
+  <div class="logo" onclick="scrollToTop()">
+    <div class="logo-icon">S</div>
+    Samstore
+  </div>
+  <div class="navbar-right">
+    <div class="logo-badge" id="roleBadge">OPEN</div>
+    <button class="nav-btn" onclick="openAccountModal()" title="Akun">👤</button>
+    <button class="nav-btn logout-btn" id="logoutBtn" onclick="handleLogout()" title="Logout" style="display:none;">↩</button>
+  </div>
+</nav>
+
+<!-- ============ MAIN ============ -->
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag">
+      <span class="dot"></span>
+      <span>Premium Digital Store</span>
+    </div>
+    <p class="hero-greeting" id="heroGreeting" style="display:none;"></p>
+    <h1>Solusi Digital<br><span class="italic">untuk kebutuhanmu</span></h1>
+    <p class="hero-desc">
+      Marketplace digital terpercaya untuk kebutuhan Website, Minigame, dan layanan custom.
+      Kualitas premium, harga bersahabat, pelayanan profesional.
+    </p>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-value" data-target="500">0</div>
+        <div class="stat-label">Pelanggan</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" data-target="4.9" data-decimal="true">0</div>
+        <div class="stat-label">Rating</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">24/7</div>
+        <div class="stat-label">Support</div>
+      </div>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="#products" class="btn-primary">Lihat Produk →</a>
+      <a href="#account" class="btn-secondary">Hubungi Kami</a>
+    </div>
+
+    <div class="scroll-indicator">Scroll</div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="section" id="products">
+    <div class="section-head">
+      <div class="section-tag">— Produk Kami</div>
+      <h2 class="section-title">Pilih <span class="italic">Kategori</span> Favoritmu</h2>
+      <p class="section-desc">Klik salah satu produk untuk melihat paket, harga, dan melakukan pemesanan langsung ke WhatsApp admin.</p>
+    </div>
+
+    <div class="products-grid">
+
+      <!-- WEBSITE -->
+      <div class="product-card" onclick="openModal('website')">
+        <span class="product-badge">Hot</span>
+        <div class="product-icon">W</div>
+        <h3 class="product-name">Website</h3>
+        <p class="product-desc">Jasa pembuatan website profesional — landing page, portfolio, hingga toko online.</p>
+
+        <div class="product-price-wrap">
+          <div>
+            <div class="price-label">Mulai dari</div>
+            <div class="price-value">Rp 20.000</div>
+          </div>
+          <div class="price-arrow">→</div>
+        </div>
+
+        <ul class="product-features">
+          <li>Desain responsif & modern</li>
+          <li>Siap online dalam 1-3 hari</li>
+          <li>Termasuk revisi & konsultasi</li>
+        </ul>
+
+        <button class="btn-view">Lihat Paket →</button>
+      </div>
+
+      <!-- MINIGAME -->
+      <div class="product-card" onclick="openModal('minigame')">
+        <span class="product-badge">Best</span>
+        <div class="product-icon">G</div>
+        <h3 class="product-name">Minigame</h3>
+        <p class="product-desc">Game sederhana custom untuk event, hiburan, tugas sekolah, atau proyek seru.</p>
+
+        <div class="product-price-wrap">
+          <div>
+            <div class="price-label">Mulai dari</div>
+            <div class="price-value">Rp 5.000</div>
+          </div>
+          <div class="price-arrow">→</div>
+        </div>
+
+        <ul class="product-features">
+          <li>Game interaktif & fun</li>
+          <li>Tema & mekanik custom</li>
+          <li>Bisa dimainkan di browser</li>
+        </ul>
+
+        <button class="btn-view">Lihat Paket →</button>
+      </div>
+
+      <!-- PESAN KHUSUS -->
+      <div class="product-card" onclick="openModal('custom')">
+        <span class="product-badge new">New</span>
+        <div class="product-icon">+</div>
+        <h3 class="product-name">Pesan Khusus</h3>
+        <p class="product-desc">Request custom sesuai kebutuhanmu — desain, coding, editing, dan jasa digital lainnya.</p>
+
+        <div class="product-price-wrap">
+          <div>
+            <div class="price-label">Mulai dari</div>
+            <div class="price-value">Rp 7.000</div>
+          </div>
+          <div class="price-arrow">→</div>
+        </div>
+
+        <ul class="product-features">
+          <li>Sesuai request pelanggan</li>
+          <li>Pengerjaan fleksibel</li>
+          <li>Konsultasi gratis dulu</li>
+        </ul>
+
+        <button class="btn-view">Lihat Paket →</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ACCOUNT / CONTACT -->
+  <section class="account-section" id="account">
+    <div class="section-head" style="max-width: 600px; margin: 0 auto 50px;">
+      <div class="section-tag">— Hubungi Kami</div>
+      <h2 class="section-title">Tetap <span class="italic">Terhubung</span></h2>
+      <p class="section-desc">Follow media sosial kami atau hubungi langsung via WhatsApp untuk konsultasi gratis.</p>
+    </div>
+
+    <div class="account-grid">
+
+      <a href="https://instagram.com/samstore_real_01" target="_blank" class="account-card">
+        <div class="account-icon">IG</div>
+        <div class="account-label">Instagram</div>
+        <div class="account-value">@samstore_real_01</div>
+        <div class="account-btn">Follow →</div>
+      </a>
+
+      <a href="https://wa.me/6281214233454" target="_blank" class="account-card">
+        <div class="account-icon">WA</div>
+        <div class="account-label">WhatsApp</div>
+        <div class="account-value">0812-1423-3454</div>
+        <div class="account-btn">Chat →</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">SAMSTORE</div>
+    <div class="footer-divider"></div>
+    <p class="footer-text">
+      © 2026 Samstore — Premium Digital Marketplace.<br>
+      Dibuat dengan dedikasi untuk pelanggan setia.
+    </p>
+  </footer>
+
+</main>
+
+<!-- ============ ORDER MODAL ============ -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-icon" id="modalIcon">W</div>
+      <h3 class="modal-title" id="modalTitle">Website</h3>
+      <p class="modal-subtitle" id="modalSubtitle">Pilih paket sesuai kebutuhanmu</p>
+    </div>
+
+    <div class="modal-body">
+      <div class="packages-label">— Pilih Paket</div>
+      <div class="package-list" id="packageList"></div>
+
+      <div class="form-group">
+        <label class="form-label">Nama Lengkap *</label>
+        <input type="text" class="form-input" id="custName" placeholder="Nama Anda">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Catatan Tambahan</label>
+        <textarea class="form-textarea" id="custNote" placeholder="Jelaskan detail pesananmu (opsional)..."></textarea>
+      </div>
+
+      <button class="btn-order" onclick="sendToWA()">
+        Pesan via WhatsApp →
+      </button>
+
+      <p class="form-note">🔒 Pesanan akan dikirim langsung ke admin Samstore</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ACCOUNT MODAL ============ -->
+<div class="modal-overlay" id="accountModal" onclick="if(event.target===this) closeAccountModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeAccountModal()">✕</button>
+      <div class="modal-icon">👤</div>
+      <h3 class="modal-title">Akun Samstore</h3>
+      <p class="modal-subtitle">Hubungi kami melalui kanal berikut</p>
+    </div>
+
+    <div class="modal-body">
+      <div class="account-modal-links">
+
+        <a href="https://instagram.com/samstore_real_01" target="_blank" class="account-modal-link">
+          <div class="account-modal-link-icon">IG</div>
+          <div class="account-modal-link-info">
+            <small>Instagram</small>
+            <strong>@samstore_real_01</strong>
+          </div>
+          <div class="account-modal-link-arrow">→</div>
+        </a>
+
+        <a href="https://wa.me/6281214233454" target="_blank" class="account-modal-link">
+          <div class="account-modal-link-icon">WA</div>
+          <div class="account-modal-link-info">
+            <small>WhatsApp</small>
+            <strong>0812-1423-3454</strong>
+          </div>
+          <div class="account-modal-link-arrow">→</div>
+        </a>
+
+      </div>
+
+      <p class="form-note" style="margin-top: 18px;">Jam operasional: Setiap hari, 09.00 - 22.00 WIB</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================
+// 🔐 DAFTAR DEVELOPER
+// ============================================
+const DEVELOPERS = [
+  {
+    email: 'samuel@gmail.com',
+    password: 'samuelganteng',
+    name: 'Samuel',
+    role: 'owner'
+  },
+  // Tambah developer baru di sini jika perlu
+];
+
+const SESSION_KEY = 'samstore_session';
+
+// ============================================
+// SESSION CHECK
+// ============================================
+(function checkSession() {
+  const session = localStorage.getItem(SESSION_KEY);
+  if (session) {
+    try {
+      const data = JSON.parse(session);
+      if (data && data.role) enterApp(data, true);
+    } catch(e) {
+      localStorage.removeItem(SESSION_KEY);
+    }
+  }
+})();
+
+// ============================================
+// LOGIN LOGIC
+// ============================================
+function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password = document.getElementById('loginPassword').value;
+  const errorEl = document.getElementById('loginError');
+  const errorMsg = document.getElementById('loginErrorMsg');
+  const btn = document.getElementById('btnLogin');
+
+  errorEl.classList.remove('show');
+  btn.disabled = true;
+  btn.textContent = 'Memverifikasi...';
+
+  setTimeout(() => {
+    const matchedDev = DEVELOPERS.find(
+      dev => dev.email.toLowerCase() === email && dev.password === password
+    );
+
+    if (matchedDev) {
+      const session = {
+        role: 'developer',
+        devRole: matchedDev.role,
+        email: matchedDev.email,
+        name: matchedDev.name,
+        loginTime: Date.now()
+      };
+      localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      enterApp(session);
+    } else {
+      errorEl.classList.add('show');
+      const emailExists = DEVELOPERS.some(dev => dev.email.toLowerCase() === email);
+      errorMsg.textContent = emailExists
+        ? 'Password salah! Coba lagi.'
+        : 'Email tidak terdaftar sebagai developer!';
+      btn.disabled = false;
+      btn.textContent = 'Masuk sebagai Developer';
+    }
+  }, 600);
+}
+
+function enterAsGuest() {
+  const session = { role: 'guest', name: 'Pembeli', loginTime: Date.now() };
+  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  enterApp(session);
+}
+
+function enterApp(session, isRefresh = false) {
+  const loginPage = document.getElementById('loginPage');
+  loginPage.classList.add('hide');
+  setTimeout(() => { loginPage.style.display = 'none'; }, 500);
+
+  const badge = document.getElementById('roleBadge');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const greeting = document.getElementById('heroGreeting');
+
+  if (session.role === 'developer') {
+    badge.textContent = session.devRole === 'owner' ? '👑 OWNER' : '💻 DEV';
+    badge.className = 'logo-badge dev';
+    logoutBtn.style.display = 'flex';
+    greeting.style.display = 'block';
+    greeting.textContent = `Halo ${session.devRole === 'owner' ? 'Owner' : 'Developer'}, ${session.name} 👋`;
+  } else {
+    badge.textContent = '🛒 GUEST';
+    badge.className = 'logo-badge guest';
+    logoutBtn.style.display = 'flex';
+    greeting.style.display = 'block';
+    greeting.textContent = 'Selamat berbelanja! 👋';
+  }
+}
+
+function handleLogout() {
+  if (!confirm('Yakin ingin keluar?')) return;
+  localStorage.removeItem(SESSION_KEY);
+
+  document.getElementById('loginForm').reset();
+  document.getElementById('loginError').classList.remove('show');
+  document.getElementById('btnLogin').textContent = 'Masuk sebagai Developer';
+  document.getElementById('btnLogin').disabled = false;
+
+  const loginPage = document.getElementById('loginPage');
+  loginPage.style.display = 'flex';
+  setTimeout(() => loginPage.classList.remove('hide'), 10);
+
+  document.getElementById('roleBadge').textContent = 'OPEN';
+  document.getElementById('roleBadge').className = 'logo-badge';
+  document.getElementById('logoutBtn').style.display = 'none';
+  document.getElementById('heroGreeting').style.display = 'none';
+
+  showToast('Berhasil logout', 'success');
+}
+
+function togglePassword() {
+  const pwd = document.getElementById('loginPassword');
+  const toggle = document.querySelector('.pwd-toggle');
+  if (pwd.type === 'password') {
+    pwd.type = 'text';
+    toggle.textContent = '🙈';
+  } else {
+    pwd.type = 'password';
+    toggle.textContent = '👁';
+  }
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================
+// ACCOUNT MODAL
+// ============================================
+function openAccountModal() {
+  document.getElementById('accountModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAccountModal() {
+  document.getElementById('accountModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ============================================
+// PRELOADER
+// ============================================
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('preloader').classList.add('hide');
+  }, 1200);
+});
+
+// ============================================
+// PRODUCTS DATA
+// ============================================
+const PRODUCTS = {
+  website: {
+    icon: 'W',
+    title: 'Website',
+    subtitle: 'Jasa Pembuatan Website Profesional',
+    packages: [
+      { name: 'Basic Landing Page', desc: '1 halaman sederhana, responsif', price: 'Rp 20.000' },
+      { name: 'Portfolio Standard', desc: 'Website portofolio multi-section', price: 'Rp 45.000' },
+      { name: 'Premium Portfolio', desc: 'Desain eksklusif + animasi halus', price: 'Rp 85.000' },
+      { name: 'Toko Online Mini', desc: 'Katalog produk + checkout WA', price: 'Rp 120.000' },
+      { name: 'Website Bisnis Pro', desc: 'Multi-halaman, SEO ready', price: 'Rp 200.000' },
+      { name: 'Premium Custom', desc: 'Full fitur sesuai permintaan', price: 'Rp 350.000' }
+    ]
+  },
+  minigame: {
+    icon: 'G',
+    title: 'Minigame',
+    subtitle: 'Game Sederhana & Fun',
+    packages: [
+      { name: 'Game Template Basic', desc: 'Game siap pakai, simple & fun', price: 'Rp 5.000' },
+      { name: 'Game Custom Ringan', desc: 'Tema & warna sesuai permintaan', price: 'Rp 15.000' },
+      { name: 'Game Interaktif', desc: 'Multi-level + scoring system', price: 'Rp 35.000' },
+      { name: 'Game Edukasi', desc: 'Game belajar untuk anak/tugas', price: 'Rp 50.000' },
+      { name: 'Game Event Special', desc: 'Game untuk event/kompetisi', price: 'Rp 85.000' },
+      { name: 'Premium Game Custom', desc: 'Full custom dengan fitur lengkap', price: 'Rp 150.000' }
+    ]
+  },
+  custom: {
+    icon: '+',
+    title: 'Pesan Khusus',
+    subtitle: 'Request Sesuai Kebutuhanmu',
+    packages: [
+      { name: 'Request Mini', desc: 'Tugas sederhana, edit kecil', price: 'Rp 7.000' },
+      { name: 'Request Standard', desc: 'Desain/coding tingkat menengah', price: 'Rp 25.000' },
+      { name: 'Request Pro', desc: 'Proyek kompleks, butuh detail', price: 'Rp 60.000' },
+      { name: 'Request VIP', desc: 'Prioritas + revisi unlimited', price: 'Rp 120.000' },
+      { name: 'Request Enterprise', desc: 'Proyek skala besar, tim support', price: 'Rp 250.000' }
+    ]
+  }
+};
+
+const WA_NUMBER = '6281214233454';
+let currentProduct = null;
+let selectedPackage = null;
+
+function openModal(key) {
+  currentProduct = PRODUCTS[key];
+  selectedPackage = null;
+  document.getElementById('modalIcon').textContent = currentProduct.icon;
+  document.getElementById('modalTitle').textContent = currentProduct.title;
+  document.getElementById('modalSubtitle').textContent = currentProduct.subtitle;
+
+  const list = document.getElementById('packageList');
+  list.innerHTML = '';
+  currentProduct.packages.forEach((pkg, i) => {
+    const div = document.createElement('div');
+    div.className = 'package-item';
+    div.innerHTML = `
+      <div class="pkg-info">
+        <h4>${pkg.name}</h4>
+        <p>${pkg.desc}</p>
+      </div>
+      <div class="pkg-price">${pkg.price}</div>
+    `;
+    div.onclick = () => selectPackage(i, div);
+    list.appendChild(div);
+  });
+
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function selectPackage(index, element) {
+  selectedPackage = currentProduct.packages[index];
+  document.querySelectorAll('.package-item').forEach(el => el.classList.remove('selected'));
+  element.classList.add('selected');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+  document.getElementById('custName').value = '';
+  document.getElementById('custNote').value = '';
+}
+
+function sendToWA() {
+  const name = document.getElementById('custName').value.trim();
+  const note = document.getElementById('custNote').value.trim();
+
+  if (!name) { showToast('⚠ Mohon isi nama terlebih dahulu', 'error'); return; }
+  if (!selectedPackage) { showToast('⚠ Pilih paket terlebih dahulu', 'error'); return; }
+
+  const tanggal = new Date().toLocaleDateString('id-ID', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+
+  const session = JSON.parse(localStorage.getItem(SESSION_KEY) || '{}');
+  const roleInfo = session.role === 'developer'
+    ? `👑 ${session.devRole === 'owner' ? 'Owner' : 'Developer'} (${session.name})`
+    : '🛒 Pembeli (Guest)';
+
+  const pesan =
+`Halo Admin Samstore 👋
+
+*PESANAN BARU*
+━━━━━━━━━━━━━━━
+
+👤 *Nama:* ${name}
+🏷 *Tipe:* ${roleInfo}
+
+📦 *Produk:* ${currentProduct.title}
+💎 *Paket:* ${selectedPackage.name}
+💰 *Harga:* ${selectedPackage.price}
+📝 *Detail:* ${selectedPackage.desc}
+
+✍ *Catatan:*
+${note || '-'}
+
+📅 *Waktu:* ${tanggal}
+
+━━━━━━━━━━━━━━━
+_Dikirim otomatis dari website Samstore_`;
+
+  const encoded = encodeURIComponent(pesan);
+  window.open(`https://wa.me/${WA_NUMBER}?text=${encoded}`, '_blank');
+  showToast('✓ Mengarahkan ke WhatsApp...', 'success');
+  setTimeout(closeModal, 800);
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ============================================
+// SCROLL REVEAL & COUNTER
+// ============================================
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  const isDecimal = el.dataset.decimal === 'true';
+  const duration = 2000;
+  const steps = 60;
+  const increment = target / steps;
+  let current = 0;
+  let step = 0;
+  const timer = setInterval(() => {
+    step++;
+    current += increment;
+    if (step >= steps) { current = target; clearInterval(timer); }
+    el.textContent = isDecimal ? current.toFixed(1) : Math.floor(current) + '+';
+  }, duration / steps);
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      if (entry.target.classList.contains('stat-value') && entry.target.dataset.target) {
+        animateCounter(entry.target);
+      }
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.product-card, .stat-value[data-target]').forEach((el, i) => {
+  if (el.classList.contains('product-card')) el.style.transitionDelay = (i * 0.1) + 's';
+  observer.observe(el);
+});
+
+// ============================================
+// KEYBOARD & ESC
+// ============================================
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeModal();
+    closeAccountModal();
+  }
+});
+</script>
+
+</body>
+</html>
