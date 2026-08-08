@@ -1,0 +1,2753 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Folio — The Literary Journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f1ea;
+  --bg-warm: #ebe5d9;
+  --bg-deep: #e0d9c9;
+  --paper: #faf7f0;
+  --ink: #1a1613;
+  --ink-soft: #2d2824;
+  --ink-dim: #6b6258;
+  --ink-dimmer: #9a9187;
+  --terracotta: #c65d3d;
+  --terracotta-dark: #9e4a30;
+  --sage: #7a8471;
+  --gold: #b8894a;
+  --border: #d4cdbd;
+  --border-light: #e0d9c9;
+  --success: #5a7a4a;
+  --error: #b54a3a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+  line-height: 1.6;
+  font-family: 'Inter', sans-serif;
+  font-feature-settings: 'ss01', 'cv11';
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-dimmer); }
+
+/* ============ LOGIN PAGE ============ */
+.login-page {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.login-page.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.login-bg-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(198, 93, 61, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 75% 75%, rgba(122, 132, 113, 0.04) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.login-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 460px;
+  animation: loginUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes loginUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.login-card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 56px 44px 44px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(26, 22, 19, 0.08);
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--ink);
+}
+
+.login-issue {
+  text-align: center;
+  margin-bottom: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--ink-dimmer);
+  text-transform: uppercase;
+}
+
+.login-logo-wrap {
+  text-align: center;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.login-logo-text {
+  font-family: 'Instrument Serif', serif;
+  font-size: 64px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -2px;
+  line-height: 1;
+  font-style: italic;
+}
+
+.login-logo-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  margin-top: 12px;
+  font-weight: 500;
+}
+
+.login-title {
+  text-align: center;
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+}
+
+.login-subtitle {
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-dim);
+  margin-bottom: 32px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.login-field-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ink-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.login-field-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--ink);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.login-field-input:focus {
+  border-color: var(--ink);
+  background: var(--paper);
+  box-shadow: 0 0 0 3px rgba(26, 22, 19, 0.05);
+}
+
+.login-field-input::placeholder { color: var(--ink-dimmer); }
+
+.pwd-wrap { position: relative; }
+
+.pwd-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--ink-dim);
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pwd-toggle:hover { color: var(--ink); border-color: var(--ink); }
+
+.btn-login {
+  width: 100%;
+  padding: 15px;
+  background: var(--ink);
+  border: none;
+  border-radius: 2px;
+  color: var(--bg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-login:hover {
+  background: var(--terracotta);
+  transform: translateY(-1px);
+}
+
+.btn-login:active { transform: scale(0.99); }
+.btn-login:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 24px 0;
+  color: var(--ink-dimmer);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.login-divider::before, .login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.btn-guest {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-guest:hover {
+  border-color: var(--ink);
+  background: var(--bg);
+  transform: translateY(-1px);
+}
+
+.btn-guest-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.btn-guest-text { text-align: left; flex: 1; }
+.btn-guest-text strong { display: block; font-size: 13px; color: var(--ink); font-weight: 600; }
+.btn-guest-text small { display: block; font-size: 11px; color: var(--ink-dim); font-weight: 400; margin-top: 2px; }
+.btn-guest:hover .btn-guest-text small { color: var(--terracotta); }
+
+.login-footer {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-dim);
+  line-height: 1.6;
+}
+
+.login-error {
+  background: rgba(181, 74, 58, 0.08);
+  border: 1px solid rgba(181, 74, 58, 0.25);
+  color: var(--error);
+  padding: 11px 14px;
+  border-radius: 2px;
+  font-size: 12px;
+  margin-bottom: 16px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-error.show { display: flex; animation: shake 0.4s ease; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+/* ============ PRELOADER ============ */
+.preloader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 24px;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.preloader.hide { opacity: 0; visibility: hidden; }
+
+.preloader-logo {
+  font-family: 'Instrument Serif', serif;
+  font-size: 56px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -1px;
+  font-style: italic;
+  animation: preloaderPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes preloaderPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.98); }
+}
+
+.preloader-quote {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  color: var(--ink-dim);
+  font-size: 16px;
+  max-width: 420px;
+  text-align: center;
+  padding: 0 20px;
+  animation: fadeIn 1s ease 0.3s both;
+  line-height: 1.5;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.preloader-bar {
+  width: 180px;
+  height: 1px;
+  background: var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.preloader-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 40%;
+  background: var(--ink);
+  animation: loadingBar 1.4s ease-in-out infinite;
+}
+
+@keyframes loadingBar {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+
+/* ============ NAVBAR ============ */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 18px 40px;
+  background: rgba(245, 241, 234, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+  font-family: 'Instrument Serif', serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-style: italic;
+}
+
+.nav-links {
+  display: flex;
+  gap: 34px;
+  align-items: center;
+}
+
+.nav-link {
+  font-size: 12px;
+  color: var(--ink-dim);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  position: relative;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: 0;
+  width: 0; height: 1px;
+  background: var(--terracotta);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover { color: var(--ink); }
+.nav-link:hover::after { width: 100%; }
+
+.navbar-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.logo-badge.dev {
+  color: var(--terracotta);
+  background: rgba(198, 93, 61, 0.06);
+  border-color: rgba(198, 93, 61, 0.3);
+}
+
+.logo-badge.guest {
+  color: var(--sage);
+  background: rgba(122, 132, 113, 0.06);
+  border-color: rgba(122, 132, 113, 0.3);
+}
+
+.logo-badge::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.nav-btn {
+  width: 38px;
+  height: 38px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.logout-btn:hover { background: var(--error); border-color: var(--error); color: #fff; }
+
+/* ============ MAIN ============ */
+.main {
+  position: relative;
+  z-index: 10;
+  padding-top: 70px;
+}
+
+/* ============ MASTHEAD ============ */
+.masthead {
+  padding: 30px 40px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ink-dimmer);
+  text-transform: uppercase;
+}
+
+.masthead-left, .masthead-right {
+  display: flex;
+  gap: 24px;
+}
+
+/* ============ HERO ============ */
+.hero {
+  padding: 80px 40px 100px;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-grid {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.hero-issue-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--terracotta);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-issue-label::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--terracotta);
+}
+
+.hero-greeting {
+  font-family: 'Instrument Serif', serif;
+  font-size: 18px;
+  color: var(--terracotta);
+  font-style: italic;
+  margin-bottom: 20px;
+  animation: fadeUp 0.8s ease 0.1s both;
+}
+
+.hero h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -3px;
+  line-height: 0.95;
+  margin-bottom: 30px;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+
+.hero h1 .italic {
+  font-style: italic;
+  color: var(--terracotta);
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--ink-dim);
+  max-width: 480px;
+  line-height: 1.7;
+  margin-bottom: 36px;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+  animation: fadeUp 0.8s ease 0.5s both;
+  padding: 28px;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+.stat-item {
+  text-align: left;
+  border-right: 1px solid var(--border);
+  padding-right: 20px;
+}
+
+.stat-item:last-child { border-right: none; padding-right: 0; }
+
+.stat-value {
+  font-family: 'Instrument Serif', serif;
+  font-size: 40px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s ease 0.6s both;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 14px 28px;
+  border-radius: 2px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.btn-primary:hover {
+  background: var(--terracotta);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn-secondary:hover {
+  background: var(--ink);
+  color: var(--bg);
+  transform: translateY(-2px);
+}
+
+/* HERO VISUAL */
+.hero-visual {
+  position: relative;
+  aspect-ratio: 4/5;
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  animation: fadeUp 1s ease 0.3s both;
+}
+
+.hero-visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(198, 93, 61, 0.15), transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(122, 132, 113, 0.15), transparent 50%);
+}
+
+.hero-visual-content {
+  position: absolute;
+  inset: 0;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero-visual-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+}
+
+.hero-visual-quote {
+  font-family: 'Instrument Serif', serif;
+  font-size: 48px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.hero-visual-author {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--terracotta);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-visual-author::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--terracotta);
+}
+
+/* ============ SECTION COMMON ============ */
+.section {
+  padding: 100px 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.section-head {
+  margin-bottom: 70px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 40px;
+  align-items: end;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-number {
+  font-family: 'Instrument Serif', serif;
+  font-size: 80px;
+  font-weight: 400;
+  color: var(--terracotta);
+  line-height: 0.8;
+  font-style: italic;
+  letter-spacing: -3px;
+}
+
+.section-title-wrap {}
+
+.section-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ink-dim);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.section-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -1.5px;
+  line-height: 1;
+}
+
+.section-title .italic {
+  font-style: italic;
+  color: var(--terracotta);
+}
+
+/* ============ FEATURED STORY ============ */
+.featured-section {
+  padding: 100px 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--border);
+}
+
+.featured-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  padding: 60px;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  position: relative;
+}
+
+.featured-card::before {
+  content: 'FEATURED';
+  position: absolute;
+  top: 24px;
+  right: 30px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--terracotta);
+  padding: 5px 12px;
+  border: 1px solid var(--terracotta);
+  border-radius: 2px;
+}
+
+.featured-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--terracotta);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.featured-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--terracotta);
+}
+
+.featured-genre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.featured-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.05;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+.featured-excerpt {
+  font-family: 'Instrument Serif', serif;
+  font-size: 19px;
+  color: var(--ink-dim);
+  line-height: 1.6;
+  margin-bottom: 28px;
+  font-style: italic;
+}
+
+.featured-meta {
+  display: flex;
+  gap: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-dim);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.featured-meta span { display: block; }
+
+.btn-read {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: var(--ink);
+  border: none;
+  border-radius: 2px;
+  color: var(--bg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-read:hover {
+  background: var(--terracotta);
+  transform: translateY(-2px);
+}
+
+.featured-visual {
+  position: relative;
+  aspect-ratio: 3/4;
+  background: var(--bg-warm);
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.featured-visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(198, 93, 61, 0.2), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(26, 22, 19, 0.1), transparent 50%);
+}
+
+.featured-visual-inner {
+  position: absolute;
+  inset: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.featured-visual-quote-mark {
+  font-family: 'Instrument Serif', serif;
+  font-size: 200px;
+  color: var(--terracotta);
+  opacity: 0.4;
+  line-height: 0.5;
+  font-style: italic;
+}
+
+.featured-visual-text {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+}
+
+/* ============ CATEGORIES ============ */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.category-card {
+  background: var(--paper);
+  padding: 32px 24px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+
+.category-card:last-child { border-right: none; }
+
+.category-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 2px;
+  background: var(--terracotta);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.category-card:hover {
+  background: var(--bg-warm);
+}
+
+.category-card:hover::before { transform: scaleX(1); }
+
+.category-icon {
+  font-size: 24px;
+  margin-bottom: 12px;
+  display: block;
+  color: var(--terracotta);
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.category-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+
+.category-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-dimmer);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* ============ STORIES GRID ============ */
+.stories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 40px;
+}
+
+.story-card {
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.story-card.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.story-image {
+  aspect-ratio: 4/3;
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+}
+
+.story-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(198, 93, 61, 0.15), rgba(122, 132, 113, 0.1));
+  opacity: 0.6;
+}
+
+.story-image-text {
+  font-family: 'Instrument Serif', serif;
+  font-size: 100px;
+  color: var(--ink);
+  opacity: 0.15;
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+  letter-spacing: -3px;
+}
+
+.story-card:hover .story-image {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(26, 22, 19, 0.1);
+}
+
+.story-card:hover .story-image-text {
+  opacity: 0.3;
+}
+
+.story-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ink-dimmer);
+  margin-bottom: 8px;
+}
+
+.story-genre {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--terracotta);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding: 4px 10px;
+  border: 1px solid var(--terracotta);
+  border-radius: 2px;
+}
+
+.story-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 10px;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  transition: color 0.3s ease;
+}
+
+.story-card:hover .story-title { color: var(--terracotta); }
+
+.story-author {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-dim);
+  margin-bottom: 14px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.story-excerpt {
+  font-family: 'Instrument Serif', serif;
+  font-size: 16px;
+  color: var(--ink-dim);
+  line-height: 1.5;
+  margin-bottom: 20px;
+  font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.story-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.story-meta {
+  display: flex;
+  gap: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.story-action {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--terracotta);
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.3s ease;
+}
+
+.story-card:hover .story-action { gap: 10px; }
+
+/* ============ QUOTE SECTION ============ */
+.quote-section {
+  padding: 120px 40px;
+  background: var(--ink);
+  color: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.quote-section::before {
+  content: '"';
+  position: absolute;
+  top: -40px;
+  left: 5%;
+  font-family: 'Instrument Serif', serif;
+  font-size: 500px;
+  color: var(--terracotta);
+  opacity: 0.15;
+  line-height: 1;
+  pointer-events: none;
+  font-style: italic;
+}
+
+.quote-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.quote-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--terracotta);
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.quote-label::before, .quote-label::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--terracotta);
+}
+
+.quote-text {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(28px, 4.5vw, 52px);
+  font-weight: 400;
+  color: var(--bg);
+  line-height: 1.2;
+  margin-bottom: 40px;
+  font-style: italic;
+  letter-spacing: -1px;
+}
+
+.quote-text .highlight {
+  color: var(--terracotta);
+  font-style: italic;
+}
+
+.quote-author {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--bg);
+  opacity: 0.7;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* ============ INFO SECTION ============ */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.info-card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 36px 32px;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.info-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--terracotta);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s ease;
+}
+
+.info-card:hover {
+  background: var(--bg-warm);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(26, 22, 19, 0.06);
+}
+
+.info-card:hover::before { transform: scaleY(1); }
+
+.info-number {
+  font-family: 'Instrument Serif', serif;
+  font-size: 56px;
+  font-weight: 400;
+  color: var(--terracotta);
+  line-height: 0.9;
+  font-style: italic;
+  letter-spacing: -2px;
+}
+
+.info-content {}
+
+.info-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-dimmer);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.info-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 10px;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+}
+
+.info-text {
+  font-size: 14px;
+  color: var(--ink-dim);
+  line-height: 1.7;
+}
+
+.info-source {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-dimmer);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+}
+
+/* ============ TIPS SECTION ============ */
+.tips-wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.tip-card {
+  padding: 40px 32px;
+  border-right: 1px solid var(--border);
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.tip-card:nth-child(3n) { border-right: none; }
+.tip-card:nth-child(n+4) { border-top: 1px solid var(--border); }
+
+.tip-card:hover {
+  background: var(--bg-warm);
+}
+
+.tip-number {
+  font-family: 'Instrument Serif', serif;
+  font-size: 40px;
+  font-weight: 400;
+  color: var(--terracotta);
+  line-height: 1;
+  margin-bottom: 20px;
+  font-style: italic;
+  letter-spacing: -1px;
+}
+
+.tip-content h4 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 10px;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+}
+
+.tip-content p {
+  font-family: 'Instrument Serif', serif;
+  font-size: 15px;
+  color: var(--ink-dim);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ============ NEWSLETTER ============ */
+.newsletter-section {
+  padding: 120px 40px;
+  background: var(--ink);
+  color: var(--bg);
+  border-top: 1px solid var(--ink);
+}
+
+.newsletter-wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.newsletter-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--terracotta);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.newsletter-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 400;
+  color: var(--bg);
+  line-height: 1.1;
+  margin-bottom: 20px;
+  letter-spacing: -1.5px;
+}
+
+.newsletter-title .italic {
+  font-style: italic;
+  color: var(--terracotta);
+}
+
+.newsletter-desc {
+  font-family: 'Instrument Serif', serif;
+  font-size: 18px;
+  color: var(--bg);
+  opacity: 0.7;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  font-style: italic;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 10px;
+  max-width: 500px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.newsletter-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 15px 20px;
+  background: transparent;
+  border: 1px solid rgba(245, 241, 234, 0.2);
+  border-radius: 2px;
+  color: var(--bg);
+  font-size: 13px;
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.newsletter-input:focus {
+  border-color: var(--terracotta);
+  background: rgba(245, 241, 234, 0.03);
+}
+
+.newsletter-input::placeholder { color: rgba(245, 241, 234, 0.4); }
+
+.newsletter-btn {
+  padding: 15px 30px;
+  background: var(--terracotta);
+  border: none;
+  border-radius: 2px;
+  color: var(--bg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.newsletter-btn:hover {
+  background: var(--bg);
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+
+/* ============ FOOTER ============ */
+.footer {
+  padding: 80px 40px 40px;
+  text-align: center;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
+.footer-logo {
+  font-family: 'Instrument Serif', serif;
+  font-size: 56px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -1.5px;
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+.footer-tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-dim);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-dim);
+  text-decoration: none;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+.footer-link:hover { color: var(--terracotta); }
+
+.footer-divider {
+  width: 60px;
+  height: 1px;
+  background: var(--border);
+  margin: 40px auto;
+}
+
+.footer-text {
+  font-family: 'Instrument Serif', serif;
+  font-size: 14px;
+  color: var(--ink-dim);
+  line-height: 1.6;
+  font-style: italic;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ============ MODAL ============ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 22, 19, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active { display: flex; opacity: 1; }
+
+.modal {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal::-webkit-scrollbar { width: 6px; }
+.modal::-webkit-scrollbar-thumb { background: var(--border); }
+
+@keyframes modalUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-head {
+  padding: 50px 50px 30px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 18px; right: 18px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); transform: rotate(90deg); }
+
+.modal-genre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--terracotta);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.modal-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(32px, 5vw, 44px);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 12px;
+  letter-spacing: -1px;
+}
+
+.modal-author {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.modal-meta {
+  display: flex;
+  gap: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-dim);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.modal-body {
+  padding: 40px 50px 50px;
+}
+
+.story-content {
+  font-family: 'Instrument Serif', serif;
+  font-size: 19px;
+  color: var(--ink-soft);
+  line-height: 1.8;
+}
+
+.story-content p {
+  margin-bottom: 22px;
+}
+
+.story-content .dropcap::first-letter {
+  font-family: 'Instrument Serif', serif;
+  font-size: 72px;
+  font-weight: 400;
+  color: var(--terracotta);
+  float: left;
+  line-height: 0.9;
+  padding: 6px 12px 0 0;
+  font-style: italic;
+}
+
+.story-content .quote-inline {
+  border-left: 3px solid var(--terracotta);
+  padding: 4px 24px;
+  margin: 28px 0;
+  font-style: italic;
+  color: var(--terracotta-dark);
+  font-size: 22px;
+  line-height: 1.5;
+}
+
+.story-end {
+  text-align: center;
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--terracotta);
+  letter-spacing: 6px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* ============ TOAST ============ */
+.toast {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--ink);
+  color: var(--bg);
+  padding: 14px 22px;
+  border-radius: 2px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  z-index: 10002;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  max-width: 90%;
+  text-transform: uppercase;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.error { background: var(--error); }
+.toast.success { background: var(--terracotta); }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .navbar { padding: 14px 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 60px 24px 80px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 50px; }
+  .hero-visual { max-width: 400px; margin: 0 auto; }
+  .section { padding: 70px 24px; }
+  .featured-section { padding: 70px 24px; }
+  .featured-card { grid-template-columns: 1fr; padding: 40px 28px; gap: 40px; }
+  .section-head { grid-template-columns: 1fr; gap: 16px; }
+  .section-number { font-size: 56px; }
+  .categories-grid { grid-template-columns: repeat(2, 1fr); }
+  .category-card { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .category-card:nth-child(2n) { border-right: none; }
+  .stories-grid { grid-template-columns: 1fr; gap: 50px; }
+  .info-grid { grid-template-columns: 1fr; }
+  .tips-wrap { grid-template-columns: 1fr; }
+  .tip-card { border-right: none !important; border-bottom: 1px solid var(--border); }
+  .login-card { padding: 40px 28px 32px; }
+  .login-logo-text { font-size: 48px; }
+  .modal-head, .modal-body { padding-left: 28px; padding-right: 28px; }
+  .masthead { display: none; }
+  .quote-section, .newsletter-section { padding: 80px 24px; }
+  .hero-stats { grid-template-columns: 1fr; gap: 16px; padding: 20px; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 16px; }
+  .stat-item:last-child { border-bottom: none; padding-bottom: 0; }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { letter-spacing: -1.5px; }
+  .featured-card::before { top: 14px; right: 14px; font-size: 8px; padding: 4px 8px; }
+  .btn-primary, .btn-secondary, .btn-read { padding: 12px 22px; font-size: 10px; }
+  .story-content { font-size: 17px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN PAGE ============ -->
+<div class="login-page" id="loginPage">
+  <div class="login-bg-pattern"></div>
+
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-issue">Issue N°08 · August 2026</div>
+      <div class="login-logo-wrap">
+        <div class="login-logo-text">Folio</div>
+        <div class="login-logo-sub">The Literary Journal</div>
+      </div>
+
+      <h2 class="login-title">Selamat datang, pembaca.</h2>
+      <p class="login-subtitle">Silakan pilih cara Anda memasuki jurnal ini.</p>
+
+      <div class="login-error" id="loginError">
+        <span>⚠</span>
+        <span id="loginErrorMsg">Email atau password salah!</span>
+      </div>
+
+      <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
+        <div>
+          <label class="login-field-label">Email Redaksi</label>
+          <input
+            type="email"
+            class="login-field-input"
+            id="loginEmail"
+            placeholder="redaksi@folio.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="pwd-wrap">
+          <label class="login-field-label">Password</label>
+          <input
+            type="password"
+            class="login-field-input"
+            id="loginPassword"
+            placeholder="Masukkan password"
+            autocomplete="current-password"
+            required
+          >
+          <button type="button" class="pwd-toggle" onclick="togglePassword()">👁</button>
+        </div>
+
+        <button type="submit" class="btn-login" id="btnLogin">
+          Masuk sebagai Editor
+        </button>
+      </form>
+
+      <div class="login-divider">atau</div>
+
+      <button class="btn-guest" onclick="enterAsGuest()">
+        <div class="btn-guest-icon">✎</div>
+        <div class="btn-guest-text">
+          <strong>Masuk sebagai Pembaca</strong>
+          <small>Jelajahi jurnal tanpa akun</small>
+        </div>
+      </button>
+
+      <div class="login-footer">
+        "A writer is someone for whom writing is more difficult<br>than it is for other people." — Thomas Mann
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PRELOADER ============ -->
+<div class="preloader" id="preloader">
+  <div class="preloader-logo">Folio</div>
+  <div class="preloader-quote">"There is no greater agony than bearing an untold story inside you." — Maya Angelou</div>
+  <div class="preloader-bar"></div>
+</div>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar">
+  <div class="logo" onclick="scrollToTop()">Folio</div>
+  <div class="nav-links">
+    <a href="#featured" class="nav-link">Featured</a>
+    <a href="#stories" class="nav-link">Cerita</a>
+    <a href="#info" class="nav-link">Journal</a>
+    <a href="#tips" class="nav-link">Essays</a>
+  </div>
+  <div class="navbar-right">
+    <div class="logo-badge" id="roleBadge">OPEN</div>
+    <button class="nav-btn logout-btn" id="logoutBtn" onclick="handleLogout()" title="Logout" style="display:none;">↩</button>
+  </div>
+</nav>
+
+<!-- ============ MAIN ============ -->
+<main class="main">
+
+  <!-- MASTHEAD -->
+  <div class="masthead">
+    <div class="masthead-left">
+      <span>Est. 2026</span>
+      <span>Vol. 08</span>
+    </div>
+    <div class="masthead-right">
+      <span id="currentDate"></span>
+      <span>Jakarta</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-issue-label">Edisi Agustus 2026</div>
+        <p class="hero-greeting" id="heroGreeting" style="display:none;"></p>
+        <h1>Cerita <span class="italic">terbaik</span><br>dimulai dari<br>satu kata.</h1>
+        <p class="hero-desc">
+          Folio adalah jurnal sastra digital yang menghadirkan cerita pendek, esai, dan renungan 
+          dari para penulis Indonesia pilihan. Dibuat untuk Anda yang masih percaya pada kekuatan kata.
+        </p>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-value" data-target="124">0</div>
+            <div class="stat-label">Cerita</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" data-target="42">0</div>
+            <div class="stat-label">Penulis</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" data-target="8700">0</div>
+            <div class="stat-label">Pembaca</div>
+          </div>
+        </div>
+
+        <div class="hero-ctas">
+          <a href="#featured" class="btn-primary">Baca Edisi Ini →</a>
+          <a href="#stories" class="btn-secondary">Arsip Cerita</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-visual-content">
+          <div class="hero-visual-tag">Opening Quote</div>
+          <div class="hero-visual-quote">Kata-kata adalah<br>jendela jiwa.</div>
+          <div class="hero-visual-author">Kahlil Gibran</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED STORY -->
+  <section class="featured-section" id="featured">
+    <div class="featured-card">
+      <div class="featured-content">
+        <div class="featured-label">Editor's Pick</div>
+        <div class="featured-genre">Mystery · Short Story</div>
+        <h2 class="featured-title">Surat Terakhir dari Lantai 7</h2>
+        <p class="featured-excerpt">
+          Sebuah amplop kuning ditemukan di bawah pintu apartemen nomor 703. 
+          Tidak ada nama pengirim, hanya satu kalimat: "Jangan buka jendela saat hujan turun."
+          Tapi malam itu, hujan mulai turun...
+        </p>
+        <div class="featured-meta">
+          <span>Arya Nugraha</span>
+          <span>8 min read</span>
+          <span>1,243 ♥</span>
+        </div>
+        <button class="btn-read" onclick="openStory(0)">Baca Cerita →</button>
+      </div>
+      <div class="featured-visual">
+        <div class="featured-visual-inner">
+          <div class="featured-visual-quote-mark">"</div>
+          <div class="featured-visual-text">
+            Beberapa pintu sebaiknya tidak dibuka. Beberapa hujan sebaiknya tidak turun.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-number">01</div>
+      <div class="section-title-wrap">
+        <div class="section-tag">— Kategori</div>
+        <h2 class="section-title">Jelajahi <span class="italic">Genre</span></h2>
+      </div>
+    </div>
+
+    <div class="categories-grid">
+      <div class="category-card" onclick="filterGenre('Romance')">
+        <span class="category-icon">r</span>
+        <div class="category-name">Romance</div>
+        <div class="category-count">24 Stories</div>
+      </div>
+      <div class="category-card" onclick="filterGenre('Mystery')">
+        <span class="category-icon">m</span>
+        <div class="category-name">Mystery</div>
+        <div class="category-count">18 Stories</div>
+      </div>
+      <div class="category-card" onclick="filterGenre('Sci-Fi')">
+        <span class="category-icon">s</span>
+        <div class="category-name">Sci-Fi</div>
+        <div class="category-count">15 Stories</div>
+      </div>
+      <div class="category-card" onclick="filterGenre('Horror')">
+        <span class="category-icon">h</span>
+        <div class="category-name">Horror</div>
+        <div class="category-count">12 Stories</div>
+      </div>
+      <div class="category-card" onclick="filterGenre('Fantasy')">
+        <span class="category-icon">f</span>
+        <div class="category-name">Fantasy</div>
+        <div class="category-count">21 Stories</div>
+      </div>
+      <div class="category-card" onclick="filterGenre('Life')">
+        <span class="category-icon">l</span>
+        <div class="category-name">Life</div>
+        <div class="category-count">34 Stories</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORIES -->
+  <section class="section" id="stories">
+    <div class="section-head">
+      <div class="section-number">02</div>
+      <div class="section-title-wrap">
+        <div class="section-tag">— Koleksi</div>
+        <h2 class="section-title">Cerita <span class="italic">Terbaru</span></h2>
+      </div>
+    </div>
+
+    <div class="stories-grid" id="storiesGrid"></div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote-section">
+    <div class="quote-wrap">
+      <div class="quote-label">Journal's Note</div>
+      <p class="quote-text">
+        "Sebuah buku adalah <span class="highlight">mimpi</span> yang kau genggam di tanganmu, 
+        dan seorang penulis adalah <span class="highlight">penjaga</span> mimpi itu."
+      </p>
+      <div class="quote-author">— Neil Gaiman, Redaksi Folio</div>
+    </div>
+  </section>
+
+  <!-- INFO SECTION -->
+  <section class="section" id="info">
+    <div class="section-head">
+      <div class="section-number">03</div>
+      <div class="section-title-wrap">
+        <div class="section-tag">— Journal</div>
+        <h2 class="section-title">Hal-hal yang <span class="italic">Patut</span> Diketahui</h2>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-number">01</div>
+        <div class="info-content">
+          <div class="info-tag">Linguistik</div>
+          <h3 class="info-title">Indonesia: Negara dengan 718 Bahasa</h3>
+          <p class="info-text">
+            Indonesia adalah rumah bagi 718 bahasa daerah — menjadikannya negara kedua paling 
+            multilingual di dunia setelah Papua Nugini. Setiap bahasa adalah dunia cerita yang unik.
+          </p>
+          <div class="info-source">Sumber: Ethnologue 2024</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-number">02</div>
+        <div class="info-content">
+          <div class="info-tag">Literasi</div>
+          <h3 class="info-title">Orang Indonesia Baca 3-4 Buku per Tahun</h3>
+          <p class="info-text">
+            Menurut UNESCO, rata-rata orang Indonesia hanya membaca 3-4 buku per tahun, 
+            jauh di bawah Singapura (17) dan Jepang (10-12). Tantangan yang harus kita jawab bersama.
+          </p>
+          <div class="info-source">Sumber: UNESCO Institute for Statistics</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-number">03</div>
+        <div class="info-content">
+          <div class="info-tag">Neurosains</div>
+          <h3 class="info-title">Novel Mengubah Otak Selama 5 Hari</h3>
+          <p class="info-text">
+            Penelitian Emory University menunjukkan membaca novel meningkatkan konektivitas otak 
+            di wilayah yang berkaitan dengan bahasa dan sensasi motorik — efeknya bertahan hingga 5 hari.
+          </p>
+          <div class="info-source">Sumber: Brain Connectivity Journal, 2023</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-number">04</div>
+        <div class="info-content">
+          <div class="info-tag">Sejarah</div>
+          <h3 class="info-title">Buku Pertama Dicetak Tahun 1455</h3>
+          <p class="info-text">
+            Johannes Gutenberg mencetak "Gutenberg Bible" pada 1455 — buku pertama yang diproduksi 
+            massal dengan mesin cetak. Sejak itu, lebih dari 130 juta judul buku telah diterbitkan.
+          </p>
+          <div class="info-source">Sumber: Library of Congress</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-number">05</div>
+        <div class="info-content">
+          <div class="info-tag">Psikologi</div>
+          <h3 class="info-title">Pembaca Fiksi Lebih Empatik</h3>
+          <p class="info-text">
+            Penelitian The New School menunjukkan pembaca fiksi sastra memiliki skor "Theory of Mind" 
+            lebih tinggi — kemampuan memahami pikiran dan perasaan orang lain. Fiksi melatih empati.
+          </p>
+          <div class="info-source">Sumber: Science Magazine, Kidd & Castano</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-number">06</div>
+        <div class="info-content">
+          <div class="info-tag">Budaya</div>
+          <h3 class="info-title">Tsundoku: Seni Menumpuk Buku</h3>
+          <p class="info-text">
+            Di Jepang ada kata "Tsundoku" (積ん読) — seni membeli buku dan menumpuknya tanpa dibaca. 
+            Bukan kemalasan, tapi bentuk penghargaan pada potensi cerita yang menunggu dibaca.
+          </p>
+          <div class="info-source">Sumber: Japanese Literary Culture</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-number">07</div>
+        <div class="info-content">
+          <div class="info-tag">Pendidikan</div>
+          <h3 class="info-title">Finlandia: Anak Baru Belajar Baca di Usia 7</h3>
+          <p class="info-text">
+            Meski terlambat mengajar membaca, anak-anak Finlandia justru menjadi pembaca terbaik di Eropa. 
+            Rahasianya: fokus pada bermain dan bercerita terlebih dahulu.
+          </p>
+          <div class="info-source">Sumber: PISA / OECD Education Report</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-number">08</div>
+        <div class="info-content">
+          <div class="info-tag">Kesehatan</div>
+          <h3 class="info-title">Membaca 6 Menit = Stres Turun 68%</h3>
+          <p class="info-text">
+            Universitas Sussex membuktikan: membaca fiksi selama 6 menit saja bisa mengurangi stres 
+            hingga 68% — lebih efektif daripada mendengarkan musik (61%) atau minum teh (54%).
+          </p>
+          <div class="info-source">Sumber: University of Sussex, Dr. David Lewis</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIPS SECTION -->
+  <section class="section" id="tips">
+    <div class="section-head">
+      <div class="section-number">04</div>
+      <div class="section-title-wrap">
+        <div class="section-tag">— Essays</div>
+        <h2 class="section-title">Dari Para <span class="italic">Maestro</span></h2>
+      </div>
+    </div>
+
+    <div class="tips-wrap">
+      <div class="tip-card">
+        <div class="tip-number">01</div>
+        <div class="tip-content">
+          <h4>Tulis Setiap Hari</h4>
+          <p>"Jika Anda ingin menjadi penulis, dua hal harus Anda lakukan: banyak membaca dan banyak menulis." — Stephen King</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-number">02</div>
+        <div class="tip-content">
+          <h4>Tunjukkan, Jangan Ceritakan</h4>
+          <p>Jangan tulis "dia sedih". Tulis "tangannya gemetar, dan ia tak bisa menatap mataku." Biarkan pembaca merasakan sendiri.</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-number">03</div>
+        <div class="tip-content">
+          <h4>Kill Your Darlings</h4>
+          <p>Jangan takut menghapus kalimat favoritmu jika tidak melayani cerita. — William Faulkner</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-number">04</div>
+        <div class="tip-content">
+          <h4>Baca Seperti Pencuri</h4>
+          <p>Perhatikan bagaimana penulis favoritmu membangun adegan. Tiru tekniknya, lalu buat versimu sendiri. — Austin Kleon</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-number">05</div>
+        <div class="tip-content">
+          <h4>Mulai dari Tengah</h4>
+          <p>"Start as close to the end as possible." — Kurt Vonnegut. Jangan habiskan 3 halaman untuk perkenalan.</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-number">06</div>
+        <div class="tip-content">
+          <h4>Biarkan Mengendap</h4>
+          <p>Setelah selesai menulis, diamkan 24 jam. Kembali dengan mata segar, dan Anda akan melihat kesalahan yang tak terlihat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter-section">
+    <div class="newsletter-wrap">
+      <div class="newsletter-tag">— Subscribe</div>
+      <h2 class="newsletter-title">Dapatkan <span class="italic">edisi</span> terbaru<br>setiap minggu</h2>
+      <p class="newsletter-desc">
+        Bergabunglah dengan 8.700+ pembaca Folio. Cerita terbaik, esai pilihan, dan catatan redaksi — 
+        langsung ke inbox Anda setiap Minggu pagi.
+      </p>
+      <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+        <input type="email" class="newsletter-input" id="newsletterEmail" placeholder="email@anda.com" required>
+        <button type="submit" class="newsletter-btn">Subscribe →</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">Folio</div>
+    <div class="footer-tagline">The Literary Journal</div>
+    <div class="footer-links">
+      <a href="#featured" class="footer-link">Featured</a>
+      <a href="#stories" class="footer-link">Cerita</a>
+      <a href="#info" class="footer-link">Journal</a>
+      <a href="#tips" class="footer-link">Essays</a>
+    </div>
+    <div class="footer-divider"></div>
+    <p class="footer-text">
+      © 2026 Folio — Dibuat dengan cinta untuk para pecinta kata.<br>
+      "A room without books is like a body without a soul." — Cicero
+    </p>
+  </footer>
+
+</main>
+
+<!-- ============ STORY MODAL ============ -->
+<div class="modal-overlay" id="storyModal" onclick="if(event.target===this) closeStoryModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeStoryModal()">✕</button>
+      <div class="modal-genre" id="modalGenre">Mystery</div>
+      <h2 class="modal-title" id="modalTitle">Judul Cerita</h2>
+      <div class="modal-author" id="modalAuthor">oleh Penulis</div>
+      <div class="modal-meta">
+        <span id="modalTime">8 min</span>
+        <span id="modalLikes">123 ♥</span>
+        <span id="modalDate">2026</span>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="story-content" id="storyContent"></div>
+      <div class="story-end">— FIN —</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================
+// 🔐 DAFTAR DEVELOPER (EDITOR)
+// ============================================
+const DEVELOPERS = [
+  {
+    email: 'samuel@gmail.com',
+    password: 'samuelganteng',
+    name: 'Samuel',
+    role: 'owner'
+  },
+];
+
+const SESSION_KEY = 'folio_session';
+
+// ============================================
+// SESSION CHECK
+// ============================================
+(function checkSession() {
+  const session = localStorage.getItem(SESSION_KEY);
+  if (session) {
+    try {
+      const data = JSON.parse(session);
+      if (data && data.role) enterApp(data);
+    } catch(e) {
+      localStorage.removeItem(SESSION_KEY);
+    }
+  }
+})();
+
+// ============================================
+// DATE DISPLAY
+// ============================================
+(function setDate() {
+  const d = new Date();
+  const opt = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
+  const el = document.getElementById('currentDate');
+  if (el) el.textContent = d.toLocaleDateString('id-ID', opt);
+})();
+
+// ============================================
+// LOGIN LOGIC
+// ============================================
+function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password = document.getElementById('loginPassword').value;
+  const errorEl = document.getElementById('loginError');
+  const errorMsg = document.getElementById('loginErrorMsg');
+  const btn = document.getElementById('btnLogin');
+
+  errorEl.classList.remove('show');
+  btn.disabled = true;
+  btn.textContent = 'Memverifikasi...';
+
+  setTimeout(() => {
+    const matchedDev = DEVELOPERS.find(
+      dev => dev.email.toLowerCase() === email && dev.password === password
+    );
+
+    if (matchedDev) {
+      const session = {
+        role: 'developer',
+        devRole: matchedDev.role,
+        email: matchedDev.email,
+        name: matchedDev.name,
+        loginTime: Date.now()
+      };
+      localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      enterApp(session);
+    } else {
+      errorEl.classList.add('show');
+      const emailExists = DEVELOPERS.some(dev => dev.email.toLowerCase() === email);
+      errorMsg.textContent = emailExists
+        ? 'Password salah! Coba lagi.'
+        : 'Email tidak terdaftar sebagai editor!';
+      btn.disabled = false;
+      btn.textContent = 'Masuk sebagai Editor';
+    }
+  }, 600);
+}
+
+function enterAsGuest() {
+  const session = { role: 'guest', name: 'Pembaca', loginTime: Date.now() };
+  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  enterApp(session);
+}
+
+function enterApp(session) {
+  const loginPage = document.getElementById('loginPage');
+  loginPage.classList.add('hide');
+  setTimeout(() => { loginPage.style.display = 'none'; }, 600);
+
+  const badge = document.getElementById('roleBadge');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const greeting = document.getElementById('heroGreeting');
+
+  if (session.role === 'developer') {
+    badge.textContent = '✎ EDITOR';
+    badge.className = 'logo-badge dev';
+    logoutBtn.style.display = 'flex';
+    greeting.style.display = 'block';
+    greeting.textContent = `Selamat datang kembali, ${session.name}.`;
+  } else {
+    badge.textContent = '✉ PEMBACA';
+    badge.className = 'logo-badge guest';
+    logoutBtn.style.display = 'flex';
+    greeting.style.display = 'block';
+    greeting.textContent = 'Selamat membaca. Semoga menemukan cerita yang menyentuh.';
+  }
+}
+
+function handleLogout() {
+  if (!confirm('Yakin ingin meninggalkan Folio?')) return;
+  localStorage.removeItem(SESSION_KEY);
+
+  document.getElementById('loginForm').reset();
+  document.getElementById('loginError').classList.remove('show');
+  document.getElementById('btnLogin').textContent = 'Masuk sebagai Editor';
+  document.getElementById('btnLogin').disabled = false;
+
+  const loginPage = document.getElementById('loginPage');
+  loginPage.style.display = 'flex';
+  setTimeout(() => loginPage.classList.remove('hide'), 10);
+
+  document.getElementById('roleBadge').textContent = 'OPEN';
+  document.getElementById('roleBadge').className = 'logo-badge';
+  document.getElementById('logoutBtn').style.display = 'none';
+  document.getElementById('heroGreeting').style.display = 'none';
+
+  showToast('Sampai jumpa di edisi berikutnya.', 'success');
+}
+
+function togglePassword() {
+  const pwd = document.getElementById('loginPassword');
+  const toggle = document.querySelector('.pwd-toggle');
+  if (pwd.type === 'password') {
+    pwd.type = 'text';
+    toggle.textContent = '🙈';
+  } else {
+    pwd.type = 'password';
+    toggle.textContent = '👁';
+  }
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================
+// STORIES DATA
+// ============================================
+const STORIES = [
+  {
+    id: 0,
+    title: 'Surat Terakhir dari Lantai 7',
+    author: 'Arya Nugraha',
+    genre: 'Mystery',
+    time: '8 min',
+    likes: 1243,
+    date: '5 Agt 2026',
+    excerpt: 'Sebuah amplop kuning ditemukan di bawah pintu apartemen nomor 703. Tidak ada nama pengirim, hanya satu kalimat yang membuat penghuninya tak bisa tidur semalaman...',
+    content: `
+      <p class="dropcap">Malam itu hujan turun seperti jarum-jarum kecil yang menusuk kaca jendela. Aku sedang duduk di sofa ketika sesuatu meluncur pelan dari celah bawah pintu apartemenku — sebuah amplop kuning, tanpa nama, tanpa perangko.</p>
+      <p>Tanganku gemetar saat membukanya. Hanya ada satu kalimat, ditulis dengan tinta biru yang sudah memudar:</p>
+      <p class="quote-inline">"Jangan buka jendela saat hujan turun."</p>
+      <p>Aku tertawa kecil. Orang gila mana yang mengirim ini? Tapi malam itu, untuk pertama kalinya, aku tidak bisa tidur. Setiap tetes hujan yang jatuh terdengar seperti ketukan jari di kaca.</p>
+      <p>Keesokan harinya, aku bertanya pada satpam. Ia mengerutkan dahi. "Lantai 7? Tapi Pak, lantai 7 sudah kosong sejak tiga tahun lalu. Sejak kejadian itu..."</p>
+      <p>"Kejadian apa?"</p>
+      <p>Ia menunduk. "Seorang wanita. Ia membuka jendela saat hujan turun. Dan tidak pernah kembali."</p>
+      <p>Malam itu aku menemukan amplop kedua. Kali ini isinya lebih panjang — dan yang membuatku terdiam adalah tanda tangan di bawahnya. Itu adalah namaku. Ditulis dengan tanganku sendiri. Dari masa depan.</p>
+    `
+  },
+  {
+    id: 1,
+    title: 'Secangkir Kopi untuk Ayah',
+    author: 'Maya Putri',
+    genre: 'Life',
+    time: '6 min',
+    likes: 892,
+    date: '3 Agt 2026',
+    excerpt: 'Setiap pagi, Ayah menyeduh dua cangkir kopi. Satu untuk dirinya, satu untuk kursi kosong di sampingnya...',
+    content: `
+      <p class="dropcap">Ayah selalu bangun pukul empat pagi. Bukan untuk sholat — ia sudah lama tidak sholat — tapi untuk menyeduh kopi. Dua cangkir. Satu untuknya, satu diletakkan di meja samping kursi kosong milik Ibu.</p>
+      <p>Ibu meninggal tujuh tahun lalu. Tapi kopinya masih selalu hangat.</p>
+      <p>"Yah," kataku suatu pagi, "Ibu sudah nggak ada. Buat apa bikin kopi dua?"</p>
+      <p>Ayah tersenyum, tapi matanya tidak. "Ibumu dulu selalu bilang, kopi dingin itu kayak janji yang dilanggar. Ayah nggak mau jadi orang yang melanggar janji."</p>
+      <p>Aku tidak mengerti. Sampai suatu hari, aku menemukan buku harian Ibu di lemari tua. Di halaman terakhir, tertulis dengan tulisan tangan yang rapuh:</p>
+      <p class="quote-inline">"Kalau aku pergi duluan, tolong jangan berhenti bikin kopi. Kopi hangat itu caramu bilang kamu masih ingat aku."</p>
+      <p>Sejak itu, aku selalu bangun pukul empat pagi juga. Bukan untuk sholat. Tapi untuk menemani Ayah menyeduh kopi. Dua cangkir. Untuk dua orang yang saling mencintai melampaui kematian.</p>
+    `
+  },
+  {
+    id: 2,
+    title: 'Planet Tanpa Nama',
+    author: 'Raka Aditya',
+    genre: 'Sci-Fi',
+    time: '10 min',
+    likes: 756,
+    date: '1 Agt 2026',
+    excerpt: 'Kapal kami mendarat di planet yang tidak ada di peta. Yang kami temukan bukanlah alien, melainkan sesuatu yang lebih familiar...',
+    content: `
+      <p class="dropcap">Koordinat itu tidak seharusnya ada. Setidaknya, begitulah yang dikatakan Kapten. Tapi layar navigator kami menunjukkan angka-angka yang jelas, dan planet di depan kami nyata — biru, berputar pelan, menanti.</p>
+      <p>Kami mendarat di padang rumput perak. Langitnya ungu. Udaranya berbau seperti rumah nenek — campuran lavender dan kayu tua.</p>
+      <p>"Ini tidak masuk akal," kata Dr. Sari, sambil menatap alat ukurnya. "Atmosfernya 98% identik dengan Bumi. Ini mustahil."</p>
+      <p>Lalu kami melihatnya. Sebuah rumah. Rumah kayu dengan teras kecil dan ayunan. Rumah yang sangat mirip dengan rumah masa kecilku di Bandung.</p>
+      <p>Di depan pintu, ada seorang wanita tua yang tersenyum. "Kalian akhirnya datang," katanya. "Kami sudah menunggu lama."</p>
+      <p>"Siapa kalian?" tanya Kapten.</p>
+      <p>"Kami adalah kenangan kalian," jawabnya. "Setiap manusia yang pernah merindukan sesuatu dengan cukup kuat, tanpa sadar menciptakannya di sini. Planet ini terbuat dari rindu."</p>
+    `
+  },
+  {
+    id: 3,
+    title: 'Lilin di Kamar 12',
+    author: 'Dewi Anggraini',
+    genre: 'Horror',
+    time: '7 min',
+    likes: 1087,
+    date: '30 Jul 2026',
+    excerpt: 'Penghuni baru hotel itu selalu bertanya: mengapa lilin di kamar 12 tidak pernah padam, tidak peduli angin kencang sekalipun?',
+    content: `
+      <p class="dropcap">"Kamar 12 sudah dipesan, Pak," kata resepsionis itu tanpa menatapku. "Tapi... kalau Bapak mau kamar lain, saya sarankan kamar 15 saja."</p>
+      <p>Aku kekeh. "Saya sudah pesan kamar 12. Kenapa harus pindah?"</p>
+      <p>Ia akhirnya mendongak. Matanya lelah. "Karena lilin di kamar 12 tidak pernah padam, Pak. Tidak peduli angin, tidak peduli kita tiup. Dan kadang... kadang, ia berganti warna."</p>
+      <p>Aku tertawa. Takhayul. Aku tetap mengambil kunci kamar 12.</p>
+      <p>Benar saja, ada lilin di meja samping tempat tidur. Menyala dengan api kuning kecil. Aku meniupnya. Apinya tidak padam. Aku coba tutup dengan gelas. Apinya tetap menyala di dalam gelas itu, seolah oksigen bukan masalah.</p>
+      <p>Pukul tiga pagi, aku terbangun. Lilin itu sudah berganti warna — menjadi merah darah. Dan di dinding, bayangannya bukan lagi bentuk lilin. Tapi bentuk seseorang. Seseorang yang berdiri persis di samping tempat tidurku.</p>
+      <p class="quote-inline">Aku tidak berani membuka mata. Tapi aku tahu ia tahu aku sudah bangun.</p>
+    `
+  },
+  {
+    id: 4,
+    title: 'Surat-Surat yang Tak Pernah Terkirim',
+    author: 'Bima Sakti',
+    genre: 'Romance',
+    time: '9 min',
+    likes: 1543,
+    date: '28 Jul 2026',
+    excerpt: 'Di laci meja kerjanya, ada 247 surat. Semua ditujukan pada wanita yang sama. Tak satu pun pernah dikirimkan...',
+    content: `
+      <p class="dropcap">Ketika Ayah meninggal, kami menemukan lacinya. Dua ratus empat puluh tujuh amplop, rapi tersusun, semua dengan alamat yang sama. Semua ditujukan pada seseorang bernama "Kartini, Jalan Melati No. 14, Yogyakarta."</p>
+      <p>Ibu menatap tumpukan itu dengan wajah yang tidak bisa kubaca. Lalu ia tersenyum — senyum yang paling sedih yang pernah kulihat.</p>
+      <p>"Itu aku," katanya pelan. "Dulu, sebelum kami menikah."</p>
+      <p>"Tapi kenapa nggak pernah dikirim, Bu?"</p>
+      <p>Ibu membuka satu amplop acak. Suratnya pendek:</p>
+      <p class="quote-inline">"Hari ini aku melihatmu di halte. Kamu memakai baju biru. Aku ingin menyapamu, tapi kakiku kaku. Mungkin besok. Mungkin lusa. Maaf, Tin. Aku pengecut yang mencintaimu dalam diam."</p>
+      <p>Ibu menutup amplop itu perlahan. "Ayahmu menulis surat untukku setiap hari selama setahun sebelum kami bertemu lagi di resepsi pernikahan temannya. Ia tidak pernah mengirim satu pun. Tapi setiap surat itu adalah caranya bertahan."</p>
+      <p>"Kenapa Ibu simpan?"</p>
+      <p>"Karena aku ingin tahu seberapa besar ia mencintaiku sebelum aku tahu ia mencintaiku."</p>
+    `
+  },
+  {
+    id: 5,
+    title: 'Kerajaan yang Hilang dalam Sekejap',
+    author: 'Nadia Putri',
+    genre: 'Fantasy',
+    time: '12 min',
+    likes: 967,
+    date: '25 Jul 2026',
+    excerpt: 'Seorang putri kecil terbangun dan menemukan kerajaannya lenyap. Hanya tersisa satu pintu berdiri sendiri di tengah padang...',
+    content: `
+      <p class="dropcap">Ketika Putri Eliana membuka mata, istananya sudah tidak ada. Bukan hancur. Bukan terbakar. Tapi menghilang, seperti tidak pernah ada. Ranjangnya kini berada di tengah padang rumput yang luas, dan langit di atasnya memiliki dua bulan.</p>
+      <p>"Halo?" panggilnya. Suaranya bergema ke segala arah, tapi tidak ada jawaban.</p>
+      <p>Lalu ia melihat pintu itu. Berdiri sendiri di tengah padang, tanpa dinding, tanpa atap. Pintu kayu tua dengan ukiran naga. Dan dari balik pintu, terdengar bisikan:</p>
+      <p class="quote-inline">"Masuklah, Yang Mulia. Kami sudah menanti. Kerajaanmu tidak hilang — ia hanya pindah."</p>
+      <p>Eliana maju perlahan. Ia tahu, begitu ia membuka pintu itu, ia tidak akan pernah kembali menjadi anak kecil yang sama. Tapi seorang putri sejati tidak lari dari takdirnya.</p>
+      <p>Ia memutar kenop pintu. Dan dunia di baliknya — dunia baru dengan aturan baru — menyambutnya dengan nyanyian.</p>
+    `
+  }
+];
+
+// ============================================
+// RENDER STORIES
+// ============================================
+function renderStories(storiesToRender = STORIES) {
+  const grid = document.getElementById('storiesGrid');
+  grid.innerHTML = '';
+  
+  storiesToRender.forEach((story, i) => {
+    const card = document.createElement('div');
+    card.className = 'story-card';
+    card.style.transitionDelay = (i * 0.08) + 's';
+    card.innerHTML = `
+      <div class="story-image">
+        <div class="story-image-text">${story.genre.charAt(0)}</div>
+      </div>
+      <div class="story-number">N°${String(i + 1).padStart(2, '0')} · ${story.date}</div>
+      <span class="story-genre">${story.genre}</span>
+      <h3 class="story-title">${story.title}</h3>
+      <div class="story-author">oleh ${story.author}</div>
+      <p class="story-excerpt">${story.excerpt}</p>
+      <div class="story-footer">
+        <div class="story-meta">
+          <span>${story.time}</span>
+          <span>${story.likes.toLocaleString()} ♥</span>
+        </div>
+        <span class="story-action">Read →</span>
+      </div>
+    `;
+    card.onclick = () => openStory(story.id);
+    grid.appendChild(card);
+    setTimeout(() => observer.observe(card), 10);
+  });
+}
+
+renderStories();
+
+// ============================================
+// FILTER GENRE
+// ============================================
+function filterGenre(genre) {
+  const filtered = STORIES.filter(s => s.genre === genre);
+  if (filtered.length === 0) {
+    showToast(`Belum ada cerita ${genre}`, 'error');
+    return;
+  }
+  renderStories(filtered);
+  document.getElementById('stories').scrollIntoView({ behavior: 'smooth' });
+  showToast(`Menampilkan ${filtered.length} cerita ${genre}`, 'success');
+}
+
+// ============================================
+// STORY MODAL
+// ============================================
+function openStory(id) {
+  const story = STORIES.find(s => s.id === id);
+  if (!story) return;
+  
+  document.getElementById('modalGenre').textContent = story.genre;
+  document.getElementById('modalTitle').textContent = story.title;
+  document.getElementById('modalAuthor').textContent = `oleh ${story.author}`;
+  document.getElementById('modalTime').textContent = `⏱ ${story.time}`;
+  document.getElementById('modalLikes').textContent = `♥ ${story.likes.toLocaleString()}`;
+  document.getElementById('modalDate').textContent = `📅 ${story.date}`;
+  document.getElementById('storyContent').innerHTML = story.content;
+  
+  document.getElementById('storyModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  document.querySelector('.modal').scrollTop = 0;
+}
+
+function closeStoryModal() {
+  document.getElementById('storyModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ============================================
+// NEWSLETTER
+// ============================================
+function subscribeNewsletter(e) {
+  e.preventDefault();
+  const email = document.getElementById('newsletterEmail').value.trim();
+  if (!email) return;
+  document.getElementById('newsletterEmail').value = '';
+  showToast('Terima kasih! Edisi berikutnya akan kami kirim Minggu pagi.', 'success');
+}
+
+// ============================================
+// TOAST
+// ============================================
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ============================================
+// PRELOADER
+// ============================================
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('preloader').classList.add('hide');
+  }, 1400);
+});
+
+// ============================================
+// COUNTER ANIMATION
+// ============================================
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  const duration = 2000;
+  const steps = 60;
+  const increment = target / steps;
+  let current = 0;
+  let step = 0;
+  const timer = setInterval(() => {
+    step++;
+    current += increment;
+    if (step >= steps) { current = target; clearInterval(timer); }
+    el.textContent = Math.floor(current).toLocaleString() + (target >= 100 ? '+' : '');
+  }, duration / steps);
+}
+
+// ============================================
+// SCROLL REVEAL
+// ============================================
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      if (entry.target.classList.contains('stat-value') && entry.target.dataset.target) {
+        animateCounter(entry.target);
+      }
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.story-card, .stat-value[data-target], .info-card, .tip-card').forEach(el => {
+  observer.observe(el);
+});
+
+// ============================================
+// KEYBOARD
+// ============================================
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeStoryModal();
+});
+</script>
+
+</body>
+</html>
