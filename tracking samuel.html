@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HandTrack Pro - Gesture Tracking System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0f0f14;
+            --bg-secondary: #1a1a24;
+            --bg-tertiary: #24243a;
+            --bg-card: #1e1e30;
+            --accent-primary: #6c63ff;
+            --accent-secondary: #a78bfa;
+            --accent-tertiary: #c4b5fd;
+            --accent-glow: rgba(108, 99, 255, 0.3);
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b8;
+            --text-muted: #6b6b80;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --error: #f87171;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+            --radius: 12px;
+            --radius-lg: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Login Page */
+        .login-container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            background: var(--bg-primary);
+            transition: var(--transition);
+        }
+
+        .login-container.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+
+        .login-bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .login-bg::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .login-bg::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.15) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        .login-card {
+            position: relative;
+            width: 420px;
+            padding: 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(20px);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .login-logo {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .login-tabs {
+            display: flex;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            padding: 4px;
+            margin-bottom: 28px;
+        }
+
+        .login-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-muted);
+        }
+
+        .login-tab.active {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 2px 12px var(--accent-glow);
+        }
+
+        .login-tab:hover:not(.active) {
+            color: var(--text-primary);
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .login-btn {
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: var(--radius);
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 8px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .guest-btn {
+            padding: 14px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .guest-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .login-error {
+            font-size: 13px;
+            color: var(--error);
+            text-align: center;
+            padding: 8px;
+            background: rgba(248, 113, 113, 0.1);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Main App */
+        .app-container {
+            display: none;
+            height: 100vh;
+            grid-template-columns: 320px 1fr;
+            grid-template-rows: 60px 1fr;
+        }
+
+        .app-container.active {
+            display: grid;
+        }
+
+        /* Header */
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .header-logo-text {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .header-logo-text span {
+            color: var(--accent-secondary);
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 14px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius);
+            font-size: 13px;
+        }
+
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            padding: 8px 14px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 28px;
+        }
+
+        .sidebar-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            padding-left: 4px;
+        }
+
+        .control-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+
+        .control-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .control-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .control-label {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .toggle {
+            position: relative;
+            width: 40px;
+            height: 22px;
+            background: var(--bg-tertiary);
+            border-radius: 11px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle.active {
+            background: var(--accent-primary);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: white;
+            top: 2px;
+            left: 2px;
+            transition: var(--transition);
+        }
+
+        .toggle.active::after {
+            left: 20px;
+        }
+
+        .control-slider {
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .slider-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 4px;
+            -webkit-appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            cursor: pointer;
+            box-shadow: 0 2px 8px var(--accent-glow);
+        }
+
+        .slider-value {
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-secondary);
+            min-width: 32px;
+            text-align: right;
+        }
+
+        .mode-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .mode-btn {
+            padding: 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .mode-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+            box-shadow: 0 2px 12px var(--accent-glow);
+        }
+
+        .mode-btn:hover:not(.active) {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-item {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-secondary);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .color-option.active {
+            border-color: white;
+            transform: scale(1.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            overflow-y: auto;
+            background: var(--bg-primary);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            aspect-ratio: 16/10;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .video-container video,
+        .video-container canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            pointer-events: none;
+        }
+
+        .video-badge {
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .video-badge.recording {
+            color: var(--error);
+        }
+
+        .video-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--error);
+            animation: pulse 1s infinite;
+        }
+
+        .gesture-info {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            pointer-events: none;
+        }
+
+        .gesture-display {
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        .gesture-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .gesture-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .finger-count {
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .finger-number {
+            font-size: 32px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-secondary);
+        }
+
+        .finger-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .video-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            gap: 16px;
+        }
+
+        .video-placeholder-icon {
+            font-size: 48px;
+            opacity: 0.5;
+        }
+
+        .video-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 2px 12px var(--accent-glow);
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+        }
+
+        .action-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        /* Gesture Log */
+        .gesture-log {
+            max-width: 900px;
+            margin: 24px auto 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+        }
+
+        .log-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .log-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .log-clear {
+            font-size: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .log-clear:hover {
+            color: var(--error);
+        }
+
+        .log-items {
+            max-height: 120px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .log-items::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .log-items::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        .log-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            font-size: 13px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .log-item-gesture {
+            font-weight: 500;
+        }
+
+        .log-item-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .log-empty {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .app-container.active {
+                grid-template-columns: 1fr;
+                grid-template-rows: 60px auto 1fr;
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                max-height: 300px;
+            }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 14px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            font-size: 14px;
+            z-index: 2000;
+            transform: translateX(120%);
+            transition: var(--transition);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left: 3px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 3px solid var(--error);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-bg"></div>
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">✋</div>
+                <h1 class="login-title">HandTrack Pro</h1>
+                <p class="login-subtitle">Gesture Tracking & Recognition System</p>
+            </div>
+
+            <div class="login-tabs">
+                <div class="login-tab active" onclick="switchTab('developer')">Developer</div>
+                <div class="login-tab" onclick="switchTab('guest')">Guest</div>
+            </div>
+
+            <div id="developerForm" class="login-form">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="Enter your email" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password">
+                </div>
+                <div class="login-error" id="loginError">Email atau password salah</div>
+                <button class="login-btn" onclick="handleLogin()">Masuk</button>
+            </div>
+
+            <div id="guestForm" class="login-form" style="display:none">
+                <div style="text-align:center; padding: 20px 0;">
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 20px;">
+                        Masuk sebagai tamu untuk mencoba fitur tracking tanpa registrasi
+                    </p>
+                </div>
+                <button class="login-btn" onclick="handleGuest()">Masuk sebagai Guest</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="appContainer">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="header-logo">
+                    <div class="header-logo-icon">✋</div>
+                    <div class="header-logo-text">HandTrack <span>Pro</span></div>
+                </div>
+                <div class="header-status">
+                    <div class="status-dot"></div>
+                    <span id="statusText">Tracking Active</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-user">
+                    <div class="user-avatar" id="userAvatar">D</div>
+                    <span id="userName">Developer</span>
+                    <span id="userRole" style="font-size:11px; padding:2px 8px; background:var(--accent-primary); border-radius:10px; color:white;">DEV</span>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Detection Settings</div>
+                
+                <div class="control-card">
+                    <div class="control-header">
+                        <span class="control-label">Camera</span>
+                        <div class="toggle active" id="cameraToggle" onclick="toggleCamera()"></div>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <div class="control-header">
+                        <span class="control-label">Show Landmarks</span>
+                        <div class="toggle active" id="landmarksToggle" onclick="toggleOption('landmarks')"></div>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <div class="control-header">
+                        <span class="control-label">Show Connections</span>
+                        <div class="toggle active" id="connectionsToggle" onclick="toggleOption('connections')"></div>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <div class="control-header">
+                        <span class="control-label">Mirror Mode</span>
+                        <div class="toggle active" id="mirrorToggle" onclick="toggleOption('mirror')"></div>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <div class="control-header">
+                        <span class="control-label">Hand Count</span>
+                    </div>
+                    <div class="mode-buttons">
+                        <div class="mode-btn active" onclick="setHandCount(1, this)">1 Hand</div>
+                        <div class="mode-btn" onclick="setHandCount(2, this)">2 Hands</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Visual Settings</div>
+
+                <div class="control-card">
+                    <div class="control-header">
+                        <span class="control-label">Line Thickness</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" min="1" max="8" value="3" id="thicknessSlider" oninput="updateThickness(this.value)">
+                        <span class="slider-value" id="thicknessValue">3px</span>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <div class="control-header">
+                        <span class="control-label">Point Size</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" min="2" max="12" value="5" id="pointSlider" oninput="updatePointSize(this.value)">
+                        <span class="slider-value" id="pointValue">5px</span>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <div class="control-header">
+                        <span class="control-label">Color Theme</span>
+                    </div>
+                    <div class="color-picker" id="colorPicker">
+                        <div class="color-option active" style="background: #6c63ff" onclick="setColor('#6c63ff', this)"></div>
+                        <div class="color-option" style="background: #34d399" onclick="setColor('#34d399', this)"></div>
+                        <div class="color-option" style="background: #fbbf24" onclick="setColor('#fbbf24', this)"></div>
+                        <div class="color-option" style="background: #f87171" onclick="setColor('#f87171', this)"></div>
+                        <div class="color-option" style="background: #60a5fa" onclick="setColor('#60a5fa', this)"></div>
+                        <div class="color-option" style="background: #fb923c" onclick="setColor('#fb923c', this)"></div>
+                        <div class="color-option" style="background: #e879f9" onclick="setColor('#e879f9', this)"></div>
+                        <div class="color-option" style="background: #ffffff" onclick="setColor('#ffffff', this)"></div>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <div class="control-header">
+                        <span class="control-label">Detection Model</span>
+                    </div>
+                    <div class="mode-buttons">
+                        <div class="mode-btn" onclick="setModel('lite', this)">Lite</div>
+                        <div class="mode-btn active" onclick="setModel('full', this)">Full</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Statistics</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="fpsValue">0</div>
+                        <div class="stat-label">FPS</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="handDetected">0</div>
+                        <div class="stat-label">Hands</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="gestureCount">0</div>
+                        <div class="stat-label">Gestures</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="sessionTime">0:00</div>
+                        <div class="stat-label">Session</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="video-container">
+                <video id="videoInput" playsinline></video>
+                <canvas id="canvasOutput"></canvas>
+                
+                <div class="video-placeholder" id="videoPlaceholder">
+                    <div class="video-placeholder-icon">📷</div>
+                    <p>Klik "Start Camera" untuk memulai tracking</p>
+                </div>
+
+                <div class="video-overlay" id="videoOverlay" style="display:none">
+                    <div class="video-badge">
+                        <div class="dot" style="background: var(--success); animation: pulse 2s infinite;"></div>
+                        <span>Live</span>
+                    </div>
+                    <div class="video-badge recording" id="recordingBadge" style="display:none">
+                        <div class="dot"></div>
+                        <span>REC</span>
+                    </div>
+                </div>
+
+                <div class="gesture-info" id="gestureInfo" style="display:none">
+                    <div class="gesture-display">
+                        <div class="gesture-label">Detected Gesture</div>
+                        <div class="gesture-name" id="gestureName">-</div>
+                    </div>
+                    <div class="finger-count">
+                        <div class="finger-number" id="fingerNumber">0</div>
+                        <div class="finger-label">Fingers</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-actions">
+                <button class="action-btn primary" id="startBtn" onclick="startCamera()">
+                    ▶ Start Camera
+                </button>
+                <button class="action-btn" onclick="takeScreenshot()">
+                    📸 Screenshot
+                </button>
+                <button class="action-btn" id="recordBtn" onclick="toggleRecording()">
+                    ⏺ Record
+                </button>
+                <button class="action-btn" onclick="resetStats()">
+                    🔄 Reset
+                </button>
+            </div>
+
+            <div class="gesture-log">
+                <div class="log-header">
+                    <span class="log-title">📋 Gesture Log</span>
+                    <span class="log-clear" onclick="clearLog()">Clear All</span>
+                </div>
+                <div class="log-items" id="logItems">
+                    <div class="log-empty" id="logEmpty">Belum ada gesture terdeteksi</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ============ CONFIGURATION ============
+        const CREDENTIALS = [
+            { email: 'samuel@gmail.com', password: 'samuel1234', name: 'Samuel' },
+            { email: 'aulia@gmail.com', password: 'aulia12234', name: 'Aulia' }
+        ];
+
+        // ============ STATE ============
+        let state = {
+            currentUser: null,
+            cameraActive: false,
+            options: {
+                landmarks: true,
+                connections: true,
+                mirror: true,
+                handCount: 1,
+                thickness: 3,
+                pointSize: 5,
+                color: '#6c63ff',
+                model: 'full'
+            },
+            stats: {
+                fps: 0,
+                hands: 0,
+                gestures: 0,
+                sessionStart: null
+            },
+            isRecording: false,
+            mediaRecorder: null,
+            recordedChunks: [],
+            gestureLog: [],
+            lastGesture: '',
+            frameCount: 0,
+            lastFpsTime: Date.now()
+        };
+
+        let hands = null;
+        let camera = null;
+
+        // ============ LOGIN SYSTEM ============
+        function switchTab(tab) {
+            document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('developerForm').style.display = tab === 'developer' ? 'flex' : 'none';
+            document.getElementById('guestForm').style.display = tab === 'guest' ? 'flex' : 'none';
+            document.getElementById('loginError').classList.remove('show');
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            const user = CREDENTIALS.find(c => c.email === email && c.password === password);
+            
+            if (user) {
+                state.currentUser = { ...user, role: 'developer' };
+                showApp();
+                showToast(`Selamat datang, ${user.name}!`, 'success');
+            } else {
+                document.getElementById('loginError').classList.add('show');
+                setTimeout(() => {
+                    document.getElementById('loginError').classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        function handleGuest() {
+            state.currentUser = { name: 'Guest', role: 'guest' };
+            showApp();
+            showToast('Masuk sebagai Guest', 'success');
+        }
+
+        function handleLogout() {
+            stopCamera();
+            state.currentUser = null;
+            document.getElementById('loginContainer').classList.remove('hidden');
+            document.getElementById('appContainer').classList.remove('active');
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        function showApp() {
+            document.getElementById('loginContainer').classList.add('hidden');
+            document.getElementById('appContainer').classList.add('active');
+            
+            document.getElementById('userName').textContent = state.currentUser.name;
+            document.getElementById('userAvatar').textContent = state.currentUser.name.charAt(0).toUpperCase();
+            document.getElementById('userRole').textContent = state.currentUser.role === 'developer' ? 'DEV' : 'GUEST';
+            
+            state.stats.sessionStart = Date.now();
+            initMediaPipe();
+            startSessionTimer();
+        }
+
+        // ============ MEDIAPIPE ============
+        function initMediaPipe() {
+            hands = new Hands({
+                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+            });
+
+            hands.setOptions({
+                maxNumHands: state.options.handCount,
+                modelComplexity: state.options.model === 'full' ? 1 : 0,
+                minDetectionConfidence: 0.7,
+                minTrackingConfidence: 0.5
+            });
+
+            hands.onResults(onResults);
+        }
+
+        function onResults(results) {
+            const canvas = document.getElementById('canvasOutput');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            ctx.save();
+            
+            if (state.options.mirror) {
+                ctx.scale(-1, 1);
+                ctx.translate(-canvas.width, 0);
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (results.image) {
+                ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
+            }
+
+            const detectedHands = results.multiHandLandmarks || [];
+            state.stats.hands = detectedHands.length;
+            document.getElementById('handDetected').textContent = state.stats.hands;
+
+            if (detectedHands.length > 0) {
+                document.getElementById('videoOverlay').style.display = 'flex';
+                document.getElementById('gestureInfo').style.display = 'flex';
+                document.getElementById('videoPlaceholder').style.display = 'none';
+
+                const landmarks = detectedHands[0];
+                const gesture = detectGesture(landmarks);
+                const fingerCount = countFingers(landmarks);
+
+                document.getElementById('gestureName').textContent = gesture;
+                document.getElementById('fingerNumber').textContent = fingerCount;
+
+                if (gesture !== state.lastGesture && gesture !== 'Unknown') {
+                    state.lastGesture = gesture;
+                    state.stats.gestures++;
+                    document.getElementById('gestureCount').textContent = state.stats.gestures;
+                    addLogItem(gesture);
+                }
+
+                // Draw hand
+                detectedHands.forEach((landmarks, index) => {
+                    if (state.options.connections) {
+                        drawConnectors(ctx, landmarks, HAND_CONNECTIONS, {
+                            color: state.options.color + '80',
+                            lineWidth: state.options.thickness
+                        });
+                    }
+                    
+                    if (state.options.landmarks) {
+                        drawLandmarks(ctx, landmarks, {
+                            color: state.options.color,
+                            lineWidth: 1,
+                            radius: state.options.pointSize
+                        });
+                    }
+                });
+            } else {
+                document.getElementById('gestureName').textContent = '-';
+                document.getElementById('fingerNumber').textContent = '0';
+                state.lastGesture = '';
+            }
+
+            ctx.restore();
+            
+            // FPS
+            state.frameCount++;
+            const now = Date.now();
+            if (now - state.lastFpsTime >= 1000) {
+                state.stats.fps = state.frameCount;
+                state.frameCount = 0;
+                state.lastFpsTime = now;
+                document.getElementById('fpsValue').textContent = state.stats.fps;
+            }
+        }
+
+        function detectGesture(landmarks) {
+            // Simplified gesture detection
+            const thumb = landmarks[4];
+            const index = landmarks[8];
+            const middle = landmarks[12];
+            const ring = landmarks[16];
+            const pinky = landmarks[20];
+            const wrist = landmarks[0];
+            
+            const fingers = countFingers(landmarks);
+            
+            // Distance between thumb and index
+            const thumbIndexDist = Math.hypot(thumb.x - index.x, thumb.y - index.y);
+            
+            if (fingers === 5) return '🖐️ Open Palm';
+            if (fingers === 0) return '✊ Fist';
+            if (fingers === 1 && thumbIndexDist < 0.05) return '👌 OK';
+            if (fingers === 1) return '☝️ Pointing';
+            if (fingers === 2) return '✌️ Peace';
+            if (fingers === 3) return '🤟 Three';
+            if (fingers === 4) return '🖖 Four';
+            
+            return 'Unknown';
+        }
+
+        function countFingers(landmarks) {
+            let count = 0;
+            const tips = [4, 8, 12, 16, 20];
+            const pips = [3, 6, 10, 14, 18];
+            
+            for (let i = 0; i < 5; i++) {
+                if (i === 0) {
+                    // Thumb
+                    if (landmarks[tips[i]].x < landmarks[pips[i]].x) count++;
+                } else {
+                    if (landmarks[tips[i]].y < landmarks[pips[i]].y) count++;
+                }
+            }
+            
+            return count;
+        }
+
+        // ============ CAMERA CONTROL ============
+        function startCamera() {
+            const video = document.getElementById('videoInput');
+            
+            if (state.cameraActive) {
+                stopCamera();
+                return;
+            }
+
+            camera = new Camera(video, {
+                onFrame: async () => {
+                    await hands.send({ image: video });
+                },
+                width: 1280,
+                height: 720
+            });
+
+            camera.start().then(() => {
+                state.cameraActive = true;
+                document.getElementById('startBtn').innerHTML = '⏹ Stop Camera';
+                document.getElementById('videoPlaceholder').style.display = 'none';
+                document.getElementById('statusText').textContent = 'Tracking Active';
+                showToast('Camera started successfully!', 'success');
+            }).catch(err => {
+                showToast('Failed to start camera: ' + err.message, 'error');
+            });
+        }
+
+        function stopCamera() {
+            if (camera) {
+                camera.stop();
+                camera = null;
+            }
+            
+            const video = document.getElementById('videoInput');
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+            }
+            
+            const canvas = document.getElementById('canvasOutput');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            state.cameraActive = false;
+            document.getElementById('startBtn').innerHTML = '▶ Start Camera';
+            document.getElementById('videoOverlay').style.display = 'none';
+            document.getElementById('gestureInfo').style.display = 'none';
+            document.getElementById('videoPlaceholder').style.display = 'flex';
+            document.getElementById('statusText').textContent = 'Camera Off';
+        }
+
+        function toggleCamera() {
+            const toggle = document.getElementById('cameraToggle');
+            toggle.classList.toggle('active');
+            
+            if (toggle.classList.contains('active')) {
+                startCamera();
+            } else {
+                stopCamera();
+            }
+        }
+
+        // ============ OPTIONS ============
+        function toggleOption(option) {
+            state.options[option] = !state.options[option];
+            document.getElementById(option + 'Toggle').classList.toggle('active');
+        }
+
+        function setHandCount(count, el) {
+            state.options.handCount = count;
+            el.parentElement.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            
+            if (hands) {
+                hands.setOptions({ maxNumHands: count });
+            }
+        }
+
+        function setModel(model, el) {
+            state.options.model = model;
+            el.parentElement.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            
+            if (hands) {
+                hands.setOptions({ modelComplexity: model === 'full' ? 1 : 0 });
+            }
+        }
+
+        function updateThickness(value) {
+            state.options.thickness = parseInt(value);
+            document.getElementById('thicknessValue').textContent = value + 'px';
+        }
+
+        function updatePointSize(value) {
+            state.options.pointSize = parseInt(value);
+            document.getElementById('pointValue').textContent = value + 'px';
+        }
+
+        function setColor(color, el) {
+            state.options.color = color;
+            document.querySelectorAll('.color-option').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // ============ FEATURES ============
+        function takeScreenshot() {
+            const canvas = document.getElementById('canvasOutput');
+            const link = document.createElement('a');
+            link.download = `handtrack-${Date.now()}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+            showToast('Screenshot saved!', 'success');
+        }
+
+        function toggleRecording() {
+            const canvas = document.getElementById('canvasOutput');
+            
+            if (!state.isRecording) {
+                const stream = canvas.captureStream(30);
+                state.mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+                state.recordedChunks = [];
+                
+                state.mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) state.recordedChunks.push(e.data);
+                };
+                
+                state.mediaRecorder.onstop = () => {
+                    const blob = new Blob(state.recordedChunks, { type: 'video/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.download = `handtrack-${Date.now()}.webm`;
+                    link.href = url;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                    showToast('Recording saved!', 'success');
+                };
+                
+                state.mediaRecorder.start();
+                state.isRecording = true;
+                document.getElementById('recordBtn').innerHTML = '⏹ Stop Rec';
+                document.getElementById('recordingBadge').style.display = 'flex';
+                showToast('Recording started', 'success');
+            } else {
+                state.mediaRecorder.stop();
+                state.isRecording = false;
+                document.getElementById('recordBtn').innerHTML = '⏺ Record';
+                document.getElementById('recordingBadge').style.display = 'none';
+            }
+        }
+
+        function resetStats() {
+            state.stats.gestures = 0;
+            state.stats.sessionStart = Date.now();
+            state.gestureLog = [];
+            document.getElementById('gestureCount').textContent = '0';
+            document.getElementById('logItems').innerHTML = '<div class="log-empty">Belum ada gesture terdeteksi</div>';
+            showToast('Statistics reset', 'success');
+        }
+
+        // ============ LOG ============
+        function addLogItem(gesture) {
+            const logItems = document.getElementById('logItems');
+            const empty = document.getElementById('logEmpty');
+            if (empty) empty.remove();
+            
+            const time = new Date().toLocaleTimeString('id-ID');
+            const item = document.createElement('div');
+            item.className = 'log-item';
+            item.innerHTML = `
+                <span class="log-item-gesture">${gesture}</span>
+                <span class="log-item-time">${time}</span>
+            `;
+            
+            logItems.insertBefore(item, logItems.firstChild);
+            
+            if (logItems.children.length > 20) {
+                logItems.removeChild(logItems.lastChild);
+            }
+        }
+
+        function clearLog() {
+            state.gestureLog = [];
+            document.getElementById('logItems').innerHTML = '<div class="log-empty">Belum ada gesture terdeteksi</div>';
+        }
+
+        // ============ SESSION TIMER ============
+        function startSessionTimer() {
+            setInterval(() => {
+                if (state.stats.sessionStart) {
+                    const elapsed = Math.floor((Date.now() - state.stats.sessionStart) / 1000);
+                    const minutes = Math.floor(elapsed / 60);
+                    const seconds = elapsed % 60;
+                    document.getElementById('sessionTime').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+
+        // ============ TOAST ============
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // ============ KEYBOARD SHORTCUTS ============
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !document.getElementById('loginContainer').classList.contains('hidden')) {
+                handleLogin();
+            }
+            if (e.key === ' ' && state.currentUser) {
+                e.preventDefault();
+                startCamera();
+            }
+            if (e.key === 's' && state.currentUser && e.ctrlKey) {
+                e.preventDefault();
+                takeScreenshot();
+            }
+        });
+
+        // Enter key on password field
+        document.getElementById('loginPassword')?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
+    </script>
+</body>
+</html>
